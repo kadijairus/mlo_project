@@ -1,10 +1,53 @@
-# mlo_group_project
+# Machine Learning Operations in Breast Cancer Aspirate Malignancy Classification
 
-Machine Learning group 5
+This is the project of group 5 in the course "Machine Learning Operations" at DTU.
+
+# Project Description
+
+### Overall goal of the project
+
+The goals of this project are:
+1. Create a machine learning model for binary classification for medical application - detect from tabular data, if an aspirate is malignant or not.
+2. Create automated and reproducible ML pipeline to ensure fluid collaboration and adding of team members.
+
+### Data
+#### Dataset
+The project is based on [Breast Cancer Wisconsin dataset](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data/data) from Kaggle.
+#### Number of samples
+The dataset consists of 569 samples:
+- 357 benign
+- 212 malignant
+
+#### Size
+The dataset consists of a single csv file of 551 kB.
+#### Modality
+The data is **tabular data** with 30 features extracted from images of breast aspirates. The data is spread over 32 columns, of which first one is the id (irrelevant) and second one is the classification (B = benign, M = malignant).
+
+The cell nucleus characteristics computed from images of fine needle aspirates (FNA) of breast tissue are:
+- radius (mean of distances from center to points on the perimeter)
+- texture (standard deviation of gray-scale values)
+- perimeter
+- area
+- smoothness (local variation in radius lengths)
+- compactness (perimeter^2 / area - 1.0)
+- concavity (severity of concave portions of the contour)
+- concave points (number of concave portions of the contour)
+- symmetry
+- fractal dimension ("coastline approximation" - 1)
+
+The mean, standard error and "worst" or largest (mean of the three
+largest values) of these features were computed for each image,
+resulting in **30 features**.
+
+### Models
+
+Initially we will use a standard artificial neural network (ANN). 
+
+Similar model has been trained on the same dataset and has shown good performance [ANN Breast Cancer model by Ahmed Hafez](https://www.kaggle.com/code/ahmedtronic/ann-breast-cancer). We have also used some of the code of this submission, e.g. for data preprocessing step.
 
 ## Project structure
 
-The directory structure of the project looks like this:
+The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) and is based on [Machine Learning Operations template](https://github.com/SkafteNicki/mlops_template).
 ```txt
 ├── .github/                  # Github actions and dependabot
 │   ├── dependabot.yaml
@@ -15,18 +58,17 @@ The directory structure of the project looks like this:
 │   ├── processed
 │   └── raw
 ├── dockerfiles/              # Dockerfiles
-│   ├── api.Dockerfile
-│   └── train.Dockerfile
+│   ├── evaluate.dockerfile
+│   └── train.dockerfile
 ├── docs/                     # Documentation
 │   ├── mkdocs.yml
 │   └── source/
 │       └── index.md
 ├── models/                   # Trained models
-├── notebooks/                # Jupyter notebooks
 ├── reports/                  # Reports
 │   └── figures/
 ├── src/                      # Source code
-│   ├── project_name/
+│   ├── mlo_project/
 │   │   ├── __init__.py
 │   │   ├── api.py
 │   │   ├── data.py
@@ -45,11 +87,55 @@ The directory structure of the project looks like this:
 ├── pyproject.toml            # Python project file
 ├── README.md                 # Project README
 ├── requirements.txt          # Project requirements
-├── requirements_dev.txt      # Development requirements
 └── tasks.py                  # Project tasks
 ```
+## How to run
+### Setup
+1. Clone the repository:
+    ```bash
+   git clone https://github.com/kadijairus/mlo_project.git
+   cd mlo_project
+   ```
+2. Install uv (optional, for running scripts):
+   ```bash
+   pip install uv
+   ```
+3. Create a virtual environment and activate it:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
+4. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
+### Running the scripts
+#### Data Processing
+1. Run the data script:
+   ```bash
+    uv run src/mlo_project/data.py
+    ```
+2. Ensure, that the processed data is in `data/processed/` folder.
+   
+#### Training
+1. To train with default configuration run the training script:
+    ```bash
+   uv run src/mlo_project/train.py
+   ```
+2. Use Hydra to change configuration options.
+3. Use WandB to monitor training.
+4. The trained model will be saved in the `models/` folder.
 
-Created using [mlops_template](https://github.com/SkafteNicki/mlops_template),
-a [cookiecutter template](https://github.com/cookiecutter/cookiecutter) for getting
-started with Machine Learning Operations (MLOps).
+#### Evaluation
+1. Run the evaluation script and specify the model path:
+    ```bash
+    uv run src/mlo_project/evaluate.py models/your_model_file.pt
+    ```   
+
+### Running the scripts with Docker
+1. Build the image:
+   docker build -t breast-cancer-train -f dockerfiles/train.dockerfile .
+2. Run the training:
+   docker run --rm breast-cancer-train
+   
