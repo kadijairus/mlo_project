@@ -3,6 +3,8 @@
 This is the report template for the exam. Please only remove the text formatted as with three dashes in front and behind
 like:
 
+
+
 ```--- question 1 fill here ---```
 
 Where you instead should add your answers. Any other changes may have unwanted consequences when your report is
