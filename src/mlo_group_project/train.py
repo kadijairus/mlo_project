@@ -12,7 +12,7 @@ import wandb
 app = typer.Typer()
 @app.command()
 
-@hydra.main(config_path="cnf", config_name="config", version_base=None)
+@hydra.main(config_path="config", config_name="config", version_base=None)
 def train_model(cnf: DictConfig):
     # Convert Hydra config to a standard dictionary
     wandb_config = OmegaConf.to_container(
