@@ -3,11 +3,8 @@ from pathlib import Path
 import typer
 from torch.utils.data import Dataset
 import torch
-import torch.nn as nn
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import LabelEncoder
@@ -51,7 +48,7 @@ class BreastCancerData(Dataset):
         self.images = self.images[indices]
         self.targets = self.targets[indices]
 
-def preprocess(data_path: Path, output_folder: Path) -> None:
+def preprocess(data_path: Path = Path("src/mlo_group_project/data/raw/bcw.csv"), output_folder: Path = Path("src/mlo_group_project/data/processed")) -> None:
     print("Preprocessing data...")
     dataset = BreastCancerData(data_path)
     dataset.preprocess(output_folder)
