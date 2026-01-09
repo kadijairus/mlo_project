@@ -5,10 +5,10 @@ RUN apt update && \
     apt install --no-install-recommends -y build-essential gcc && \
     apt clean && rm -rf /var/lib/apt/lists/*
 # Install dependencies
-COPY uv.lock uv.lock
-COPY pyproject.toml pyproject.toml
-COPY README.md README.md
-COPY src/ src/
+COPY ../uv.lock uv.lock
+COPY ../pyproject.toml pyproject.toml
+COPY ../README.md README.md
+COPY ../src src/
 # Set working directory to root
 WORKDIR /
 # Install dependencies from uv.lock without installing the project itself
