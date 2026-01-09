@@ -12,9 +12,9 @@ def train_model(
     epochs: int = 100,
     lr: float = 0.001,
     batch_size: int = 64,
-    processed_dir: Path = Path("data/processed"),
-    model_save_path: Path = Path("models/model.pth"),
-    metrics_save_path: Path = Path("reports/metrics.pt")
+    processed_dir: Path = Path("src/mlo_group_project/data/processed"),
+    model_save_path: Path = Path("src/mlo_group_project/models/model.pth"),
+    metrics_save_path: Path = Path("src/mlo_group_project/reports/metrics.pt")
     
 ):
         print(f" Starting training: epochs={epochs}, lr={lr}, batch_size={batch_size}")
@@ -82,9 +82,6 @@ def train_model(
                 #Store metrics
                 loss_history.append(avg_loss)
                 accuracy_history.append(avg_acc)
-
-                        
-                
 
                 #Report epoch loss every 10 epochs
                 if (epoch + 1) % 10 == 0:
