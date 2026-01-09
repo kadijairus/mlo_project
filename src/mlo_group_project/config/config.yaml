@@ -1,0 +1,12 @@
+defaults:
+  - hp: basic
+  - _self_
+
+
+paths:
+  root_dir: ${hydra:runtime.cwd}  # where you ran the command
+  data_dir: ${paths.root_dir}/data #
+  output_dir: ${hydra:runtime.output_dir} 
+  model_checkpoints: ${paths.output_dir}/checkpoints
+  processed_dir: data/processed
+  model_save_path: models/model.pth
