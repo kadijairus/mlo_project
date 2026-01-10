@@ -8,7 +8,7 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 import umap
 
-from pic_classification_mnist_v01_xh.model import MyNeuralNet
+import MyNeuralNet
 
 
 DEVICE = torch.device(
@@ -124,3 +124,4 @@ def visualize_embeddings(
 
 if __name__ == "__main__":
     typer.run(visualize_embeddings)
+
