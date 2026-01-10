@@ -3,6 +3,8 @@ import typer
 from pathlib import Path
 from mlo_group_project.model import BreastCancerModel
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
 app = typer.Typer()
 
 @app.command()
@@ -11,7 +13,7 @@ app = typer.Typer()
 def evaluate_model(
     model_path: Path = Path("models/model.pth"),
     processed_dir: Path = Path("data/processed"),
-    metrics_save_path: Path = Path("reports/eval_metrics.pt")
+    metrics_save_path: Path = Path("eval_metrics.pt")
 ):
     
     print(f" Starting evaluation using model: {model_path}")
@@ -20,22 +22,23 @@ def evaluate_model(
     print(f" Loading eval data from: {eval_file}")
     
     data = torch.load(eval_file)
-    X_eval = data["images"]
-    y_eval = data["targets"]
+    x_eval, y_eval = data[0], data[1]
 
     # Load the trained model
-    model = BreastCancerModel(input_shape=X_eval.shape[1])
+    model = BreastCancerModel(input_shape=x_eval.shape[1])
     model.load_state_dict(torch.load(model_path))
     model.eval()
 
 
     # Perform evaluation , No grad cause we are not training
     with torch.no_grad():
-        logits = model(X_eval)
+        logits = model(x_eval)
         probabilities = torch.sigmoid(logits.squeeze())
         predicted_classes = (probabilities > 0.5).float()
-        
-        correct = (predicted_classes == y_eval).sum().item()
+        y_eval = y_eval.float()
+
+        # predicted_classes shape is [114], y_eval shape is [114, 1]
+        correct = (predicted_classes == y_eval.view_as(predicted_classes)).sum().item()
         total = y_eval.size(0)
     # Calculate accuracy
     accuracy = correct / total

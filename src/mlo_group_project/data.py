@@ -48,7 +48,7 @@ class BreastCancerData(Dataset):
         self.images = self.images[indices]
         self.targets = self.targets[indices]
 
-def preprocess(data_path: Path = Path("src/mlo_group_project/data/raw/bcw.csv"), output_folder: Path = Path("src/mlo_group_project/data/processed")) -> None:
+def preprocess(data_path: Path = Path("./data/raw/bcw.csv"), output_folder: Path = Path("./data/processed")) -> None:
     print("Preprocessing data...")
     dataset = BreastCancerData(data_path)
     dataset.preprocess(output_folder)

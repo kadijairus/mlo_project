@@ -12,32 +12,30 @@ def train_model(
     epochs: int = 100,
     lr: float = 0.001,
     batch_size: int = 64,
-    processed_dir: Path = Path("src/mlo_group_project/data/processed"),
-    model_save_path: Path = Path("src/mlo_group_project/models/model.pth"),
-    metrics_save_path: Path = Path("src/mlo_group_project/reports/metrics.pt")
+    processed_dir: Path = Path("data/processed"),
+    model_save_path: Path = Path("smodels/model.pth"),
+    metrics_save_path: Path = Path("reports/metrics.pt")
     
 ):
         print(f" Starting training: epochs={epochs}, lr={lr}, batch_size={batch_size}")
         print(f" Loading data from: {processed_dir}")
         data_file = processed_dir / "train.pt"
         print(f" Loading data from: {data_file}")
-        data = torch.load(data_file)
-        X_train = data["images"]
-        y_train = data["targets"]
+        x_train, y_train = torch.load(data_file)
 
         #Sanity check
         print("\n Data Sanity Check:")
-        print(f"   Input Shape (X): {X_train.shape}")
+        print(f"   Input Shape (X): {y_train.shape}")
         print(f"   Target Shape (y): {y_train.shape}")
         print(f"   First 2 Targets: {y_train[:2].tolist()}")
         print("-" * 20 + "\n")
 
         #Loading data into DataLoader
-        dataset = torch.utils.data.TensorDataset(X_train, y_train)
+        dataset = torch.utils.data.TensorDataset(x_train, y_train)
         dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
         #Model Initialization, Forcing input shape based on data
-        input_features = X_train.shape[1]
+        input_features = x_train.shape[1]
         model = BreastCancerModel(input_shape=input_features)
 
         #Loss function and optimizer, We use BCEWithLogitsLoss for binary classification
