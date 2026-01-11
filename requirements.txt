@@ -51,6 +51,8 @@ joblib==1.5.3
     # via scikit-learn
 kiwisolver==1.4.9
     # via matplotlib
+loguru==0.7.3
+    # via mlo-group-project (pyproject.toml)
 markdown-it-py==4.0.0
     # via rich
 markupsafe==3.0.3
@@ -65,7 +67,7 @@ mpmath==1.3.0
     # via sympy
 networkx==3.6.1
     # via torch
-numpy==2.4.0
+numpy==2.4.1
     # via
     #   mlo-group-project (pyproject.toml)
     #   contourpy
