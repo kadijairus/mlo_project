@@ -32,6 +32,23 @@ def train_model(cnf: DictConfig):
         model_save_path = Path(cnf.paths.model_save_path)
         metrics_save_path = Path(cnf.paths.metrics_save_path)
 
+        ## For saving model to wandb
+        best_metric = None  # will store best value seen so far
+        best_epoch = None
+
+        best_ckpt_path = model_save_path.parent / "best_model.pt"
+        last_ckpt_path = model_save_path.parent / "last_model.pt"
+
+
+        def log_model_artifact(path: Path, name: str, metadata: dict):
+            artifact = wandb.Artifact(
+                name=name, 
+                type="model",
+                metadata=metadata,
+            )
+            artifact.add_file(str(path))
+            wandb.log_artifact(artifact)
+
         # --- Enhanced Data Loading ---
         logger.debug(f"Getting files from: {processed_dir}")
         data_file = processed_dir / "train.pt"
@@ -113,6 +130,18 @@ def train_model(cnf: DictConfig):
 
             # Log to Wandb
             wandb.log({"train_loss": avg_loss, "train_acc": avg_acc, "epoch": epoch})
+            is_better = False
+            if best_metric is None:
+                is_better = True
+            elif avg_loss < best_metric:
+                is_better = True
+            # save best checkpoint locally
+            best_ckpt_path.parent.mkdir(parents=True, exist_ok=True)
+            torch.save(model.state_dict(), best_ckpt_path)
+
+            if is_better:
+                best_metric = avg_loss
+                best_epoch = epoch + 1
 
         logger.info("Training loop completed.")
 
@@ -134,6 +163,32 @@ def train_model(cnf: DictConfig):
         except OSError as e:
             logger.error(f"Failed to save artifacts. Check permissions for the path. Error: {e}")
             raise
+
+        # Save last and best model to wandb
+        last_ckpt_path.parent.mkdir(parents=True, exist_ok=True)
+        torch.save(model.state_dict(), last_ckpt_path)
+
+        log_model_artifact(
+            last_ckpt_path,
+            name="breast-cancer-model-last",
+            metadata={
+                "epoch": epochs,
+                "train_loss_last": float(loss_history[-1]),
+                "train_acc_last": float(accuracy_history[-1]),
+                "lr": lr,
+                "batch_size": batch_size,
+            },
+        )
+        log_model_artifact(
+            best_ckpt_path,
+            name="breast-cancer-model-best",
+            metadata={
+                "epoch": best_epoch,
+                "train_loss_best": float(best_metric),
+                "lr": lr,
+                "batch_size": batch_size,
+            },
+        )
 
         logger.success("Training process finished successfully!")
 
