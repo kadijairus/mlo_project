@@ -6,6 +6,9 @@ from mlo_group_project.model import BreastCancerModel
 import hydra
 from omegaconf import DictConfig, OmegaConf
 import wandb
+from typing import Any, cast
+from dotenv import load_dotenv
+load_dotenv()
 
 
 @hydra.main(config_path="config", config_name="config", version_base=None)
@@ -13,9 +16,10 @@ def train_model(cnf: DictConfig):
     """Train the Breast Cancer Classification Model."""
     try:
         # Convert Hydra config to a standard dictionary
-        wandb_config = OmegaConf.to_container(
-            cnf, resolve=True, throw_on_missing=True
-        )
+        wandb_config = cast(dict[str, Any], 
+                            OmegaConf.to_container(
+                                cnf, resolve=True, throw_on_missing=True
+                            ))
         wandb.init(project="Breast Cancer Wisconsin", config=wandb_config)
         logger.info("Starting model training process...")
         logger.debug(f"Configuration loaded: {OmegaConf.to_yaml(cnf)}")
