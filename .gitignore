@@ -174,3 +174,4 @@ cython_debug/
 
 # Hydra outputs
 outputs/
+/wandb

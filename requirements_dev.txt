@@ -80,6 +80,8 @@ joblib==1.5.3
     # via scikit-learn
 kiwisolver==1.4.9
     # via matplotlib
+loguru==0.7.3
+    # via mlo-group-project (pyproject.toml)
 markdown==3.10
     # via
     #   mkdocs
@@ -131,7 +133,7 @@ networkx==3.6.1
     # via torch
 nodeenv==1.10.0
     # via pre-commit
-numpy==2.4.0
+numpy==2.4.1
     # via
     #   mlo-group-project (pyproject.toml)
     #   contourpy
