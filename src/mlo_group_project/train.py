@@ -8,7 +8,6 @@ from omegaconf import DictConfig, OmegaConf
 import wandb
 import cProfile
 import sys
-import snakeviz.cli as cli_sv
 
 
 @hydra.main(config_path="config", config_name="config", version_base=None)
