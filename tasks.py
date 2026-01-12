@@ -23,6 +23,11 @@ def evaluate(ctx: Context) -> None:
     ctx.run(f"uv run src/{PROJECT_NAME}/evaluate.py", echo=True, pty=not WINDOWS)
 
 @task
+def visualize(ctx: Context) -> None:
+    """Visualize model results."""
+    ctx.run(f"uv run src/{PROJECT_NAME}/visualize.py", echo=True, pty=not WINDOWS)
+
+@task
 def test(ctx: Context) -> None:
     """Run tests."""
     ctx.run("uv run coverage run -m pytest tests/", echo=True, pty=not WINDOWS)
