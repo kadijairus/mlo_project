@@ -1,10 +1,11 @@
 from loguru import logger
 import torch.nn as nn
+import torch
 
 
 # Simple ANN with 30 input nodes, all activations are ReLU for simplicity, Having some dropout to counter overfit
 class BreastCancerModel(nn.Module):
-    def __init__(self, input_shape: int):
+    def __init__(self, input_shape: int) -> None:
         super(BreastCancerModel, self).__init__()
         logger.info(f"Initializing BreastCancerModel with input shape: {input_shape}")
         if not isinstance(input_shape, int) or input_shape <= 0:
@@ -25,9 +26,10 @@ class BreastCancerModel(nn.Module):
         )
         logger.success("BreastCancerModel initialized successfully.")
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         try:
-            return self.network(x)
+            output: torch.Tensor = self.network(x)
+            return output
         except RuntimeError as e:
             expected_features = self.network[0].in_features
             logger.critical(
