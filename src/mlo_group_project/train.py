@@ -97,10 +97,11 @@ def train_model(cnf: DictConfig):
                 epoch_loss += loss.item()
 
                 # Calculate accuracy
-                probs = torch.sigmoid(predictions.squeeze())
-                preds = (probs > 0.5).float()
-                correct += (preds == batch_y).sum().item()
-                total += batch_y.size(0)
+                with torch.no_grad():
+                    logits = predictions.squeeze()
+                    preds = (logits > 0).to(batch_y.dtype)
+                    correct += (preds == batch_y).sum().item()
+                    total += batch_y.size(0)
 
             # End of batch loop. Average metrics.
             avg_loss = epoch_loss / len(dataloader)
@@ -160,6 +161,6 @@ if __name__ == "__main__":
         train_model()
         profiler.disable()
         profiler.dump_stats("reports/train_profile.prof")
-        cli_sv.main(["reports/train_profile.prof"])
+        logger.info("Profile saved to reports/train_profile.prof\n To visualize, run: snakeviz reports/train_profile.prof")
     else:
         train_model()
