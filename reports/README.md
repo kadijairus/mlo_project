@@ -70,7 +70,7 @@ will check the repositories and the code to verify your answers.
 * [x] Build the docker files locally and make sure they work as intended (M10) (Eduard) *(Optional TODO: Add synchronize Docker output folder with local folder)*
 * [x] Write one or multiple configurations files for your experiments (M11) (Eduard)
 * [x] Used Hydra to load the configurations and manage your hyperparameters (M11) (Eduard)
-* [ ] Use profiling to optimize your code (M12) (Victor)
+* [x] Use profiling to optimize your code (M12) (Victor)
 * [x] Use logging to log important events in your code (M14) (Kadi)
 * [ ] Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14) (Victor)
 * [ ] Consider running a hyperparameter optimization sweep (M14)

@@ -6,6 +6,8 @@ from mlo_group_project.model import BreastCancerModel
 import hydra
 from omegaconf import DictConfig, OmegaConf
 import wandb
+import cProfile
+import sys
 
 
 @hydra.main(config_path="config", config_name="config", version_base=None)
@@ -94,10 +96,11 @@ def train_model(cnf: DictConfig):
                 epoch_loss += loss.item()
 
                 # Calculate accuracy
-                probs = torch.sigmoid(predictions.squeeze())
-                preds = (probs > 0.5).float()
-                correct += (preds == batch_y).sum().item()
-                total += batch_y.size(0)
+                with torch.no_grad():
+                    logits = predictions.squeeze()
+                    preds = (logits > 0).to(batch_y.dtype)
+                    correct += (preds == batch_y).sum().item()
+                    total += batch_y.size(0)
 
             # End of batch loop. Average metrics.
             avg_loss = epoch_loss / len(dataloader)
@@ -147,4 +150,16 @@ def train_model(cnf: DictConfig):
 
 
 if __name__ == "__main__":
-    train_model()
+    # Check if profiling is requested
+    if "--profile" in sys.argv:
+        # Remove --profile from sys.argv so Hydra doesn't see it
+        sys.argv.remove("--profile")
+        logger.info("Profiling enabled")
+        profiler = cProfile.Profile()
+        profiler.enable()
+        train_model()
+        profiler.disable()
+        profiler.dump_stats("reports/train_profile.prof")
+        logger.info("Profile saved to reports/train_profile.prof\n To visualize, run: snakeviz reports/train_profile.prof")
+    else:
+        train_model()
