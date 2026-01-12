@@ -4,8 +4,6 @@ import typer
 from torch.utils.data import Dataset
 import torch
 import pandas as pd
-import matplotlib.pyplot as plt
-
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
@@ -48,7 +46,7 @@ class BreastCancerData(Dataset):
         self.images = self.images[indices]
         self.targets = self.targets[indices]
 
-def preprocess(data_path: Path = Path("src/mlo_group_project/data/raw/bcw.csv"), output_folder: Path = Path("src/mlo_group_project/data/processed")) -> None:
+def preprocess(data_path: Path = Path("./data/raw/bcw.csv"), output_folder: Path = Path("./data/processed")) -> None:
     print("Preprocessing data...")
     dataset = BreastCancerData(data_path)
     dataset.preprocess(output_folder)

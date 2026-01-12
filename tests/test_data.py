@@ -1,9 +1,12 @@
-from torch.utils.data import Dataset
+from pathlib import Path
 
-from mlo_group_project.data import MyDataset
+from torch.utils.data import Dataset
+import os
+from mlo_group_project.data import BreastCancerData
 
 
 def test_my_dataset():
     """Test the MyDataset class."""
-    dataset = MyDataset("data/raw")
+    print(f"\nPytest is running from: {os.getcwd()}")
+    dataset = BreastCancerData(Path("../data/raw/bcw.csv"))
     assert isinstance(dataset, Dataset)
