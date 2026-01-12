@@ -2,18 +2,21 @@ from loguru import logger
 import torch
 from pathlib import Path
 import math
-from mlo_group_project.model import BreastCancerModel
+from torch import optim, nn
+from torch.utils.data import TensorDataset, DataLoader
 import hydra
 from omegaconf import DictConfig, OmegaConf
-import wandb
-from typing import Any, cast
-from dotenv import load_dotenv
-load_dotenv()
-import cProfile
 import sys
+import wandb
+from typing import Any, cast, List
+from dotenv import load_dotenv
+from mlo_group_project.model import BreastCancerModel
+
+load_dotenv()
+
 
 @hydra.main(config_path="config", config_name="config", version_base=None)
-def train_model(cnf: DictConfig):
+def train_model(cnf: DictConfig) -> None:
     """Train the Breast Cancer Classification Model."""
     try:
         # Convert Hydra config to a standard dictionary
@@ -59,21 +62,21 @@ def train_model(cnf: DictConfig):
                     f"\n{'=' * 39}\n")
 
         # Load data into DataLoader
-        dataset = torch.utils.data.TensorDataset(x_train, y_train)
-        dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True)
+        dataset: TensorDataset = TensorDataset(x_train, y_train)
+        dataloader: DataLoader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
         # Model Initialization, Forcing input shape based on data
-        input_features = x_train.shape[1]
+        input_features: int = x_train.shape[1]
+        model: BreastCancerModel = BreastCancerModel(input_shape=input_features)
         logger.debug(f"Initializing model with input features: {input_features}")
-        model = BreastCancerModel(input_shape=input_features)
 
         # Loss function and optimizer, We use BCEWithLogitsLoss for binary classification
-        criterion = torch.nn.BCEWithLogitsLoss()
-        optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+        criterion: nn.modules.loss._Loss = nn.BCEWithLogitsLoss()
+        optimizer: optim.Optimizer = optim.Adam(model.parameters(), lr=lr)
 
         # Some metrics to track
-        loss_history = []
-        accuracy_history = []
+        loss_history: List[float] = []
+        accuracy_history: List[float] = []
 
         logger.info("Starting training loop...")
         model.train()
@@ -83,6 +86,9 @@ def train_model(cnf: DictConfig):
             epoch_loss = 0.0
             correct = 0
             total = 0
+
+            batch_X: torch.Tensor
+            batch_y: torch.Tensor
 
             for batch_X, batch_y in dataloader:
                 optimizer.zero_grad()
@@ -106,8 +112,8 @@ def train_model(cnf: DictConfig):
                     total += batch_y.size(0)
 
             # End of batch loop. Average metrics.
-            avg_loss = epoch_loss / len(dataloader)
-            avg_acc = correct / total
+            avg_loss: float = epoch_loss / len(dataloader)
+            avg_acc: float = correct / total
             logger.debug(f"Epoch {epoch + 1}/{epochs} | Loss: {avg_loss:.4f} | Accuracy: {avg_acc * 100:.2f}%")
 
             # Store metrics
