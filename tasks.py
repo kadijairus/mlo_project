@@ -18,9 +18,19 @@ def train(ctx: Context) -> None:
     ctx.run(f"uv run src/{PROJECT_NAME}/train.py", echo=True, pty=not WINDOWS)
 
 @task
+def train_profile(ctx: Context) -> None:
+    """Profile training."""
+    ctx.run(f"uv run src/{PROJECT_NAME}/train.py --profile", echo=True, pty=not WINDOWS)
+
+@task
 def evaluate(ctx: Context) -> None:
     """Evaluate model."""
     ctx.run(f"uv run src/{PROJECT_NAME}/evaluate.py", echo=True, pty=not WINDOWS)
+
+@task
+def visualize(ctx: Context) -> None:
+    """Visualize model results."""
+    ctx.run(f"uv run src/{PROJECT_NAME}/visualize.py", echo=True, pty=not WINDOWS)
 
 @task
 def test(ctx: Context) -> None:
