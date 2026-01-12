@@ -41,7 +41,7 @@ resulting in **30 features**.
 
 ### Models
 
-Initially we will use a standard artificial neural network (ANN). 
+Initially we will use a standard artificial neural network (ANN).
 
 Similar model has been trained on the same dataset and has shown good performance [ANN Breast Cancer model by Ahmed Hafez](https://www.kaggle.com/code/ahmedtronic/ann-breast-cancer). We have also used some of the code of this submission, e.g. for data preprocessing step.
 
@@ -117,7 +117,7 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
     uv run src/mlo_project/data.py
     ```
 2. Ensure, that the processed data is in `data/processed/` folder.
-   
+
 #### Training
 1. To train with default configuration run the training script:
     ```bash
@@ -131,11 +131,10 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 1. Run the evaluation script and specify the model path:
     ```bash
     uv run src/mlo_project/evaluate.py models/your_model_file.pt
-    ```   
+    ```
 
 ### Running the scripts with Docker
 1. Build the image:
    docker build -t breast-cancer-train -f dockerfiles/train.dockerfile .
 2. Run the training:
    docker run --rm breast-cancer-train
-   

@@ -36,19 +36,21 @@ class BreastCancerData(Dataset):
         """Preprocess the raw data and save it to the output folder."""
         try:
             # Drop id column
-            self.data.drop(columns=['id', 'Unnamed: 32'], inplace=True)
-            self.X = self.data.drop(columns=['diagnosis'])  # M = malignant, B = benign
-            self.y = self.data['diagnosis']
+            self.data.drop(columns=["id", "Unnamed: 32"], inplace=True)
+            self.X = self.data.drop(columns=["diagnosis"])  # M = malignant, B = benign
+            self.y = self.data["diagnosis"]
             logger.info("Successfully dropped unnecessary columns and separated features and target.")
         except KeyError as e:
             logger.error(f"A required column was not found in the dataset: {e}")
             logger.debug(f"Available columns are: {self.data.columns.tolist()}")
             raise
-        scaler = MinMaxScaler() # max value = 1 , min value = 0 
+        scaler = MinMaxScaler()  # max value = 1 , min value = 0
         self.X = scaler.fit_transform(self.X)
         encoder = LabelEncoder()
         self.y = encoder.fit_transform(self.y)
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, train_size=0.9, shuffle=True, random_state=42)
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
+            self.X, self.y, train_size=0.9, shuffle=True, random_state=42
+        )
 
         try:
             # Ensure the output directory exists
@@ -59,11 +61,14 @@ class BreastCancerData(Dataset):
 
             torch.save(
                 (torch.tensor(self.X_train, dtype=torch.float32), torch.tensor(self.y_train, dtype=torch.float32)),
-                train_path)
+                train_path,
+            )
             logger.info(f"Training data saved to {train_path}")
 
-            torch.save((torch.tensor(self.X_test, dtype=torch.float32), torch.tensor(self.y_test, dtype=torch.float32)),
-                       test_path)
+            torch.save(
+                (torch.tensor(self.X_test, dtype=torch.float32), torch.tensor(self.y_test, dtype=torch.float32)),
+                test_path,
+            )
             logger.info(f"Test data saved to {test_path}")
 
         except OSError as e:
@@ -82,12 +87,15 @@ class BreastCancerData(Dataset):
         self.images = self.images[indices]
         self.targets = self.targets[indices]
 
+
 def preprocess(data_path: Path = Path("./data/raw/bcw.csv"), output_folder: Path = Path("./data/processed")) -> None:
     try:
         logger.debug(f"Preprocessing data from {data_path}...")
         dataset = BreastCancerData(data_path)
         dataset.preprocess(output_folder)
-        logger.success(f"Data successfully preprocessed and saved to {output_folder}") # Use logger.success for a nice final message
+        logger.success(
+            f"Data successfully preprocessed and saved to {output_folder}"
+        )  # Use logger.success for a nice final message
     except Exception as e:
         logger.critical(f"The preprocessing script failed. Error: {e}")
 

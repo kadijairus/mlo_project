@@ -10,19 +10,18 @@ class BreastCancerModel(nn.Module):
         logger.info(f"Initializing BreastCancerModel with input shape: {input_shape}")
         if not isinstance(input_shape, int) or input_shape <= 0:
             logger.critical(
-                f"Invalid input_shape: '{input_shape}'. The number of input features must be a positive integer.")
+                f"Invalid input_shape: '{input_shape}'. The number of input features must be a positive integer."
+            )
             raise ValueError("Model input_shape must be a positive integer.")
 
         self.network = nn.Sequential(
             nn.Linear(input_shape, 64),
             nn.ReLU(),
             nn.Dropout(0.3),
-
             nn.Linear(64, 32),
             nn.ReLU(),
             nn.Dropout(0.3),
-
-            nn.Linear(32, 1)
+            nn.Linear(32, 1),
         )
         logger.success("BreastCancerModel initialized successfully.")
 

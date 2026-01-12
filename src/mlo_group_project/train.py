@@ -11,6 +11,7 @@ import wandb
 from typing import Any, cast, List
 from dotenv import load_dotenv
 from mlo_group_project.model import BreastCancerModel
+import cProfile
 
 load_dotenv()
 
@@ -20,10 +21,7 @@ def train_model(cnf: DictConfig) -> None:
     """Train the Breast Cancer Classification Model."""
     try:
         # Convert Hydra config to a standard dictionary
-        wandb_config = cast(dict[str, Any], 
-                            OmegaConf.to_container(
-                                cnf, resolve=True, throw_on_missing=True
-                            ))
+        wandb_config = cast(dict[str, Any], OmegaConf.to_container(cnf, resolve=True, throw_on_missing=True))
         wandb.init(project="Breast Cancer Wisconsin", config=wandb_config)
         logger.info("Starting model training process...")
         logger.debug(f"Configuration loaded: {OmegaConf.to_yaml(cnf)}")
@@ -52,14 +50,17 @@ def train_model(cnf: DictConfig) -> None:
             raise
 
         # --- Enhanced Sanity Check ---
-        assert x_train.shape[0] == y_train.shape[0], \
-            f"Shape mismatch between inputs and targets: {x_train.shape[0]} != {y_train.shape[0]}"
+        assert (
+            x_train.shape[0] == y_train.shape[0]
+        ), f"Shape mismatch between inputs and targets: {x_train.shape[0]} != {y_train.shape[0]}"
 
-        logger.info(f"\n{'=' * 10} Data Sanity Check {'=' * 10}"
-                    f"\n   Input Shape (x): {x_train.shape}"
-                    f"\n   Target Shape (y): {y_train.shape}"
-                    f"\n   First 2 Targets: {y_train[:2].tolist()}"
-                    f"\n{'=' * 39}\n")
+        logger.info(
+            f"\n{'=' * 10} Data Sanity Check {'=' * 10}"
+            f"\n   Input Shape (x): {x_train.shape}"
+            f"\n   Target Shape (y): {y_train.shape}"
+            f"\n   First 2 Targets: {y_train[:2].tolist()}"
+            f"\n{'=' * 39}\n"
+        )
 
         # Load data into DataLoader
         dataset: TensorDataset = TensorDataset(x_train, y_train)
@@ -134,11 +135,10 @@ def train_model(cnf: DictConfig) -> None:
 
             # Save metrics
             metrics_save_path.parent.mkdir(parents=True, exist_ok=True)
-            torch.save({
-                "loss": loss_history,
-                "accuracy": accuracy_history,
-                "epochs": list(range(1, epochs + 1))
-            }, metrics_save_path)
+            torch.save(
+                {"loss": loss_history, "accuracy": accuracy_history, "epochs": list(range(1, epochs + 1))},
+                metrics_save_path,
+            )
             logger.debug(f"Metrics saved for plotting to: {metrics_save_path}")
         except OSError as e:
             logger.error(f"Failed to save artifacts. Check permissions for the path. Error: {e}")
@@ -169,6 +169,8 @@ if __name__ == "__main__":
         train_model()
         profiler.disable()
         profiler.dump_stats("reports/train_profile.prof")
-        logger.info("Profile saved to reports/train_profile.prof\n To visualize, run: snakeviz reports/train_profile.prof")
+        logger.info(
+            "Profile saved to reports/train_profile.prof\n To visualize, run: snakeviz reports/train_profile.prof"
+        )
     else:
         train_model()

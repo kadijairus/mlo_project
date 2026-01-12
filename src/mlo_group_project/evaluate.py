@@ -8,13 +8,14 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 app = typer.Typer()
 
+
 @app.command()
 
-#Evaluate the trained model on the test dataset
+# Evaluate the trained model on the test dataset
 def evaluate_model(
-        model_path: Path = Path("models/model.pth"),
-        processed_dir: Path = Path("data/processed"),
-        metrics_save_path: Path = Path("eval_metrics.pt")
+    model_path: Path = Path("models/model.pth"),
+    processed_dir: Path = Path("data/processed"),
+    metrics_save_path: Path = Path("eval_metrics.pt"),
 ):
     """Evaluate the trained model on the test dataset."""
     try:
@@ -34,8 +35,9 @@ def evaluate_model(
             raise
 
         # --- Data Validation ---
-        assert x_eval.shape[0] == y_eval.shape[0], \
-            f"Shape mismatch between evaluation inputs and targets: {x_eval.shape[0]} != {y_eval.shape[0]}"
+        assert (
+            x_eval.shape[0] == y_eval.shape[0]
+        ), f"Shape mismatch between evaluation inputs and targets: {x_eval.shape[0]} != {y_eval.shape[0]}"
         logger.debug(f"Evaluation data shapes - x: {x_eval.shape}, y: {y_eval.shape}")
 
         # --- Enhanced Model Loading ---
@@ -73,22 +75,27 @@ def evaluate_model(
             accuracy = correct / total
 
         # --- Log Final Report ---
-        logger.info(f"\n{'=' * 30}"
-                    f"\n FINAL EVALUATION REPORT"
-                    f"\n   Total Samples: {total}"
-                    f"\n   Correct:       {correct}"
-                    f"\n   Accuracy:      {accuracy * 100:.2f}%"
-                    f"\n{'=' * 30}\n")
+        logger.info(
+            f"\n{'=' * 30}"
+            f"\n FINAL EVALUATION REPORT"
+            f"\n   Total Samples: {total}"
+            f"\n   Correct:       {correct}"
+            f"\n   Accuracy:      {accuracy * 100:.2f}%"
+            f"\n{'=' * 30}\n"
+        )
 
         # --- Enhanced Metrics Saving ---
         try:
             metrics_save_path.parent.mkdir(parents=True, exist_ok=True)
-            torch.save({
-                "targets": y_eval,
-                "predictions": predicted_classes,
-                "probabilities": probabilities,
-                "accuracy": accuracy
-            }, metrics_save_path)
+            torch.save(
+                {
+                    "targets": y_eval,
+                    "predictions": predicted_classes,
+                    "probabilities": probabilities,
+                    "accuracy": accuracy,
+                },
+                metrics_save_path,
+            )
             logger.info(f"Evaluation metrics saved to: {metrics_save_path}")
         except OSError as e:
             logger.error(f"Could not save evaluation metrics to '{metrics_save_path}'. Check permissions. Error: {e}")
@@ -106,4 +113,3 @@ def evaluate_model(
 
 if __name__ == "__main__":
     app()
-
