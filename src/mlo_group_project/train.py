@@ -6,6 +6,9 @@ from mlo_group_project.model import BreastCancerModel
 import hydra
 from omegaconf import DictConfig, OmegaConf
 import wandb
+import cProfile
+import sys
+import snakeviz.cli as cli_sv
 
 
 @hydra.main(config_path="config", config_name="config", version_base=None)
@@ -147,4 +150,16 @@ def train_model(cnf: DictConfig):
 
 
 if __name__ == "__main__":
-    train_model()
+    # Check if profiling is requested
+    if "--profile" in sys.argv:
+        # Remove --profile from sys.argv so Hydra doesn't see it
+        sys.argv.remove("--profile")
+        logger.info("Profiling enabled")
+        profiler = cProfile.Profile()
+        profiler.enable()
+        train_model()
+        profiler.disable()
+        profiler.dump_stats("reports/train_profile.prof")
+        cli_sv.main(["reports/train_profile.prof"])
+    else:
+        train_model()
