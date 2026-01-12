@@ -24,7 +24,6 @@ class BreastCancerData(Dataset):
         except Exception as e:
             logger.exception(f"An unexpected error occurred while reading {self.data_path}: {e}")
             raise
-        logger.debug(f"Data read from csv. Data shape before preprocessing: {df.shape}")
         self.data = df
 
     def __len__(self) -> int:
