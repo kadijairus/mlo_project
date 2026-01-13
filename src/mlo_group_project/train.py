@@ -144,6 +144,7 @@ def train_model(cnf: DictConfig) -> None:
                 is_better = True
             elif avg_loss < best_metric:
                 is_better = True
+                logger.info(f"New best model found at epoch {epoch + 1} with loss {avg_loss:.4f}")
             # save best checkpoint locally
             best_ckpt_path.parent.mkdir(parents=True, exist_ok=True)
             torch.save(model.state_dict(), best_ckpt_path)
@@ -209,8 +210,9 @@ def train_model(cnf: DictConfig) -> None:
     finally:
         # --- Ensure wandb is always closed ---
         if wandb.run is not None:
-            logger.info("Closing wandb run.")
+            logger.debug("Closing wandb run.")
             wandb.finish()
+
 
 
 if __name__ == "__main__":
