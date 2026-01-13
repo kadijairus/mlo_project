@@ -140,6 +140,19 @@ def train_model(cnf: DictConfig) -> None:
             # Log to Wandb
             wandb.log({"train_loss": avg_loss, "train_acc": avg_acc, "epoch": epoch})
 
+            is_better = False
+            if best_metric is None:
+                is_better = True
+            elif avg_loss < best_metric:
+                is_better = True
+            # save best checkpoint locally
+            best_ckpt_path.parent.mkdir(parents=True, exist_ok=True)
+            torch.save(model.state_dict(), best_ckpt_path)
+
+            if is_better:
+                best_metric = avg_loss
+                best_epoch = epoch + 1
+
         logger.info("Training loop completed.")
 
         # --- Enhanced Artifact Saving ---
