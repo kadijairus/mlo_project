@@ -32,4 +32,4 @@ jobs:
     - name: Test with pytest
       env:
         WANDB_MODE: offline
-      run: uv run pytest -v
+      run: uv run invoke test -v
