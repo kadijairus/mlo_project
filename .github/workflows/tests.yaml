@@ -30,4 +30,6 @@ jobs:
       run: uv sync --dev --locked
 
     - name: Test with pytest
+      env:
+        WANDB_MODE: offline
       run: uv run pytest -v
