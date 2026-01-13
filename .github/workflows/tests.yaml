@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: [ master, main ]
 
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true # Cancel previous runs on new push
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -16,15 +20,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v5
 
-    - name: Setup uv
+    - name: Setup uv (with cache)
       uses: astral-sh/setup-uv@v7
       with:
         python-version: 3.12
+        enable-cache: true # Enable caching for faster installs
 
     - name: Install dependencies
-      run: |
-        uv sync --dev --locked
+      run: uv sync --dev --locked
 
     - name: Test with pytest
-      run: |
-        uv run pytest -v
+      run: uv run pytest -v
