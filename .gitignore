@@ -179,8 +179,13 @@ outputs/
 # Data and training artifacts (generated)
 data/processed/
 data/raw/
-models/
+models/*
+!models/*.dvc
+!models/*.gitkeep
 reports/figures/
 reports/*.pt
 eval_metrics.pt
 *.pth
+
+# DVC
+/google_cloud_key.json
