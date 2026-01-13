@@ -20,7 +20,7 @@ def train_model(cnf: DictConfig) -> None:
     """Train the Breast Cancer Classification Model."""
     try:
         # Convert Hydra config to a standard dictionary
-        wandb_config = cast(dict[str, Any], 
+        wandb_config = cast(dict[str, Any],
                             OmegaConf.to_container(
                                 cnf, resolve=True, throw_on_missing=True
                             ))
@@ -37,6 +37,23 @@ def train_model(cnf: DictConfig) -> None:
         processed_dir = Path(cnf.paths.processed_dir)
         model_save_path = Path(cnf.paths.model_save_path)
         metrics_save_path = Path(cnf.paths.metrics_save_path)
+
+        ## For saving model to wandb
+        best_metric = None  # will store best value seen so far
+        best_epoch = None
+
+        best_ckpt_path = model_save_path.parent / "best_model.pt"
+        last_ckpt_path = model_save_path.parent / "last_model.pt"
+
+
+        def log_model_artifact(path: Path, name: str, metadata: dict):
+            artifact = wandb.Artifact(
+                name=name,
+                type="model",
+                metadata=metadata,
+            )
+            artifact.add_file(str(path))
+            wandb.log_artifact(artifact)
 
         # --- Enhanced Data Loading ---
         logger.debug(f"Getting files from: {processed_dir}")
@@ -144,6 +161,32 @@ def train_model(cnf: DictConfig) -> None:
             logger.error(f"Failed to save artifacts. Check permissions for the path. Error: {e}")
             raise
 
+        # Save last and best model to wandb
+        last_ckpt_path.parent.mkdir(parents=True, exist_ok=True)
+        torch.save(model.state_dict(), last_ckpt_path)
+
+        log_model_artifact(
+            last_ckpt_path,
+            name="breast-cancer-model-last",
+            metadata={
+                "epoch": epochs,
+                "train_loss_last": float(loss_history[-1]),
+                "train_acc_last": float(accuracy_history[-1]),
+                "lr": lr,
+                "batch_size": batch_size,
+            },
+        )
+        log_model_artifact(
+            best_ckpt_path,
+            name="breast-cancer-model-best",
+            metadata={
+                "epoch": best_epoch,
+                "train_loss_best": float(best_metric),
+                "lr": lr,
+                "batch_size": batch_size,
+            },
+        )
+
         logger.success("Training process finished successfully!")
 
     except Exception as e:
@@ -154,8 +197,9 @@ def train_model(cnf: DictConfig) -> None:
     finally:
         # --- Ensure wandb is always closed ---
         if wandb.run is not None:
-            logger.info("Closing wandb run.")
+            logger.debug("Closing wandb run.")
             wandb.finish()
+
 
 
 if __name__ == "__main__":
