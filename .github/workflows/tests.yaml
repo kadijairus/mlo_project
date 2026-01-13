@@ -30,7 +30,4 @@ jobs:
       run: uv sync --dev --locked
 
     - name: Test with pytest
-      env:
-        WANDB_MODE: offline
-        HYDRA_FULL_ERROR: 1
       run: uv run pytest -v
