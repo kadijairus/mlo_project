@@ -20,7 +20,7 @@ def train_model(cnf: DictConfig) -> None:
     """Train the Breast Cancer Classification Model."""
     try:
         # Convert Hydra config to a standard dictionary
-        wandb_config = cast(dict[str, Any], 
+        wandb_config = cast(dict[str, Any],
                             OmegaConf.to_container(
                                 cnf, resolve=True, throw_on_missing=True
                             ))
@@ -48,7 +48,7 @@ def train_model(cnf: DictConfig) -> None:
 
         def log_model_artifact(path: Path, name: str, metadata: dict):
             artifact = wandb.Artifact(
-                name=name, 
+                name=name,
                 type="model",
                 metadata=metadata,
             )
@@ -139,19 +139,6 @@ def train_model(cnf: DictConfig) -> None:
 
             # Log to Wandb
             wandb.log({"train_loss": avg_loss, "train_acc": avg_acc, "epoch": epoch})
-            is_better = False
-            if best_metric is None:
-                is_better = True
-            elif avg_loss < best_metric:
-                is_better = True
-                logger.info(f"New best model found at epoch {epoch + 1} with loss {avg_loss:.4f}")
-            # save best checkpoint locally
-            best_ckpt_path.parent.mkdir(parents=True, exist_ok=True)
-            torch.save(model.state_dict(), best_ckpt_path)
-
-            if is_better:
-                best_metric = avg_loss
-                best_epoch = epoch + 1
 
         logger.info("Training loop completed.")
 
