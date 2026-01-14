@@ -105,7 +105,12 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
    python -m venv venv
    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
    ```
-4. Install the required dependencies:
+4. Add to .env file (create if it doesn't exist):
+   ```env
+   WANDB_API_KEY=your_wandb_api_key_here
+   GOOGLE_APPLICATION_CREDENTIALS="your_google_cloud_service_account_key.json"
+   ```
+5. Install the required dependencies:
    ```bash
    pip install -r requirements.txt
    ```
