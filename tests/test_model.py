@@ -84,3 +84,18 @@ def test_breast_cancer_model_parameters_have_gradients_after_backward_pass_indic
     
     # Check if first layer weights have gradients
     assert model.network[0].weight.grad is not None, "Gradients missing from first layer weights"
+
+#Input feature size adaptability
+@pytest.mark.parametrize("input_features", [10, 20, 100, 5])
+def test_breast_cancer_model_initialization_works_for_various_input_feature_sizes(input_features):
+    """
+    Equivalent to your snippet: Ensures the model architecture adapts
+    to different input feature counts (columns).
+    """
+    model = BreastCancerModel(input_shape=input_features)
+    dummy_input = torch.randn(1, input_features)
+    output = model(dummy_input)
+
+    assert output.shape == (1, 1), f"Expected output (1, 1) for input size {input_features}"
+
+
