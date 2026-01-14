@@ -97,5 +97,3 @@ def test_breast_cancer_model_initialization_works_for_various_input_feature_size
     output = model(dummy_input)
 
     assert output.shape == (1, 1), f"Expected output (1, 1) for input size {input_features}"
-
-
