@@ -197,6 +197,8 @@ python-dateutil==2.9.0.post0
     #   ghp-import
     #   matplotlib
     #   pandas
+python-dotenv==1.2.1
+    # via mlo-group-project (pyproject.toml)
 pytz==2025.2
     # via pandas
 pyyaml==6.0.3
@@ -236,6 +238,8 @@ six==1.17.0
     # via python-dateutil
 smmap==5.0.2
     # via gitdb
+snakeviz==2.2.2
+    # via mlo-group-project (pyproject.toml:dev)
 starlette==0.41.3
     # via fastapi
 sympy==1.13.1
@@ -244,6 +248,8 @@ threadpoolctl==3.6.0
     # via scikit-learn
 torch==2.6.0+cpu
     # via mlo-group-project (pyproject.toml)
+tornado==6.5.4
+    # via snakeviz
 typer==0.15.1
     # via mlo-group-project (pyproject.toml)
 typing-extensions==4.15.0
