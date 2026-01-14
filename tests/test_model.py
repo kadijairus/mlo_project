@@ -85,6 +85,42 @@ def test_breast_cancer_model_parameters_have_gradients_after_backward_pass_indic
     # Check if first layer weights have gradients
     assert model.network[0].weight.grad is not None, "Gradients missing from first layer weights"
 
+# TO check if we are grabbing right parameters and HP
+def test_optimizer_config():
+    model = BreastCancerModel(input_shape=30)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+    # optimizer track
+    assert len(optimizer.param_groups) == 1
+    # Param track
+    assert len(optimizer.param_groups[0]['params']) > 0
+
+# Training Loop check before running the hwole algorithm
+def test_one_training_step():
+    # Setup
+    model = BreastCancerModel(input_shape=30)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+    criterion = torch.nn.BCEWithLogitsLoss()
+
+    # Fake Data
+    inputs = torch.randn(4, 30)
+    targets = torch.tensor([0.0, 1.0, 0.0, 1.0]).unsqueeze(1)  # Shape (4, 1)
+
+    # Forward
+    outputs = model(inputs)
+    loss = criterion(outputs, targets)
+
+    # Backward
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    # Check if it worked
+    assert loss.item() > 0
+    # The model parameters should have gradients now (meaning it learned something)
+    for param in model.parameters():
+        assert param.grad is not None
+
 #Input feature size adaptability
 @pytest.mark.parametrize("input_features", [10, 20, 100, 5])
 def test_breast_cancer_model_initialization_works_for_various_input_feature_sizes(input_features):
