@@ -116,16 +116,22 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
    ```
 
 ### Running the scripts
+
+Scripts can be run using `uv run invoke`. See a list of available tasks with
+   ```bash
+    uv run src/mlo_project/data.py
+   ```
+
 #### Data Processing
 1. Run the data script:
    ```bash
     uv run src/mlo_project/data.py
-    ```
+   ```
 2. Ensure, that the processed data is in `data/processed/` folder.
 
 #### Training
 1. To train with default configuration run the training script:
-    ```bash
+   ```bash
    uv run src/mlo_project/train.py
    ```
 2. Use Hydra to change configuration options.
