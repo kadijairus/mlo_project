@@ -4,6 +4,7 @@ from loguru import logger
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
+
 def pytest_sessionstart(session):
     """Runs once before all tests. Bootstraps the test data."""
     # Ensure the code can be imported even if running from inside /tests

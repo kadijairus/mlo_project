@@ -14,5 +14,5 @@ WORKDIR /
 # Install dependencies from uv.lock without installing the project itself
 RUN uv sync --locked --no-cache --no-install-project
 
-# Set the entrypoint to run the training script 
+# Set the entrypoint to run the training script
 ENTRYPOINT ["uv", "run", "src/mlo_group_project/train.py"]

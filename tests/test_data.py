@@ -7,6 +7,7 @@ from loguru import logger
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
+
 def test_data_dataset_is_created_from_raw_data():
     logger.debug(f"\nPytest is running from: {os.getcwd()}")
     raw_path = PROJECT_ROOT / "data" / "raw" / "bcw.csv"
