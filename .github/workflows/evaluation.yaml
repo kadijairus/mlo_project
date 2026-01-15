@@ -5,7 +5,7 @@ on:
     branches: [ master, main ]
     # THIS IS THE TRIGGER: Only run if the model pointer changes
     paths:
-      - 'models/best_model.pt.dvc'
+      - 'dvc.lock'
   workflow_dispatch:
 
 jobs:
@@ -39,4 +39,6 @@ jobs:
       env:
         WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
         WANDB_MODE: online
-      run: uv run python src/mlo_group_project/evaluate.py --model_path models/best_model.pt
+      run: |
+        PKG=$(ls src | head -n 1)
+        uv run python src/$PKG/evaluate.py --model-path models/best_model.pt
