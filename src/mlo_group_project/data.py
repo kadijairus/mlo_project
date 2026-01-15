@@ -7,6 +7,8 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
+import json
+import joblib
 
 
 class BreastCancerData(Dataset):
@@ -39,6 +41,7 @@ class BreastCancerData(Dataset):
             self.data.drop(columns=["id", "Unnamed: 32"], inplace=True)
             self.X = self.data.drop(columns=["diagnosis"])  # M = malignant, B = benign
             self.y = self.data["diagnosis"]
+            feature_columns = self.X.columns.tolist()
             logger.info("Successfully dropped unnecessary columns and separated features and target.")
         except KeyError as e:
             logger.error(f"A required column was not found in the dataset: {e}")
@@ -56,6 +59,12 @@ class BreastCancerData(Dataset):
             # Ensure the output directory exists
             output_folder.mkdir(parents=True, exist_ok=True)
 
+            # Save preprocessing artifacts for inference
+            joblib.dump(scaler, output_folder / "scaler.joblib")
+            (output_folder / "feature_columns.json").write_text(json.dumps(feature_columns))
+            joblib.dump(encoder, output_folder / "label_encoder.joblib")
+
+            # Save processed data
             train_path = output_folder / "train.pt"
             test_path = output_folder / "test.pt"
 
