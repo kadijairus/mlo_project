@@ -3,6 +3,7 @@ from loguru import logger
 import os
 from pathlib import Path
 import tomllib
+from typing import cast
 
 WINDOWS = os.name == "nt"
 PYTHON_VERSION = "3.12"
@@ -12,7 +13,7 @@ def get_project_name() -> str:
     try:
         with open("pyproject.toml", "rb") as f:
             data = tomllib.load(f)
-        return data["project"]["name"]
+        return cast(str, data["project"]["name"])
     except Exception as e:
         logger.warning(f"Could not read project name from pyproject.toml: {e}. Falling back to folder name.")
         return Path.cwd().name
