@@ -8,7 +8,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from loguru import logger
 from mlo_group_project.model import BreastCancerModel
 import json
-import joblib
+import joblib # type: ignore[import-untyped]
 
 MODEL_PATH = Path("models/model.pth")
 PROCESSED_DIR = Path("data/processed")
@@ -56,7 +56,11 @@ async def evaluate_csv(file: UploadFile = File(...)) -> dict:
     if not hasattr(app.state, "model"):
         raise HTTPException(status_code=500, detail="Model not loaded.")
 
-    if not file.filename.lower().endswith(".csv"):
+    filename = file.filename
+    if filename is None:
+        raise HTTPException(status_code=400, detail="Uploaded file has no filename.")
+
+    if not filename.lower().endswith(".csv"):
         raise HTTPException(status_code=400, detail="Please upload a .csv file.")
 
     raw = await file.read()
@@ -99,7 +103,7 @@ async def evaluate_csv(file: UploadFile = File(...)) -> dict:
         preds = (probs > 0.5).float()
 
     resp: dict = {
-        "filename": file.filename,
+        "filename": filename,
         "n_samples": int(x.shape[0]),
         "n_features": int(x.shape[1]),
     }
@@ -119,11 +123,6 @@ async def evaluate_csv(file: UploadFile = File(...)) -> dict:
         probs = torch.sigmoid(logits)
         preds = (probs > 0.5).float()
 
-    resp: dict = {
-        "filename": file.filename,
-        "n_samples": int(x.shape[0]),
-        "n_features": int(x.shape[1]),
-    }
 
     if has_labels:
         y_t = torch.tensor(y, dtype=torch.float32)

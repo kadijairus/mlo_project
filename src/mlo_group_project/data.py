@@ -8,7 +8,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 import json
-import joblib
+import joblib # type: ignore[import-untyped]
 
 
 class BreastCancerData(Dataset):
