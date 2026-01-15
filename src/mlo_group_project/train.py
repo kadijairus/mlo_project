@@ -189,16 +189,19 @@ def train_model(cnf: DictConfig) -> None:
                 "batch_size": batch_size,
             },
         )
-        log_model_artifact(
-            best_ckpt_path,
-            name="breast-cancer-model-best",
-            metadata={
-                "epoch": best_epoch,
-                "train_loss_best": float(best_metric),
-                "lr": lr,
-                "batch_size": batch_size,
-            },
-        )
+        if best_metric is not None and best_epoch is not None:
+            log_model_artifact(
+                best_ckpt_path,
+                name="breast-cancer-model-best",
+                metadata={
+                    "epoch": best_epoch,
+                    "train_loss_best": float(best_metric),
+                    "lr": lr,
+                    "batch_size": batch_size,
+                },
+            )
+        else:
+            logger.warning("Best model information is missing; skipping best model artifact logging.")
 
         logger.success("Training process finished successfully!")
 
@@ -218,6 +221,7 @@ def train_model(cnf: DictConfig) -> None:
 if __name__ == "__main__":
     # Check if profiling is requested
     if "--profile" in sys.argv:
+        import cProfile
         # Remove --profile from sys.argv so Hydra doesn't see it
         sys.argv.remove("--profile")
         logger.info("Profiling enabled")
