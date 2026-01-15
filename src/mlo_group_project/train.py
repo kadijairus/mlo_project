@@ -218,6 +218,7 @@ def train_model(cnf: DictConfig) -> None:
 if __name__ == "__main__":
     # Check if profiling is requested
     if "--profile" in sys.argv:
+        import cProfile
         # Remove --profile from sys.argv so Hydra doesn't see it
         sys.argv.remove("--profile")
         logger.info("Profiling enabled")
