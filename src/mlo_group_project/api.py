@@ -7,19 +7,37 @@ import torch
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from loguru import logger
 from mlo_group_project.model import BreastCancerModel
+import json
+import joblib
 
 MODEL_PATH = Path("models/model.pth")
-
+PROCESSED_DIR = Path("data/processed")
+SCALER_PATH = PROCESSED_DIR / "scaler.joblib"
+FEATURES_PATH = PROCESSED_DIR / "feature_columns.json"
+LABEL_ENCODER_PATH = PROCESSED_DIR / "label_encoder.joblib"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
     if not MODEL_PATH.exists():
         raise RuntimeError(f"Missing model at {MODEL_PATH}. Train first.")
+    if not SCALER_PATH.exists():
+        raise RuntimeError(f"Missing scaler at {SCALER_PATH}. Run preprocessing first.")
+    if not FEATURES_PATH.exists():
+        raise RuntimeError(f"Missing feature columns at {FEATURES_PATH}. Run preprocessing first.")
+    if not LABEL_ENCODER_PATH.exists():
+        raise RuntimeError(f"Missing label encoder at {LABEL_ENCODER_PATH}. Run preprocessing first.")
 
-    # We assume BCW has 30 features after dropping id/Unnamed: 32 and diagnosis
-    # If we want to accept variable input shapes, we would need to handle that in a seperate preprocessing.py file
-    model = BreastCancerModel(input_shape=30)
+    scaler = joblib.load(SCALER_PATH)
+    feature_columns = json.loads(FEATURES_PATH.read_text())
+    label_encoder = joblib.load(LABEL_ENCODER_PATH)
+
+    app.state.scaler = scaler
+    app.state.feature_columns = feature_columns
+    app.state.label_encoder = label_encoder
+    
+    # Load model
+    model = BreastCancerModel(input_shape=len(feature_columns))
     state = torch.load(MODEL_PATH, map_location="cpu")
     model.load_state_dict(state)
     model.eval()
@@ -47,31 +65,54 @@ async def evaluate_csv(file: UploadFile = File(...)) -> dict:
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to read CSV: {e}")
 
-    # Uses same preprocessing as in data.py but adapted for inference TODO: deduplicate code, preprocess correctly
+    # Drop columns
     df = df.copy()
     df.drop(columns=["id", "Unnamed: 32"], errors="ignore", inplace=True)
-
+    
     has_labels = "diagnosis" in df.columns
     if has_labels:
         y_raw = df["diagnosis"]
         X_df = df.drop(columns=["diagnosis"])
-        # assumes diagnosis is already 0/1 OR is M/B (handle both)
-        if y_raw.dtype == object:
-            y = y_raw.map({"B": 0, "M": 1}).astype("float32")
-        else:
-            y = y_raw.astype("float32")
     else:
         X_df = df
-        y = None
+        y_raw = None
+    
+    # Enforce same feature columns + order as training
+    feature_columns = app.state.feature_columns
+    missing = set(feature_columns) - set(X_df.columns)
+    extra = set(X_df.columns) - set(feature_columns)
+    
+    if missing:
+        raise HTTPException(status_code=400, detail=f"Missing columns: {sorted(missing)}")
+    if extra:
+        raise HTTPException(status_code=400, detail=f"Unexpected extra columns: {sorted(extra)}")
+    
+    X_df = X_df[feature_columns]
+    
+    # Scale using training scaler
+    X_scaled = app.state.scaler.transform(X_df.to_numpy())
+    x = torch.tensor(X_scaled, dtype=torch.float32)
 
-    # Validate shape expected by model (30)
-    if X_df.shape[1] != 30:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Expected 30 feature columns, got {X_df.shape[1]}.",
-        )
+    with torch.no_grad():
+        logits = app.state.model(x).squeeze()
+        probs = torch.sigmoid(logits)
+        preds = (probs > 0.5).float()
 
-    x = torch.tensor(X_df.to_numpy(), dtype=torch.float32)
+    resp: dict = {
+        "filename": file.filename,
+        "n_samples": int(x.shape[0]),
+        "n_features": int(x.shape[1]),
+    }
+
+    # Encode labels if present
+    if has_labels:
+        try:
+            y = app.state.label_encoder.transform(y_raw).astype("float32")
+        except Exception as e:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Could not encode diagnosis labels. Expected something like 'B'/'M'. Error: {e}",
+            )
 
     with torch.no_grad():
         logits = app.state.model(x).squeeze()
@@ -85,7 +126,7 @@ async def evaluate_csv(file: UploadFile = File(...)) -> dict:
     }
 
     if has_labels:
-        y_t = torch.tensor(y.to_numpy(), dtype=torch.float32)
+        y_t = torch.tensor(y, dtype=torch.float32)
         if y_t.numel() != preds.numel():
             raise HTTPException(status_code=400, detail="Targets shape mismatch.")
 
