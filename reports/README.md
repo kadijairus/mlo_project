@@ -86,8 +86,8 @@ will check the repositories and the code to verify your answers.
 * [x] Add a linting step to your continuous integration (M17)
 * [x] Add pre-commit hooks to your version control setup (M18)
 * [ ] Add a continues workflow that triggers when data changes (M19)
-* [ ] Add a continues workflow that triggers when changes to the model registry is made (M19)
-* [ ] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
+* [x] Add a continues workflow that triggers when changes to the model registry is made (M19)
+* [x] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
 * [ ] Create a trigger workflow for automatically building your docker images (M21)
 * [ ] Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [ ] Create a FastAPI application that can do inference using your model (M22)
@@ -125,7 +125,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 1 fill here ---
+5
 
 ### Question 2
 > **Enter the study number for each member in the group**
@@ -136,7 +136,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 2 fill here ---
+Kadi Jairus - s256613
 
 ### Question 3
 > **Did you end up using any open-source frameworks/packages not covered in the course during your project? If so**
@@ -170,7 +170,12 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 4 fill here ---
+We managed our dependencies using uv. The source of truth is the pyproject.toml file. To ensure every team member has a 
+bit-for-bit identical environment, we use a uv.lock file. A new team member can get an exact copy of the environment by 
+Git cloning and running uv sync. Additionally, since our binary data and models are not stored in Git, the member must 
+run dvc pull after setting up their local service_account_key.json to fetch the processed tensors and model checkpoints 
+from Google Cloud Storage. This dual-layered approach (uv for code, DVC for data) ensures a fully reproducible pipeline 
+across different machines.
 
 ### Question 5
 
@@ -186,7 +191,11 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 5 fill here ---
+From the cookiecutter template we have filled out the tests, .github, data, dockerfiles, models, reports, wandb and 
+src folder. We have removed the notebooks folder because we did not use any Jupyter notebooks in our project. 
+We have added: (1) .dvc folder to manage our remote connection to Google Cloud Storage, (2) scripts folder to hold 
+helper-script to create smaller data files for testing, (3) outputs folder for running our experiments and,
+(4) src/mlo_project/training folder to hold helper classes for training.py.
 
 ### Question 6
 
