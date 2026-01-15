@@ -57,6 +57,15 @@ def docker_build(ctx: Context, progress: str = "plain") -> None:
         f"docker build -t api:latest . -f dockerfiles/api.dockerfile --progress={progress}", echo=True, pty=not WINDOWS
     )
 
+@task
+def serve_api(ctx: Context) -> None:
+    """Serve the FastAPI application."""
+    ctx.run(
+        f"uv run uvicorn {PROJECT_NAME}.api:app --host 127.0.0.1 --port 8000 --reload",
+        echo=True,
+        pty=not WINDOWS,
+    )
+
 
 # Documentation commands
 @task
