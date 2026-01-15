@@ -6,6 +6,7 @@ on:
     # THIS IS THE TRIGGER: Only run if the model pointer changes
     paths:
       - 'models/best_model.pt.dvc'
+  workflow_dispatch:
 
 jobs:
   evaluate-promoted-model:
