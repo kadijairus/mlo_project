@@ -227,7 +227,7 @@ helper-script to create smaller data files for testing, (3) outputs folder for r
 > *In total we have implemented X tests. Primarily we are testing ... and ... as these the most critical parts of our*
 > *application but also ... .*
 >
-> Answer:
+> Answer: In total we have implemented around 25 tests. Primarily, we focused on model robustness and data integrity. For model tests We verified output shapes across variable batch sizes, ensured the model handles edge-case inputs (zeros, negative numbers) without crashing or producing NaNs, and confirmed the model is deterministic in evaluation mode. And for the we validated that processed tensors have the correct shape (30 features), are strictly normalized (MinMax scaling between 0-1), and that there is no data leakage between training and test sets.
 
 --- question 7 fill here ---
 
@@ -242,7 +242,11 @@ helper-script to create smaller data files for testing, (3) outputs folder for r
 > *The total code coverage of code is X%, which includes all our source code. We are far from 100% coverage of our **
 > *code and even if we were then...*
 >
-> Answer:
+> Answer:Here is the text for Question 8. You can copy and paste this directly into your reports/README.md.
+
+Answer:
+
+The total code coverage is currently 12% . Even if we achieved 100% code coverage, we would not trust the system to be completely error-free. Code coverage only measures which lines of code were executed during testing, not whether the logic or the results are correct.
 
 --- question 8 fill here ---
 
