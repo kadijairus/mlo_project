@@ -117,11 +117,6 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 
 ### Running the scripts
 
-Scripts can be run using `uv run invoke`. See a list of available tasks with
-   ```bash
-    uv run src/mlo_project/data.py
-   ```
-
 #### Data Processing
 1. Run the data script:
    ```bash

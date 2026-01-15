@@ -125,7 +125,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 1 fill here ---
+5
 
 ### Question 2
 > **Enter the study number for each member in the group**
@@ -136,7 +136,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 2 fill here ---
+Kadi Jairus - s256613
 
 ### Question 3
 > **Did you end up using any open-source frameworks/packages not covered in the course during your project? If so**
@@ -170,7 +170,12 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 4 fill here ---
+We managed our dependencies using uv. The source of truth is the pyproject.toml file. To ensure every team member has a 
+bit-for-bit identical environment, we use a uv.lock file. A new team member can get an exact copy of the environment by 
+Git cloning and running uv sync. Additionally, since our binary data and models are not stored in Git, the member must 
+run dvc pull after setting up their local service_account_key.json to fetch the processed tensors and model checkpoints 
+from Google Cloud Storage. This dual-layered approach (uv for code, DVC for data) ensures a fully reproducible pipeline 
+across different machines.
 
 ### Question 5
 
@@ -186,7 +191,10 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 5 fill here ---
+From the cookiecutter template we have filled out the tests, .github, data, dockerfiles, models, reports, wandb and 
+src folder. We have removed the notebooks folder because we did not use any Jupyter notebooks in our project. 
+We have added: (1) .dvc folder to manage our remote connection to Google Cloud Storage, (2) scripts folder to hold 
+helper-script to create smaller data files for testing, and (3) outputs folder for running our experiments.
 
 ### Question 6
 
