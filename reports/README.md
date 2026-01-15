@@ -194,7 +194,8 @@ across different machines.
 From the cookiecutter template we have filled out the tests, .github, data, dockerfiles, models, reports, wandb and 
 src folder. We have removed the notebooks folder because we did not use any Jupyter notebooks in our project. 
 We have added: (1) .dvc folder to manage our remote connection to Google Cloud Storage, (2) scripts folder to hold 
-helper-script to create smaller data files for testing, and (3) outputs folder for running our experiments.
+helper-script to create smaller data files for testing, (3) outputs folder for running our experiments and,
+(4) src/mlo_project/training folder to hold helper classes for training.py.
 
 ### Question 6
 
