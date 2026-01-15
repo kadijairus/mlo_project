@@ -189,16 +189,19 @@ def train_model(cnf: DictConfig) -> None:
                 "batch_size": batch_size,
             },
         )
-        log_model_artifact(
-            best_ckpt_path,
-            name="breast-cancer-model-best",
-            metadata={
-                "epoch": best_epoch,
-                "train_loss_best": float(best_metric),
-                "lr": lr,
-                "batch_size": batch_size,
-            },
-        )
+        if best_metric is not None and best_epoch is not None:
+            log_model_artifact(
+                best_ckpt_path,
+                name="breast-cancer-model-best",
+                metadata={
+                    "epoch": best_epoch,
+                    "train_loss_best": float(best_metric),
+                    "lr": lr,
+                    "batch_size": batch_size,
+                },
+            )
+        else:
+            logger.warning("Best model information is missing; skipping best model artifact logging.")
 
         logger.success("Training process finished successfully!")
 
