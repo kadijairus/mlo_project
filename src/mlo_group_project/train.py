@@ -1,5 +1,5 @@
-from loguru import logger
 from __future__ import annotations
+from loguru import logger
 import sys
 from pathlib import Path
 from torch import optim, nn
