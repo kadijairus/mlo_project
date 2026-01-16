@@ -49,9 +49,11 @@ Similar model has been trained on the same dataset and has shown good performanc
 
 The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) and is based on [Machine Learning Operations template](https://github.com/SkafteNicki/mlops_template).
 ```txt
+├── .dvc                      # DVC configuration files
 ├── .github/                  # Github actions and dependabot
-│   ├── dependabot.yaml
 │   └── workflows/
+│       ├── evaluation.yaml
+│       ├── linting.yaml
 │       └── tests.yaml
 ├── configs/                  # Configuration files
 ├── data/                     # Data directory
@@ -65,31 +67,39 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 │   └── source/
 │       └── index.md
 ├── models/                   # Trained models
+├── outputs/                   
 ├── reports/                  # Reports
 │   └── figures/
+├── scripts/  
 ├── src/                      # Source code
 │   ├── mlo_project/
 │   │   ├── __init__.py
 │   │   ├── api.py
 │   │   ├── data.py
 │   │   ├── evaluate.py
-│   │   ├── models.py
+│   │   ├── model.py
 │   │   ├── train.py
 │   │   └── visualize.py
 └── tests/                    # Tests
 │   ├── __init__.py
+│   ├── conftest.py
 │   ├── test_api.py
 │   ├── test_data.py
 │   └── test_model.py
+├── wandb/                    # Weights & Biases files
 ├── .gitignore
 ├── .pre-commit-config.yaml
 ├── LICENSE
 ├── pyproject.toml            # Python project file
 ├── README.md                 # Project README
 ├── requirements.txt          # Project requirements
+├── requirements_dev.txt      # Project development requirements
 └── tasks.py                  # Project tasks
 ```
 ## How to run
+We use invoke as our primary project CLI to simplify complex commands. 
+Ensure your environment is set up with uv sync.
+
 ### Setup
 1. Clone the repository:
     ```bash
@@ -100,47 +110,88 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
    ```bash
    pip install uv
    ```
-3. Create a virtual environment and activate it:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
-4. Add to .env file (create if it doesn't exist):
+3. Add to .env file (create if it doesn't exist):
    ```env
    WANDB_API_KEY=your_wandb_api_key_here
    GOOGLE_APPLICATION_CREDENTIALS="your_google_cloud_service_account_key.json"
    ```
+4. Activate virtual environment:
+   ```bash
+   source .venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
 5. Install the required dependencies:
    ```bash
-   pip install -r requirements.txt
+   uv sync
    ```
+   
+### Update data artifacts
 
-### Running the scripts
+We use DVC to version heavy artifacts. 
+Use these commands to keep your local environment in sync with the cloud registry.
 
-#### Data Processing
-1. Run the data script:
+1. Before running any scripts, you must pull the data artifacts tracked by DVC:
    ```bash
-    uv run src/mlo_project/data.py
+   uv run invoke data-pull
    ```
-2. Ensure, that the processed data is in `data/processed/` folder.
-
-#### Training
-1. To train with default configuration run the training script:
+2. After running a successful training and reaching a new "best" model upload data using: 
    ```bash
-   uv run src/mlo_project/train.py
+   uv run invoke promote
    ```
-2. Use Hydra to change configuration options.
-3. Use WandB to monitor training.
-4. The trained model will be saved in the `models/` folder.
+3. Pushing data to DVC updates the local dvc.lock file. Commit this to git.
+4. See other invoke tasks in `tasks.py` file or run:
+   ```bash
+   uv run invoke --list
+   ``` 
 
-#### Evaluation
-1. Run the evaluation script and specify the model path:
-    ```bash
-    uv run src/mlo_project/evaluate.py models/your_model_file.pt
-    ```
+### Running the standard pipeline
+    
+1. Run preprocess and training if data.py or train.py has changed.
+   ```bash
+   uv run invoke repro
+   ```
+
+2. Optional: preprocess and train can be run separately:
+   ```bash
+   uv run invoke preprocess-data
+   uv run invoke train
+   ```
+   
+3. Promote best model to cloud registry:
+   ```bash
+   uv run invoke promote
+   ```
+
+4. Run evaluation on the test set
+   ```bash
+   uv run invoke evaluate
+   ```
+
+5. Run all tests
+   ```bash
+   uv run invoke test
+   ```
+
+### Monitoring and profiling
+
+We use Hydra for configuration management.
+We use WandB to monitor training.
+Training progress and model artifacts are automatically logged to Weights & Biases dashboard.
+
+1. Run training with performance profiling enabled:
+   ```bash
+   uv run invoke train-profile
+   ```
+2. Visualise results: 
+   ```bash
+   snakeviz reports/train_profile.prof
+   ```
 
 ### Running the scripts with Docker
 1. Build the image:
+   ```bash
    docker build -t breast-cancer-train -f dockerfiles/train.dockerfile .
+   ```
 2. Run the training:
+   ```bash
    docker run --rm breast-cancer-train
+   ```

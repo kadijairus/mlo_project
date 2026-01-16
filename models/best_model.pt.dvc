@@ -1,9 +1,0 @@
-outs:
-- md5: 323628feadb8b4768c965400b5c7fc99
-  size: 19174
-  hash: md5
-  path: best_model.pt
-  cloud:
-    remote_storage:
-      etag: 08a683aeacc98d92031001
-      version_id: '1768481062879654'
