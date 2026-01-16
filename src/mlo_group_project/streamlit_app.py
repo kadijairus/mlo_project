@@ -78,7 +78,7 @@ if uploaded:
 st.markdown("---")
 
 # Evaluate button
-col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
+col_btn1, col_btn2, col_btn3 = st.columns([2, 2, 2])
 with col_btn2:
     run_eval = st.button("🚀 Evaluate Dataset", disabled=uploaded is None, type="primary")
 
