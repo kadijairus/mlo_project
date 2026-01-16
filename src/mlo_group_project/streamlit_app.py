@@ -160,6 +160,6 @@ st.markdown("---")
 st.markdown("""
     <div style='text-align: center; color: #666; padding: 2rem 0;'>
         <p>Part of MLOps DTU Project. </p>
-        <p style='font-size: 0.9rem;'>[Github project](https://github.com/kadijairus/mlo_project) • 2026</p>
+        <p style='font-size: 0.9rem;'><a href="https://github.com/kadijairus/mlo_project" target="_blank">Github project</a> • 2026</p>
     </div>
 """, unsafe_allow_html=True)
