@@ -66,13 +66,14 @@ def serve_api(ctx: Context, port: int = 8000) -> None:
 
     kill_port(port)
 
-    cmd = (f"uv run uvicorn {PROJECT_NAME}.api:app", f"--host 127.0.0.1 --port {port} --reload")
+    cmd = f"uv run uvicorn {PROJECT_NAME}.api:app --host 127.0.0.1 --port {port} --reload"
 
     if WINDOWS:
         full = f"{cmd} & echo. & echo API process exited. & pause"
+        create_new_console = getattr(subprocess, "CREATE_NEW_CONSOLE", 0)
         subprocess.Popen(
             ["cmd.exe", "/k", full],
-            creationflags=subprocess.CREATE_NEW_CONSOLE,
+            creationflags=create_new_console,
         )
     else:
         ctx.run(cmd, echo=True, pty=True)
@@ -84,14 +85,15 @@ def serve_ui(ctx: Context, port: int = 8501) -> None:
 
     kill_port(port)
 
-    cmd = (f"uv run streamlit run src/{PROJECT_NAME}/streamlit_app.py ", f"--server.port {port}")
+    cmd = f"uv run streamlit run src/{PROJECT_NAME}/streamlit_app.py --server.port {port}"
 
     if WINDOWS:
         # /k keeps it open; pause shows errors if the command fails instantly
         full = f"{cmd} & echo. & echo UI process exited. & pause"
+        create_new_console = getattr(subprocess, "CREATE_NEW_CONSOLE", 0)
         subprocess.Popen(
             ["cmd.exe", "/k", full],
-            creationflags=subprocess.CREATE_NEW_CONSOLE,
+            creationflags=create_new_console,
         )
     else:
         ctx.run(cmd, echo=True, pty=True)
