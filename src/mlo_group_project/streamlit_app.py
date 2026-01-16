@@ -8,10 +8,7 @@ API_URL_DEFAULT = "http://127.0.0.1:8000/evaluate-csv"
 
 # Page configuration with custom theme
 st.set_page_config(
-    page_title="Breast Cancer Evaluator",
-    layout="centered",
-    page_icon="🩺",
-    initial_sidebar_state="collapsed"
+    page_title="Breast Cancer Evaluator", layout="centered", page_icon="🩺", initial_sidebar_state="collapsed"
 )
 
 # Load custom CSS from external file
@@ -20,28 +17,35 @@ with open(css_file) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Header
-st.markdown("""
+st.markdown(
+    """
     <div class="main-header">
         <h1>🩺 Breast Cancer Evaluator</h1>
         <p>MLOps Group 5 • 2026</p>
     </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # Introduction section
 with st.container():
     st.markdown("### 📊 About This Application")
-    st.markdown("""
+    st.markdown(
+        """
         Upload a CSV dataset. The app sends it to the FastAPI backend for preprocessing + evaluation using a pre-trained model.
-    """)
-    
+    """
+    )
+
     with st.expander("ℹ️ Dataset Information"):
-        st.markdown("""
+        st.markdown(
+            """
             **Wisconsin Breast Cancer Dataset**
             
             The model is trained on the UCI Breast Cancer Wisconsin (Diagnostic) dataset.
             
             🔗 [Download dataset from Kaggle](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data)
-        """)
+        """
+        )
 
 st.markdown("---")
 
@@ -51,9 +55,7 @@ col_config1, col_config2 = st.columns([1, 1])
 
 with col_config1:
     api_url = st.text_input(
-        "FastAPI Endpoint URL",
-        value=API_URL_DEFAULT,
-        help="The backend API endpoint for model evaluation"
+        "FastAPI Endpoint URL", value=API_URL_DEFAULT, help="The backend API endpoint for model evaluation"
     )
 
 with col_config2:
@@ -67,9 +69,7 @@ st.markdown("---")
 # Upload section
 st.markdown("### 📁 Upload Dataset")
 uploaded = st.file_uploader(
-    "Choose a CSV file to evaluate",
-    type=["csv"],
-    help="Upload your breast cancer dataset in CSV format"
+    "Choose a CSV file to evaluate", type=["csv"], help="Upload your breast cancer dataset in CSV format"
 )
 
 if uploaded:
@@ -105,61 +105,51 @@ if run_eval:
         st.stop()
 
     result = r.json()
-    
+
     # Success message
     st.success("✅ Evaluation Complete!")
-    
+
     st.markdown("---")
     st.markdown("### 📈 Results")
-    
+
     # Display key metrics with enhanced styling
     if result.get("has_labels"):
         # Metrics in columns
         col1, col2, col3 = st.columns(3)
-        
+
         with col1:
-            st.metric(
-                label="🎯 Accuracy",
-                value=f"{result['accuracy']*100:.2f}%",
-                delta=None
-            )
-        
+            st.metric(label="🎯 Accuracy", value=f"{result['accuracy']*100:.2f}%", delta=None)
+
         with col2:
-            st.metric(
-                label="✅ Correct Predictions",
-                value=result['correct']
-            )
-        
+            st.metric(label="✅ Correct Predictions", value=result["correct"])
+
         with col3:
-            st.metric(
-                label="📊 Total Samples",
-                value=result['total']
-            )
-        
+            st.metric(label="📊 Total Samples", value=result["total"])
+
         # Progress bar for accuracy
         st.markdown("#### Performance Visualization")
-        st.progress(result['accuracy'])
-        
+        st.progress(result["accuracy"])
+
         # Additional details in expandable section
         with st.expander("📋 Detailed Results (JSON)"):
             st.json(result)
-            
+
     else:
         st.info("ℹ️ " + result.get("message", "No labels found in dataset."))
         if result.get("predicted_positive") is not None:
-            st.metric(
-                label="Predicted Positive Cases",
-                value=result.get("predicted_positive")
-            )
-        
+            st.metric(label="Predicted Positive Cases", value=result.get("predicted_positive"))
+
         with st.expander("📋 Full Response (JSON)"):
             st.json(result)
 
 # Footer
 st.markdown("---")
-st.markdown("""
+st.markdown(
+    """
     <div style='text-align: center; color: #666; padding: 2rem 0;'>
         <p>Part of MLOps DTU Project. </p>
         <p style='font-size: 0.9rem;'><a href="https://github.com/kadijairus/mlo_project" target="_blank">Github project</a> • 2026</p>
     </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
