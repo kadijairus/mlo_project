@@ -1,6 +1,7 @@
 import os
 
 from invoke import Context, task
+import subprocess
 
 WINDOWS = os.name == "nt"
 PROJECT_NAME = "mlo_group_project"
@@ -58,13 +59,36 @@ def docker_build(ctx: Context, progress: str = "plain") -> None:
     )
 
 @task
-def serve_api(ctx: Context) -> None:
-    """Serve the FastAPI application."""
-    ctx.run(
-        f"uv run uvicorn {PROJECT_NAME}.api:app --host 127.0.0.1 --port 8000 --reload",
-        echo=True,
-        pty=not WINDOWS,
+def serve_api(ctx: Context, port: int = 8000) -> None:
+    """Serve FastAPI backend (opens in a new terminal on Windows)."""
+    cmd = f"uv run uvicorn {PROJECT_NAME}.api:app --host 127.0.0.1 --port {port} --reload"
+
+    if WINDOWS:
+        full = f'{cmd} & echo. & echo API process exited. & pause'
+        subprocess.Popen(
+            ["cmd.exe", "/k", full],
+            creationflags=subprocess.CREATE_NEW_CONSOLE,
+        )
+    else:
+        ctx.run(cmd, echo=True, pty=True)
+
+@task
+def serve_ui(ctx: Context, port: int = 8501) -> None:
+    """Serve Streamlit UI (opens in a new terminal on Windows)."""
+    cmd = (
+        f"uv run streamlit run src/{PROJECT_NAME}/streamlit_app.py "
+        f"--server.port {port}"
     )
+
+    if WINDOWS:
+        # /k keeps it open; pause shows errors if the command fails instantly
+        full = f'{cmd} & echo. & echo UI process exited. & pause'
+        subprocess.Popen(
+            ["cmd.exe", "/k", full],
+            creationflags=subprocess.CREATE_NEW_CONSOLE,
+        )
+    else:
+        ctx.run(cmd, echo=True, pty=True)
 
 
 # Documentation commands
