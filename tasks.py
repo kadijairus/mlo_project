@@ -1,4 +1,5 @@
 import os
+import sys
 
 from invoke import Context, task
 import subprocess
@@ -58,13 +59,17 @@ def docker_build(ctx: Context, progress: str = "plain") -> None:
         f"docker build -t api:latest . -f dockerfiles/api.dockerfile --progress={progress}", echo=True, pty=not WINDOWS
     )
 
+
 @task
 def serve_api(ctx: Context, port: int = 8000) -> None:
     """Serve FastAPI backend (opens in a new terminal on Windows)."""
-    cmd = f"uv run uvicorn {PROJECT_NAME}.api:app --host 127.0.0.1 --port {port} --reload"
+
+    kill_port(port)
+
+    cmd = (f"uv run uvicorn {PROJECT_NAME}.api:app", f"--host 127.0.0.1 --port {port} --reload")
 
     if WINDOWS:
-        full = f'{cmd} & echo. & echo API process exited. & pause'
+        full = f"{cmd} & echo. & echo API process exited. & pause"
         subprocess.Popen(
             ["cmd.exe", "/k", full],
             creationflags=subprocess.CREATE_NEW_CONSOLE,
@@ -72,17 +77,18 @@ def serve_api(ctx: Context, port: int = 8000) -> None:
     else:
         ctx.run(cmd, echo=True, pty=True)
 
+
 @task
 def serve_ui(ctx: Context, port: int = 8501) -> None:
     """Serve Streamlit UI (opens in a new terminal on Windows)."""
-    cmd = (
-        f"uv run streamlit run src/{PROJECT_NAME}/streamlit_app.py "
-        f"--server.port {port}"
-    )
+
+    kill_port(port)
+
+    cmd = (f"uv run streamlit run src/{PROJECT_NAME}/streamlit_app.py ", f"--server.port {port}")
 
     if WINDOWS:
         # /k keeps it open; pause shows errors if the command fails instantly
-        full = f'{cmd} & echo. & echo UI process exited. & pause'
+        full = f"{cmd} & echo. & echo UI process exited. & pause"
         subprocess.Popen(
             ["cmd.exe", "/k", full],
             creationflags=subprocess.CREATE_NEW_CONSOLE,
@@ -102,3 +108,19 @@ def build_docs(ctx: Context) -> None:
 def serve_docs(ctx: Context) -> None:
     """Serve documentation."""
     ctx.run("uv run mkdocs serve --config-file docs/mkdocs.yaml", echo=True, pty=not WINDOWS)
+
+
+def kill_port(port: int):
+    try:
+        if sys.platform.startswith("win"):
+            cmd = f"for /f \"tokens=5\" %a in ('netstat -aon ^| findstr :{port}') do taskkill /F /PID %a"
+            subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        else:
+            subprocess.run(
+                f"lsof -ti:{port} | xargs kill -9",
+                shell=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+    except Exception:
+        pass
