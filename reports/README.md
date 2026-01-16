@@ -65,7 +65,7 @@ will check the repositories and the code to verify your answers.
 * [x] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
 * [x] Do a bit of code typing and remember to document essential parts of your code (M7) (Kadi)
 * [x] Setup version control for your data or part of your data (M8)
-* [ ] Add command line interfaces and project commands to your code where it makes sense (M9)
+* [x] Add command line interfaces and project commands to your code where it makes sense (M9)
 * [x] Construct one or multiple docker files for your code (M10) (Eduard)
 * [x] Build the docker files locally and make sure they work as intended (M10) (Eduard) *(Optional TODO: Add synchronize Docker output folder with local folder)*
 * [x] Write one or multiple configurations files for your experiments (M11) (Eduard)
