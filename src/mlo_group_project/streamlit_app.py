@@ -11,7 +11,9 @@ st.title("Breast Cancer CSV Evaluation")
 st.subheader("MLOps Group 5, 2026")
 st.write("Upload a CSV dataset. The app sends it to the FastAPI backend for preprocessing + evaluation.")
 # Dataset can be found at kaggle
-st.write("Data can be found at: [Link to Kaggle data set](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data)")
+st.write(
+    "Data can be found at: [Link to Kaggle data set](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data)"
+)
 
 api_url = st.text_input("FastAPI endpoint", value=API_URL_DEFAULT)
 
@@ -22,7 +24,7 @@ with col1:
     run_eval = st.button("Evaluate", disabled=uploaded is None)
 
 with col2:
-    st.caption("IMPORTANT: Backend must be running: uvicorn mlo_group_project.api:app")
+    st.caption("IMPORTANT: Backend must be running: `uv run invoke serve-api`")
 
 if run_eval:
     if uploaded is None:
