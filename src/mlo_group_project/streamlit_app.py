@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # Load custom CSS from external file
-css_file = Path(__file__).parent / "styles.css"
+css_file = Path(__file__).parent / "styles/styles.css"
 with open(css_file) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
@@ -47,7 +47,7 @@ st.markdown("---")
 
 # Configuration section
 st.markdown("### ⚙️ Configuration")
-col_config1, col_config2 = st.columns([2, 1])
+col_config1, col_config2 = st.columns([1, 1])
 
 with col_config1:
     api_url = st.text_input(
