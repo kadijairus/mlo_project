@@ -8,13 +8,14 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from loguru import logger
 from mlo_group_project.model import BreastCancerModel
 import json
-import joblib # type: ignore[import-untyped]
+import joblib  # type: ignore[import-untyped]
 
 MODEL_PATH = Path("models/model.pth")
 PROCESSED_DIR = Path("data/processed")
 SCALER_PATH = PROCESSED_DIR / "scaler.joblib"
 FEATURES_PATH = PROCESSED_DIR / "feature_columns.json"
 LABEL_ENCODER_PATH = PROCESSED_DIR / "label_encoder.joblib"
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -35,7 +36,7 @@ async def lifespan(app: FastAPI):
     app.state.scaler = scaler
     app.state.feature_columns = feature_columns
     app.state.label_encoder = label_encoder
-    
+
     # Load model
     model = BreastCancerModel(input_shape=len(feature_columns))
     state = torch.load(MODEL_PATH, map_location="cpu")
@@ -44,7 +45,7 @@ async def lifespan(app: FastAPI):
 
     app.state.model = model
     logger.info(f"Model loaded from {MODEL_PATH}")
-    
+
     yield
 
 
@@ -72,7 +73,7 @@ async def evaluate_csv(file: UploadFile = File(...)) -> dict:
     # Drop columns
     df = df.copy()
     df.drop(columns=["id", "Unnamed: 32"], errors="ignore", inplace=True)
-    
+
     has_labels = "diagnosis" in df.columns
     if has_labels:
         y_raw = df["diagnosis"]
@@ -80,19 +81,19 @@ async def evaluate_csv(file: UploadFile = File(...)) -> dict:
     else:
         X_df = df
         y_raw = None
-    
+
     # Enforce same feature columns + order as training
     feature_columns = app.state.feature_columns
     missing = set(feature_columns) - set(X_df.columns)
     extra = set(X_df.columns) - set(feature_columns)
-    
+
     if missing:
         raise HTTPException(status_code=400, detail=f"Missing columns: {sorted(missing)}")
     if extra:
         raise HTTPException(status_code=400, detail=f"Unexpected extra columns: {sorted(extra)}")
-    
+
     X_df = X_df[feature_columns]
-    
+
     # Scale using training scaler
     X_scaled = app.state.scaler.transform(X_df.to_numpy())
     x = torch.tensor(X_scaled, dtype=torch.float32)
@@ -122,7 +123,6 @@ async def evaluate_csv(file: UploadFile = File(...)) -> dict:
         logits = app.state.model(x).squeeze()
         probs = torch.sigmoid(logits)
         preds = (probs > 0.5).float()
-
 
     if has_labels:
         y_t = torch.tensor(y, dtype=torch.float32)
