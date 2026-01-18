@@ -1,10 +1,16 @@
 from __future__ import annotations
 from pathlib import Path
 from typing import Any
+import os
 import wandb
 
-def init_wandb(project: str, config: dict[str, Any]) -> None:
-    wandb.init(project=project, config=config)
+def init_wandb(project, config):
+    mode = os.environ.get("WANDB_MODE", "offline")
+    wandb.init(
+        project=project,
+        config=config,
+        mode=mode
+    )
 
 def log_epoch(epoch: int, loss: float, acc: float) -> None:
     wandb.log({"epoch": epoch, "train_loss": loss, "train_acc": acc})
