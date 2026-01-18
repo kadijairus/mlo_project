@@ -1,0 +1,7 @@
+invoke>=2.2.0
+loguru>=0.7.3
+streamlit>=1.53.0
+types-requests
+pandas-stubs>=2.3.3.260113
+fastapi>=0.115.6
+torch==2.6.0
