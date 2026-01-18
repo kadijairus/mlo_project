@@ -13,11 +13,10 @@ ENV PROJECT_NAME=${PROJECT_NAME}
 # Set working directory
 WORKDIR /app
 
-# 1. Install dependencies first (better caching)
 # Copy only the requirements file
 COPY dockerfiles/eval_requirements.txt ./requirements.txt
 
-# Use uv for faster installation
+# Use uv for faster installation of dependencies
 RUN uv pip install --system --no-cache \
     --extra-index-url https://download.pytorch.org/whl/cpu \
     --index-strategy unsafe-best-match \
@@ -25,9 +24,9 @@ RUN uv pip install --system --no-cache \
 
 # Copy metadata first (helps with caching)
 COPY pyproject.toml README.md* ./
-# Copy the rest of the application
+# Copy source files
 COPY tasks.py ./tasks.py
-# Copy the whole src directory to maintain structure
+COPY src/${PROJECT_NAME}/__init__.py ./src/${PROJECT_NAME}/__init__.py
 COPY src/${PROJECT_NAME}/api.py ./src/${PROJECT_NAME}/api.py
 COPY src/${PROJECT_NAME}/streamlit_app.py ./src/${PROJECT_NAME}/streamlit_app.py
 COPY src/${PROJECT_NAME}/styles/ ./src/${PROJECT_NAME}/styles/
@@ -37,12 +36,12 @@ COPY data/processed/scaler.joblib ./data/processed/scaler.joblib
 COPY data/processed/feature_columns.json ./data/processed/feature_columns.json
 COPY data/processed/label_encoder.joblib ./data/processed/label_encoder.joblib
 
-
-# Copy git metadata
+# Copy git metadata (Check that it is needed)
 COPY .git ./.git
 COPY .gitignore ./.gitignore
 
 # Ensure the package directory exists
 RUN mkdir -p src/${PROJECT_NAME} && touch src/${PROJECT_NAME}/__init__.py
+# Install the project in editable mode
 ENTRYPOINT ["uv", "run", "--no-project", "invoke"]
 CMD ["serve-api-ui"]
