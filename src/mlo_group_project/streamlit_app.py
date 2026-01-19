@@ -6,7 +6,7 @@ import requests
 import streamlit as st
 
 # Use the environment variable set in docker-compose
-API_BASE = os.environ.get("API_URL", "http://127.0.0.1:8000")
+API_BASE = os.environ.get("API_URL", "http://localhost:8000")
 API_URL_DEFAULT = f"{API_BASE}/evaluate-csv"  # "http://127.0.0.1:8000/evaluate-csv"
 
 # Page configuration with custom theme
