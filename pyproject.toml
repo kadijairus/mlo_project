@@ -7,7 +7,7 @@ name = "mlo_group_project"
 version = "0.3.0"
 description = "Machine Learning group 5"
 authors = [
-  { name = "kadijairus", email = "your@email.com" },
+  { name = "kadijairus", email = "kadijairus@gmail.com" },
 ]
 
 keywords = ["machine learning", "MLOps"]
