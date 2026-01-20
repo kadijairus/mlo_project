@@ -224,9 +224,8 @@ We used Ruff for both linting and formatting, enforcing PEP 8 compliance with a 
 > *In total we have implemented X tests. Primarily we are testing ... and ... as these the most critical parts of our*
 > *application but also ... .*
 >
-> Answer: In total we have implemented around 25 tests. Primarily, we focused on model robustness and data integrity. For model tests We verified output shapes across variable batch sizes, ensured the model handles edge-case inputs (zeros, negative numbers) without crashing or producing NaNs, and confirmed the model is deterministic in evaluation mode. And for the we validated that processed tensors have the correct shape (30 features), are strictly normalized (MinMax scaling between 0-1), and that there is no data leakage between training and test sets.
-
---- question 7 fill here ---
+> Answer:
+In total we have implemented around 25 tests. Primarily, we focused on model robustness and data integrity. For model tests We verified output shapes across variable batch sizes, ensured the model handles edge-case inputs (zeros, negative numbers) without crashing or producing NaNs, and confirmed the model is deterministic in evaluation mode. And for the we validated that processed tensors have the correct shape (30 features), are strictly normalized (MinMax scaling between 0-1), and that there is no data leakage between training and test sets.
 
 ### Question 8
 
@@ -239,13 +238,9 @@ We used Ruff for both linting and formatting, enforcing PEP 8 compliance with a 
 > *The total code coverage of code is X%, which includes all our source code. We are far from 100% coverage of our **
 > *code and even if we were then...*
 >
-> Answer:Here is the text for Question 8. You can copy and paste this directly into your reports/README.md.
+> Answer:
 
-Answer:
-
-The total code coverage is currently 12% . Even if we achieved 100% code coverage, we would not trust the system to be completely error-free. Code coverage only measures which lines of code were executed during testing, not whether the logic or the results are correct.
-
---- question 8 fill here ---
+The total code coverage is currently 53% (tested by running `uv run invoke test`). Even if we achieved 100% code coverage, we would not trust the system to be completely error-free. Code coverage only measures which lines of code were executed during testing, not whether the logic or the results are correct. Still, it would be worthwhile to run more code than not since it helps catch errors early. 
 
 ### Question 9
 
@@ -260,7 +255,7 @@ The total code coverage is currently 12% . Even if we achieved 100% code coverag
 >
 > Answer:
 
---- question 9 fill here ---
+We early on agreed to use both branches and pull requests. We even enforced rules so pushes cannot be made directly on the main branch but only through pull requests (that also need a review). We did this in an attempt to ensure as many people as possible are up to date with the project and try to keep unchecked code out of main. Still, this does not ensure the code actually works, and it is up to the reviewer to be thorough and in the long run it is better to ensure a continuous pipeline that performs automatic linting, building and testing (as we also do).
 
 ### Question 10
 
