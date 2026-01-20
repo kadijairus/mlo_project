@@ -1,0 +1,2 @@
+Before deploying this function, you need to include the mlo_grou_project, as the fucntion requires the model. 
+Simply copy the whole "mlo_grou_project" folder into this folder, it is gitignored but needed locally. 
