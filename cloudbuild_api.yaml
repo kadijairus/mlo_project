@@ -3,10 +3,8 @@ steps:
   id: 'Build container image'
   args: [
     'build',
-    '-t',
-    'europe-west1-docker.pkg.dev/dtumlops-484207/eval/api:latest',
-    '-f',
-    'dockerfiles/api.dockerfile',
+    '-t', 'europe-west1-docker.pkg.dev/dtumlops-484207/eval/api:latest',
+    '-f', 'dockerfiles/api.dockerfile',
     '.'
   ]
 - name: 'gcr.io/cloud-builders/docker'
@@ -25,15 +23,15 @@ steps:
     '--image', 'europe-west1-docker.pkg.dev/dtumlops-484207/eval/api:latest',
     '--region', 'europe-west1',
     '--platform', 'managed',
-    '--allow-unauthenticated',
-    '--port', '8000',
-    '--memory', '4Gi',
+    '--port', '8000',             # FastAPI default port
+    '--memory', '4Gi',            # Matches docker memory limits
     '--cpu', '1',
     '--timeout', '300s',
     '--concurrency', '80',
     '--max-instances', '3',
     '--cpu-boost',
-    '--service-account', '934984265576-compute@developer.gserviceaccount.com'
+    '--service-account', '934984265576-compute@developer.gserviceaccount.com',
+    '--allow-unauthenticated',
   ]
 
 options:
