@@ -61,18 +61,18 @@ will check the repositories and the code to verify your answers.
 * [x] Fill out the `data.py` file such that it downloads whatever data you need and preprocesses it (if necessary) (M6)
 * [x] Add a model to `model.py` and a training procedure to `train.py` and get that running (M6)
 * [x] Remember to fill out the `requirements.txt` and `requirements_dev.txt` file with whatever dependencies that you
-    are using (M2+M6) (Kadi)
+    are using (M2+M6)
 * [x] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
-* [x] Do a bit of code typing and remember to document essential parts of your code (M7) (Kadi)
+* [x] Do a bit of code typing and remember to document essential parts of your code (M7)
 * [x] Setup version control for your data or part of your data (M8)
 * [x] Add command line interfaces and project commands to your code where it makes sense (M9)
-* [x] Construct one or multiple docker files for your code (M10) (Eduard)
-* [x] Build the docker files locally and make sure they work as intended (M10) (Eduard) *(Optional TODO: Add synchronize Docker output folder with local folder)*
-* [x] Write one or multiple configurations files for your experiments (M11) (Eduard)
-* [x] Used Hydra to load the configurations and manage your hyperparameters (M11) (Eduard)
-* [x] Use profiling to optimize your code (M12) (Victor)
-* [x] Use logging to log important events in your code (M14) (Kadi)
-* [x] Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14) (Victor)
+* [x] Construct one or multiple docker files for your code (M10)
+* [x] Build the docker files locally and make sure they work as intended (M10)
+* [x] Write one or multiple configurations files for your experiments (M11)
+* [x] Used Hydra to load the configurations and manage your hyperparameters (M11)
+* [x] Use profiling to optimize your code (M12)
+* [x] Use logging to log important events in your code (M14)
+* [x] Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14)
 * [ ] Consider running a hyperparameter optimization sweep (M14)
 * [ ] Use PyTorch-lightning (if applicable) to reduce the amount of boilerplate in your code (M15)
 
@@ -91,7 +91,7 @@ will check the repositories and the code to verify your answers.
 * [ ] Create a trigger workflow for automatically building your docker images (M21)
 * [ ] Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [ ] Create a FastAPI application that can do inference using your model (M22)
-* [ ] Deploy your model in GCP using either Functions or Run as the backend (M23)
+* [x] Deploy your model in GCP using either Functions or Run as the backend (M23)
 * [ ] Write API tests for your application and setup continues integration for these (M24)
 * [ ] Load test your application (M24)
 * [ ] Create a more specialized ML-deployment API using either ONNX or BentoML, or both (M25)
@@ -170,11 +170,11 @@ Kadi Jairus - s256613
 >
 > Answer:
 
-We managed our dependencies using uv. The source of truth is the pyproject.toml file. To ensure every team member has a 
-bit-for-bit identical environment, we use a uv.lock file. A new team member can get an exact copy of the environment by 
-Git cloning and running uv sync. Additionally, since our binary data and models are not stored in Git, the member must 
-run dvc pull after setting up their local service_account_key.json to fetch the processed tensors and model checkpoints 
-from Google Cloud Storage. This dual-layered approach (uv for code, DVC for data) ensures a fully reproducible pipeline 
+We managed our dependencies using uv. The source of truth is the pyproject.toml file. To ensure every team member has a
+bit-for-bit identical environment, we use a uv.lock file. A new team member can get an exact copy of the environment by
+Git cloning and running uv sync. Additionally, since our binary data and models are not stored in Git, the member must
+run dvc pull after setting up their local service_account_key.json to fetch the processed tensors and model checkpoints
+from Google Cloud Storage. This dual-layered approach (uv for code, DVC for data) ensures a fully reproducible pipeline
 across different machines.
 
 ### Question 5
@@ -191,9 +191,9 @@ across different machines.
 >
 > Answer:
 
-From the cookiecutter template we have filled out the tests, .github, data, dockerfiles, models, reports, wandb and 
-src folder. We have removed the notebooks folder because we did not use any Jupyter notebooks in our project. 
-We have added: (1) .dvc folder to manage our remote connection to Google Cloud Storage, (2) scripts folder to hold 
+From the cookiecutter template we have filled out the tests, .github, data, dockerfiles, models, reports, wandb and
+src folder. We have removed the notebooks folder because we did not use any Jupyter notebooks in our project.
+We have added: (1) .dvc folder to manage our remote connection to Google Cloud Storage, (2) scripts folder to hold
 helper-script to create smaller data files for testing, (3) outputs folder for running our experiments and,
 (4) src/mlo_project/training folder to hold helper classes for training.py.
 
