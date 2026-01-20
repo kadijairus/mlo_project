@@ -240,7 +240,8 @@ In total we have implemented around 25 tests. Primarily, we focused on model rob
 >
 > Answer:
 
-The total code coverage is currently 53% (tested by running `uv run invoke test`). Even if we achieved 100% code coverage, we would not trust the system to be completely error-free. Code coverage only measures which lines of code were executed during testing, not whether the logic or the results are correct. Still, it would be worthwhile to run more code than not since it helps catch errors early. 
+The total code coverage is currently 53% (tested by running `uv run invoke test`). Even if we achieved 100% code coverage, we would not trust the system to be completely error-free. Code coverage only measures which lines of code were executed during testing, not whether the logic or the results are correct. Still, it would be worthwhile to run more code than not since it helps catch errors early. It is also important to test which files are actually generating code coverage reports since all parts of the pipeline can be important to cover. Some parts, however, are more high-risk and should be covered. Earlier parts of the pipeline remain the most critical, but ideally all parts should be covered.
+Code coverage can also help highlight what code is actually used, however using packages such as "cProfile" is better at isolating parts to optimise. 
 
 ### Question 9
 
