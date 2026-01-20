@@ -16,5 +16,25 @@ steps:
     'europe-west1-docker.pkg.dev/dtumlops-484207/eval/api:latest'
   ]
 
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: 'Deploy to Cloud Run'
+  args: [
+    'run',
+    'deploy',
+    'api',
+    '--image', 'europe-west1-docker.pkg.dev/dtumlops-484207/eval/api:latest',
+    '--region', 'europe-west1',
+    '--platform', 'managed',
+    '--allow-unauthenticated',
+    '--port', '8000',
+    '--memory', '4Gi',
+    '--cpu', '1',
+    '--timeout', '300s',
+    '--concurrency', '80',
+    '--max-instances', '3',
+    '--cpu-boost',
+    '--service-account', '934984265576-compute@developer.gserviceaccount.com'
+  ]
+
 options:
   logging: CLOUD_LOGGING_ONLY
