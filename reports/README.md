@@ -287,7 +287,13 @@ We early on agreed to use both branches and pull requests. We even enforced rule
 >
 > Answer:
 
---- question 11 fill here ---
+We have organized our continuous integration into 4 separate workflows:
+1) tests.yaml for running unit tests,
+2) linting.yaml for code quality checks,
+3) and evaluation.yaml for model evaluation.
+4) TODO: answer cloudbuild.yaml 
+The tests workflow runs pytest across three operating systems (Ubuntu, Windows, macOS), with caching enabled via uv's setup action for faster dependency installation.
+The linting workflow runs on push and pull requests to main/master, executing Ruff for code formatting and linting, plus mypy for type checking. The evaluation workflow is triggered automatically when dvc.lock changes (indicating a new model in the registry), communicating with GCP to pull the latest artifacts via DVC and running our evaluation. All workflows use uv for dependency management with locked dependencies (--locked flag) and implement concurrency controls to cancel previous runs on new pushes so we don't waste GitHub action minutes running too many actions.
 
 ## Running code and tracking experiments
 
