@@ -312,7 +312,7 @@ The linting workflow runs on push and pull requests to main/master, executing Ru
 >
 > Answer:
 
---- question 12 fill here ---
+We used Hydra for experiment configuration management. Our config files are organized in "src/mlo_group_project/config/", with config.yaml as the main file and hyperparameters in hp/basic.yaml. To run an experiment with default settings: `uv run python src/mlo_group_project/train.py`. Experiments can also be run using invoke. List all tasks with `uv run invoke --list`. To override hyperparameters: `uv run python src/mlo_group_project/train.py hp.lr=0.01 hp.batch_size=128 hp.epochs=50` with desired parameters. Hydra automatically creates timestamped output directories (outputs/YYYY-MM-DD/HH-MM-SS/) for each run, storing logs and checkpoints separately.
 
 ### Question 13
 
