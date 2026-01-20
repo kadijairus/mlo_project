@@ -154,8 +154,7 @@ Farnood Khordepaz -	s240118@student.dtu.dk
 >
 > Answer:
 
-Seaborn (?)
-We used the open-source Python package Seaborn in our project to create clear, publication-quality statistical visualizations. We used its built-in functions for charts like histograms, box/violin plots, scatter plots with regression lines, and heatmaps to quickly explore distributions, relationships, and correlations in our dataset. Seaborn’s tight integration with Pandas DataFrames and Matplotlib helped us generate consistent, well-styled plots with minimal code, making it easier to validate assumptions, spot outliers, and communicate insights in our final results.
+Currently, we are using no third-party framework that was not covered in the course. We focused on using tools recommended and mastering the pipeline they support. 
 
 ## Coding environment
 
@@ -208,7 +207,7 @@ We have added: (1) .dvc folder to manage our remote connection to Google Cloud S
 >
 > Answer:
 
---- question 6 fill here ---
+We used Ruff for both linting and formatting, enforcing PEP 8 compliance with a 120-character line length. For type checking, we used mypy with strict settings enabled. We integrated pre-commit hooks to automatically run Ruff (fix, format, and lint) on every commit, along with basic checks for trailing whitespace, YAML syntax, and large files. These concepts are critical in larger projects because they ensure code consistency across team members, catch bugs early (e.g., type errors before runtime), and make the codebase more maintainable and readable. For example, typing helps prevent runtime errors by catching type mismatches during development, while consistent formatting reduces merge conflicts and cognitive load when reviewing code. It is a good idea to centralise this, as we did, since having individual setups for espcially formatting will create conflicts more often than not. 
 
 ## Version control
 
