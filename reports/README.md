@@ -670,7 +670,7 @@ sharing our experiences setup process among team members.
 > Answer:
 
 Student s256613 (Kadi Jairus) was responsible for setting up the initial repository, initial README, 
-cookiecutter project structure, and managing the DVC integration with Google Cloud Storage. Additionally, Kadi 
-created shared Google Cloud and ensured that team-members have necessary access. Kadi also organized team meetings, 
-coordinated tasks among members and contributed to writing tests with student s240118.
+cookiecutter project structure, logging, typing and managing the DVC integration with Google Cloud Storage. 
+Additionally, Kadi created shared Google Cloud and ensured that team-members have necessary access. Kadi also organized 
+team meetings, coordinated tasks among members and contributed to writing tests with student s240118.
 TODO: fill out for all members
