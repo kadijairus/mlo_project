@@ -4,10 +4,10 @@ build-backend = "uv_build"
 
 [project]
 name = "mlo_group_project"
-version = "0.2.0"
+version = "0.3.0"
 description = "Machine Learning group 5"
 authors = [
-  { name = "kadijairus", email = "your@email.com" },
+  { name = "kadijairus", email = "kadijairus@gmail.com" },
 ]
 
 keywords = ["machine learning", "MLOps"]
