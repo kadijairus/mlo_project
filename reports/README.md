@@ -551,7 +551,10 @@ deployment across different environments.
 >
 > Answer:
 
---- question 24 fill here ---
+We did manage to deploy our API using Google Cloud Run. First we served the model locally. Later we containerized our 
+FastAPI application with Docker. We created two distinct cloudbuild.yaml files: one for the API and one for the 
+Streamlit application. These files instruct Google Cloud Build to build the Docker image, push it to Google Artifact 
+Registry, and then deploy it as a service on Cloud Run.
 
 ### Question 25
 
@@ -672,5 +675,6 @@ sharing our experiences setup process among team members.
 Student s256613 (Kadi Jairus) was responsible for setting up the initial repository, initial README, 
 cookiecutter project structure, logging, typing and managing the DVC integration with Google Cloud Storage. 
 Additionally, Kadi created shared Google Cloud and ensured that team-members have necessary access. Kadi also organized 
-team meetings, coordinated tasks among members and contributed to writing tests with student s240118.
+team meetings, coordinated tasks among members, merged many pull requests and contributed to writing tests with 
+student s240118.
 TODO: fill out for all members
