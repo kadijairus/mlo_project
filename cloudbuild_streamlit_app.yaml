@@ -3,11 +3,11 @@ steps:
   id: 'Build container image'
   args: [
     'build',
-    '.',
     '-t',
     'europe-west1-docker.pkg.dev/dtumlops-484207/eval/streamlit_app:latest',
     '-f',
-    'dockerfiles/streamlit_app.dockerfile'
+    'dockerfiles/streamlit_app.dockerfile',
+    '.'
   ]
 - name: 'gcr.io/cloud-builders/docker'
   id: 'Push container image'
