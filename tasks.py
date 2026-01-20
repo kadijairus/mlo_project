@@ -1,7 +1,9 @@
 import os
 import sys
 
-from invoke import Context, task
+from invoke import task
+from invoke.context import Context
+
 import subprocess
 
 from loguru import logger
@@ -11,6 +13,7 @@ from typing import cast
 
 WINDOWS = os.name == "nt"
 PYTHON_VERSION = "3.12"
+
 
 def get_project_name() -> str:
     """Reads the project name from pyproject.toml."""
@@ -22,7 +25,9 @@ def get_project_name() -> str:
         logger.warning(f"Could not read project name from pyproject.toml: {e}. Falling back to folder name.")
         return Path.cwd().name
 
+
 PROJECT_NAME = get_project_name()
+
 
 # Utility functions
 def kill_port(port: int):
@@ -130,6 +135,49 @@ def serve_ui(ctx: Context, port: int = 8501) -> None:
     else:
         ctx.run(cmd, echo=True, pty=True)
 
+
+@task
+def serve_api_ui(ctx, api_port=8000, ui_port=8501):
+    """Start API + UI (API in background, UI in foreground)."""
+
+    kill_port(api_port)
+    kill_port(ui_port)
+
+    # Use 0.0.0.0 if in Docker, else 127.0.0.1 for local safety
+    IS_DOCKER = os.environ.get("IS_DOCKER", "0") == "1"
+    logger.debug(f"IS_DOCKER={IS_DOCKER}")
+    host = "0.0.0.0" if IS_DOCKER else "127.0.0.1"
+    logger.debug(f"Using host address: {host}")
+
+    # Updated commands
+    api_cmd = f"uv run uvicorn {PROJECT_NAME}.api:app --host 0.0.0.0 --port {api_port}"
+
+    # Streamlit needs address 0.0.0.0 and headless mode for Docker
+    ui_cmd = (
+        f"uv run streamlit run src/{PROJECT_NAME}/streamlit_app.py "
+        f"--server.port {ui_port} "
+        f"--server.address 0.0.0.0 --server.headless true"
+    )
+
+    if WINDOWS:
+        # start both in separate consoles
+        create_new_console = getattr(subprocess, "CREATE_NEW_CONSOLE", 0)
+        subprocess.Popen(
+            ["cmd.exe", "/k", f"{api_cmd} & echo. & echo API exited. & pause"], creationflags=create_new_console
+        )
+        subprocess.Popen(
+            ["cmd.exe", "/k", f"{ui_cmd} & echo. & echo UI exited. & pause"], creationflags=create_new_console
+        )
+    else:
+        # start API in background
+        api_proc = subprocess.Popen(api_cmd, shell=True)
+        try:
+            # run UI in foreground so Ctrl+C stops everything
+            ctx.run(ui_cmd, echo=True, pty=True)
+        finally:
+            api_proc.terminate()
+
+
 # Documentation commands
 @task
 def build_docs(ctx: Context) -> None:
@@ -142,22 +190,22 @@ def serve_docs(ctx: Context) -> None:
     """Serve documentation."""
     ctx.run("uv run mkdocs serve --config-file docs/mkdocs.yaml", echo=True, pty=not WINDOWS)
 
+
 @task
 def data_pull(ctx):
     """Pull data from GCS remote."""
     logger.debug("Pulling latest artifacts from Google Cloud Storage...")
     ctx.run("dvc pull")
 
+
 @task
 def repro(ctx):
     """Run the DVC pipeline. Only runs stages if code or data changed."""
     logger.debug("Checking pipeline lineage and reproducing...")
-    ctx.run(
-        "dvc repro",
-        echo=True
-    )
+    ctx.run("dvc repro", echo=True)
     ctx.run("git add dvc.lock")
     logger.success("Pipeline reproduced. dvc.lock updated.")
+
 
 @task
 def promote(ctx: Context) -> None:

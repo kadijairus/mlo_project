@@ -151,3 +151,9 @@ async def evaluate_csv(file: UploadFile = File(...)) -> dict:
         )
 
     return resp
+
+
+@app.get("/health")
+def health_check():
+    # Check if your model is loaded here
+    return {"status": "healthy"}

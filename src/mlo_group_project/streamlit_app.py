@@ -1,10 +1,13 @@
 from __future__ import annotations
+import os
 from pathlib import Path
 
 import requests
 import streamlit as st
 
-API_URL_DEFAULT = "http://127.0.0.1:8000/evaluate-csv"
+# Use the environment variable set in docker-compose
+API_BASE = os.environ.get("API_URL", "http://localhost:8000")
+API_URL_DEFAULT = f"{API_BASE}/evaluate-csv"  # "http://127.0.0.1:8000/evaluate-csv"
 
 # Page configuration with custom theme
 st.set_page_config(
@@ -40,9 +43,9 @@ with st.container():
         st.markdown(
             """
             **Wisconsin Breast Cancer Dataset**
-            
+
             The model is trained on the UCI Breast Cancer Wisconsin (Diagnostic) dataset.
-            
+
             🔗 [Download dataset from Kaggle](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data)
         """
         )

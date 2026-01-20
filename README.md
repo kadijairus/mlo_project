@@ -67,10 +67,10 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 │   └── source/
 │       └── index.md
 ├── models/                   # Trained models
-├── outputs/                   
+├── outputs/
 ├── reports/                  # Reports
 │   └── figures/
-├── scripts/  
+├── scripts/
 ├── src/                      # Source code
 │   ├── mlo_project/
 │   │   ├── __init__.py
@@ -97,7 +97,7 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 └── tasks.py                  # Project tasks
 ```
 ## How to run
-We use invoke as our primary project CLI to simplify complex commands. 
+We use invoke as our primary project CLI to simplify complex commands.
 Ensure your environment is set up with uv sync.
 
 ### Setup
@@ -123,17 +123,17 @@ Ensure your environment is set up with uv sync.
    ```bash
    uv sync
    ```
-   
+
 ### Update data artifacts
 
-We use DVC to version heavy artifacts. 
+We use DVC to version heavy artifacts.
 Use these commands to keep your local environment in sync with the cloud registry.
 
 1. Before running any scripts, you must pull the data artifacts tracked by DVC:
    ```bash
    uv run invoke data-pull
    ```
-2. After running a successful training and reaching a new "best" model upload data using: 
+2. After running a successful training and reaching a new "best" model upload data using:
    ```bash
    uv run invoke promote
    ```
@@ -141,10 +141,10 @@ Use these commands to keep your local environment in sync with the cloud registr
 4. See other invoke tasks in `tasks.py` file or run:
    ```bash
    uv run invoke --list
-   ``` 
+   ```
 
 ### Running the standard pipeline
-    
+
 1. Run preprocess and training if data.py or train.py has changed.
    ```bash
    uv run invoke repro
@@ -155,7 +155,7 @@ Use these commands to keep your local environment in sync with the cloud registr
    uv run invoke preprocess-data
    uv run invoke train
    ```
-   
+
 3. Promote best model to cloud registry:
    ```bash
    uv run invoke promote
@@ -181,7 +181,7 @@ Training progress and model artifacts are automatically logged to Weights & Bias
    ```bash
    uv run invoke train-profile
    ```
-2. Visualise results: 
+2. Visualise results:
    ```bash
    snakeviz reports/train_profile.prof
    ```
@@ -195,8 +195,9 @@ Training progress and model artifacts are automatically logged to Weights & Bias
    ```bash
    docker run --rm breast-cancer-train
    ```
-   
-### Inference API & User Interface
+
+### Inference API & User Interface to Eavaluate the Model
+#### Local Development (via Invoke)
 We provide a backend API for programmatic access and a frontend UI for easy user interaction.
 1. Start the backend API server:
    ```bash
@@ -210,3 +211,21 @@ We provide a backend API for programmatic access and a frontend UI for easy user
 Open your browser and go to `http://127.0.0.1:8501/`.
 4. Upload csv file with samples under "Upload dataset".
 5. Click "Evaluate Dataset" to get predictions from the model.
+
+#### Containerized Deployment (via Docker)
+For a consistent environment, we provide a `docker-compose.yml` that orchestrates the API and UI services in parallel.
+
+1. Build and launch the containers:
+
+```
+docker compose up --build
+```
+2. Accessing the services:
+* Frontend UI: Navigate to http://localhost:8501.
+* Backend API: Available at http://localhost:8000
+
+
+#### Cloud Production (Google Cloud Platform)
+The evaluation services are hosted on **Google Cloud Run** for high availability and scalability.
+* Production URL: https://streamlit-app-934984265576.europe-west1.run.app/
+> Note: The cloud-hosted UI is configured to communicate directly with the API service via its internal Cloud Run URL. Ensure the API_URL environment variable is correctly set if redeploying.
