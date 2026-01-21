@@ -1,4 +1,9 @@
 steps:
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: 'Download Model'
+  args: ['storage', 'cp', 'gs://kadis-bucket/models/best_model.pt', 'models/model.pth']
+
 - name: 'gcr.io/cloud-builders/docker'
   id: 'Build container image'
   args: [
