@@ -9,7 +9,7 @@ class BreastCancerModel(nn.Module):
     def __init__(self, input_shape: int, cnf: DictConfig | None = None) -> None:
         super(BreastCancerModel, self).__init__()
         logger.info(f"Initializing BreastCancerModel with input shape: {input_shape}")
-        seed = 42 if cnf is None else cnf.hp.seed
+        seed = 42 if cnf is None else cnf.hp.seed  # seed "42" is default if no config provided in the test
         torch.manual_seed(int(seed))
         if not isinstance(input_shape, int) or input_shape <= 0:
             logger.critical(
