@@ -35,12 +35,12 @@ dependencies = [
     "typer==0.15.1",
     "uvicorn==0.34.0",
     "wandb>=0.23.1",
+    "invoke==2.2.0",
 ]
 
 [dependency-groups]
 dev = [
     "coverage==7.6.9",
-    "invoke==2.2.0",
     "mkdocs-material==9.4.6",
     "mkdocs==1.6.1",
     "pre-commit==4.1.0",

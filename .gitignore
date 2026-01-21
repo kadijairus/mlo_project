@@ -192,3 +192,6 @@ eval_metrics.pt
 
 # Not ignored report files
 !reports/figures/
+
+# Secrets and credentials
+.secrets/

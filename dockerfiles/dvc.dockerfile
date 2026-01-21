@@ -13,6 +13,7 @@ COPY ../pyproject.toml ./pyproject.toml
 COPY ../README.md ./README.md
 COPY ../tasks.py ./tasks.py
 COPY ../src ./src
+COPY ../data/raw/bcw.csv ./data/raw/bcw.csv
 COPY ../.git ./.git
 COPY ../.gitignore ./.gitignore
 
