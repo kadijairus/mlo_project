@@ -171,6 +171,44 @@ Use these commands to keep your local environment in sync with the cloud registr
    uv run invoke test
    ```
 
+### Runnig via the Docker
+
+All project tasks (data pulling, training, and evaluation) can be executed within a containerized environment to ensure consistency across different machines.
+
+#### 1. Setup:
+
+Build the Docker image: Run this command from the project root to build the specialized DVC/worker image:
+```
+docker build -f dockerfiles/dvc.dockerfile . -t dvc:latest
+```
+#### 2. Usage:
+
+**Prerequisites (GCP Credentials):** To interact with Google Cloud Storage (e.g., via DVC), you must provide a service account key:
+* Download a GCP Service Account key with Storage Object Admin (or Viewer/Creator) permissions.
+* Save the JSON file to .secrets/gcp-key.json in your project root.
+* Note: The .secrets/ folder is included in .gitignore to prevent accidental credential leaks.
+
+You can run any invoke task (`uv run invoke <task>`) defined in the project by passing it to the docker run command.
+
+**To explore the container environment (Interactive Shell):** If you need to debug or run multiple commands manually, use the `--entrypoint` override:
+
+```
+docker run --rm -it \
+-v $(pwd)/.secrets/gcp-key.json:/app/gcp-key.json:ro \
+-e GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json \
+--entrypoint sh \
+dvc:latest
+```
+
+**To run a specific task (e.g., pulling data):**
+
+```
+docker run --rm -it \
+-v $(pwd)/.secrets/gcp-key.json:/app/gcp-key.json:ro \
+-e GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json \
+dvc:latest data-pull
+```
+
 ### Monitoring and profiling
 
 We use Hydra for configuration management.
