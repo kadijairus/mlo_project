@@ -43,9 +43,9 @@ class DataGuard:
         
         #This sends an email/slack notification if WandB is running
         if wandb.run is not None:
-            wandb.alert(
+            wandb.alert(  # type: ignore
                 title="Bad Input Detected",
                 text=message,
-                level=wandb.AlertLevel.WARN,
+                level=wandb.AlertLevel.WARN, # type: ignore
                 wait_duration=300 # Wait 5 mins before sending another alert
             )
