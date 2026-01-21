@@ -196,7 +196,7 @@ Training progress and model artifacts are automatically logged to Weights & Bias
    docker run --rm breast-cancer-train
    ```
 
-### Inference API & User Interface to Eavaluate the Model
+### Inference API & User Interface to Evaluate the Model
 #### Local Development (via Invoke)
 We provide a backend API for programmatic access and a frontend UI for easy user interaction.
 1. Start the backend API server:
@@ -210,7 +210,7 @@ We provide a backend API for programmatic access and a frontend UI for easy user
 3. Access the UI:
 Open your browser and go to `http://127.0.0.1:8501/`.
 4. Upload csv file with samples under "Upload dataset".
-5. Click "Evaluate Dataset" to get predictions from the model.
+5. Click "Evaluate Dataset".
 
 #### Containerized Deployment (via Docker)
 For a consistent environment, we provide a `docker-compose.yml` that orchestrates the API and UI services in parallel.
