@@ -99,12 +99,12 @@ will check the repositories and the code to verify your answers.
 
 ### Week 3
 
-* [ ] Check how robust your model is towards data drifting (M27) (Farnood)
+* [x] Check how robust your model is towards data drifting (M27) (Farnood)
 * [ ] Setup collection of input-output data from your deployed application (M27)
 * [ ] Deploy to the cloud a drift detection API (M27)
 * [ ] Instrument your API with a couple of system metrics (M28) (Victor)
 * [ ] Setup cloud monitoring of your instrumented application (M28)
-* [ ] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28) (Farnood)
+* [x] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28) (Farnood)
 * [ ] If applicable, optimize the performance of your data loading using distributed data loading (M29)
 * [ ] If applicable, optimize the performance of your training pipeline by using distributed training (M30) (Victor checks)
 * [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
@@ -571,7 +571,7 @@ Registry, and then deploy it as a service on Cloud Run.
 > Answer:
 Farnood
 --- question 25 fill here ---
-
+For unit testing, we used pytest to verify the individual components of our inference pipeline. We focused on three key areas: Model Logic: We verified that the model accepts variable batch sizes and produces valid probability outputs (strictly between 0 and 1). Input Guardrails: We tested our DataGuard class to ensure it correctly rejects "bad" inputs—such as NaNs, infinite values, or statistical outliers—before they are passed to the model. Data Integrity: We validated that our normalization logic maintains the expected feature ranges to prevent silent data corruption. We have not performed load testing yet, as the API is currently being integrated into the Google Cloud environment.How we would do load testing: To load test the API, we would use Locust, a Python-based load testing tool. We would write a locustfile.py script that simulates hundreds of concurrent users sending random tensor data to the /predict endpoint. We would gradually ramp up the number of users (e.g., from 10 to 1,000) and monitor two key metrics to find the breaking point: Latency: The point where average response time exceeds an acceptable threshold (e.g., 200ms). Failure Rate: The point where the server begins returning 500 errors or crashes due to Out-Of-Memory (OOM) exceptions.
 ### Question 26
 
 > **Did you manage to implement monitoring of your deployed model? If yes, explain how it works. If not, explain how**
@@ -687,3 +687,12 @@ Student s204475 (Victor G. H. Rasmussen) was worked on:
 - Good project hygiene (refactored training code (split train.py into helper modules))
 - Improving data.py to persist scaler/feature metadata so inference works on new datasets
 - Added/maintaining linting and test automation (GitHub Actions)
+
+Student s240118 ( Farnood Khordepaz ):
+- I focused on the Core Training Pipeline, Model Reliability, and Quality Assurance.
+- Training & Evaluation Pipeline: I implemented the core training loop (train.py) and evaluation logic (evaluate.py). This included defining the optimization steps, loss calculation, and ensuring the   model correctly processes batches during both training and validation phases.
+- Guardrails & Drift Detection (M27): I designed and implemented the guardrails.py module. This system acts as a runtime "bouncer" that validates input tensors against statistical thresholds, preventing the model from hallucinating on outliers, NaNs, or drifted data.
+-Automated Alerting (M28): I integrated the guardrails with the Weights & Biases alerting system. This ensures that any "bad" data detected in production immediately triggers a real-time cloud alert to the team.
+-Testing Infrastructure: I took ownership of the testing framework. This involved resolving critical dependency conflicts in pyproject.toml to get the CI environment running on macOS, implementing unit tests for the Model and Data modules, and mocking the training loop to verify integration without incurring compute costs.
+
+Generative AI Usage: I used Generative AI primarily as a technical unblocker and pair programmer. It was essential for debugging complex environment errors (specifically between uv, torch, and hardware architectures) and for generating the initial boilerplate code for the unit tests and guardrail logic, allowing me to focus on the system architecture rather than syntax. ( Also gemini helped with some questions and answers in this read me file )
