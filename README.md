@@ -186,19 +186,11 @@ Training progress and model artifacts are automatically logged to Weights & Bias
    snakeviz reports/train_profile.prof
    ```
 
-### Running the scripts with Docker
-1. Build the image:
-   ```bash
-   docker build -t breast-cancer-train -f dockerfiles/train.dockerfile .
-   ```
-2. Run the training:
-   ```bash
-   docker run --rm breast-cancer-train
-   ```
-
-### Inference API & User Interface to Eavaluate the Model
+### Inference API & User Interface to Eavaluate the Model (Three Options)
+This project features a **FastAPI backend** for programmatic model inference and a **Streamlit frontend** for interactive spatial data evaluation.
 #### Local Development (via Invoke)
-We provide a backend API for programmatic access and a frontend UI for easy user interaction.
+The easiest way to run the services locally for development is using our `invoke` tasks.
+>Prerequisites: Ensure that `models/best_model.pt` and the required preprocessing files (scalers, encoders) are present in the `data/processed/` directory before starting.
 1. Start the backend API server:
    ```bash
    uv run invoke serve-api
@@ -207,25 +199,30 @@ We provide a backend API for programmatic access and a frontend UI for easy user
    ```bash
    uv run invoke serve-ui
    ```
-3. Access the UI:
-Open your browser and go to `http://127.0.0.1:8501/`.
-4. Upload csv file with samples under "Upload dataset".
-5. Click "Evaluate Dataset" to get predictions from the model.
+3. Usage:
+* Open your browser and navigate to http://localhost:8501.
+
+* Under the "Upload dataset" section, select a .csv file containing your samples.
+
+* Click "Evaluate Dataset" to generate predictions from the model.
 
 #### Containerized Deployment (via Docker)
-For a consistent environment, we provide a `docker-compose.yml` that orchestrates the API and UI services in parallel.
+To ensure environment consistency and simplify dependency management, we provide a `docker-compose.yml` file to orchestrate both services in parallel.
 
 1. Build and launch the containers:
 
 ```
 docker compose up --build
 ```
+
 2. Accessing the services:
+
 * Frontend UI: Navigate to http://localhost:8501.
+
 * Backend API: Available at http://localhost:8000
 
 
 #### Cloud Production (Google Cloud Platform)
-The evaluation services are hosted on **Google Cloud Run** for high availability and scalability.
-* Production URL: https://streamlit-app-934984265576.europe-west1.run.app/
-> Note: The cloud-hosted UI is configured to communicate directly with the API service via its internal Cloud Run URL. Ensure the API_URL environment variable is correctly set if redeploying.
+The evaluation services are deployed on **Google Cloud Run**, providing a scalable and highly available production environment.
+* Live User Interface: [streamlit-app-934984265576.europe-west1.run.app](https://streamlit-app-934984265576.europe-west1.run.app/)
+> **MLOps Note**: The UI service is linked to the API through the API_URL environment variable. If redeploying the API, ensure the UI's environment variable is updated to point to the new service URL to maintain connectivity.
