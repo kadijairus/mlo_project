@@ -334,7 +334,7 @@ We have organized our continuous integration into 4 separate workflows:
 1) tests.yaml for running unit tests,
 2) linting.yaml for code quality checks,
 3) and evaluation.yaml for model evaluation.
-4) TODO: answer cloudbuild.yaml 
+4) TODO: answer cloudbuild.yaml ..
 The tests workflow runs pytest across three operating systems (Ubuntu, Windows, macOS), with caching enabled via 
 uv's setup action for faster dependency installation.
 The linting workflow runs on push and pull requests to main/master, executing Ruff for code formatting and linting, 
