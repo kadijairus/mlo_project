@@ -98,6 +98,13 @@ async def evaluate_csv(file: UploadFile = File(...)) -> dict:
     # Scale using training scaler
     X_scaled = app.state.scaler.transform(X_df.to_numpy())
     x = torch.tensor(X_scaled, dtype=torch.float32)
+    
+    #Init bouncer
+    bouncer = DataGuard()
+
+    #If it is bad give me error
+    if not bouncer.validate(x):
+        raise HTTPException(status_code=400, detail="Input rejected by Guardrails (Drift or Anomaly detected)")
 
     with torch.no_grad():
         logits = app.state.model(x).squeeze()
