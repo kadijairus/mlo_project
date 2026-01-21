@@ -9,7 +9,7 @@ from loguru import logger
 from mlo_group_project.model import BreastCancerModel
 import json
 import joblib# type: ignore[import-untyped]
-from mlo_group_project.guardrails import DataGuard
+from mlo_group_project.guardrails import DataGuard # type: ignore
 
 MODEL_PATH = Path("models/model.pth")
 PROCESSED_DIR = Path("data/processed")
