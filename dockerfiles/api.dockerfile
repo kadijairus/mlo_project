@@ -26,11 +26,13 @@ RUN uv pip install --system --no-cache \
 
 # Copy metadata first (helps with caching)
 COPY pyproject.toml README.md* ./
-# Copy source files
+# Copy source source files
 COPY src/${PROJECT_NAME}/__init__.py ./src/${PROJECT_NAME}/__init__.py
 COPY src/${PROJECT_NAME}/api.py ./src/${PROJECT_NAME}/api.py
 COPY src/${PROJECT_NAME}/model.py ./src/${PROJECT_NAME}/model.py
+# Copy model
 COPY models/model.pth ./models/model.pth
+# Copy processed data files
 COPY data/processed/scaler.joblib ./data/processed/scaler.joblib
 COPY data/processed/feature_columns.json ./data/processed/feature_columns.json
 COPY data/processed/label_encoder.joblib ./data/processed/label_encoder.joblib
