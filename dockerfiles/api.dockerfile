@@ -26,7 +26,7 @@ RUN uv pip install --system --no-cache \
 
 # Copy metadata first (helps with caching)
 COPY pyproject.toml README.md* ./
-# Copy source source files
+# Copy source files
 COPY src/${PROJECT_NAME}/__init__.py ./src/${PROJECT_NAME}/__init__.py
 COPY src/${PROJECT_NAME}/api.py ./src/${PROJECT_NAME}/api.py
 COPY src/${PROJECT_NAME}/model.py ./src/${PROJECT_NAME}/model.py
