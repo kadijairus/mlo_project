@@ -88,7 +88,7 @@ will check the repositories and the code to verify your answers.
 * [x] Add a continues workflow that triggers when data changes (M19)
 * [x] Add a continues workflow that triggers when changes to the model registry is made (M19)
 * [x] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
-* [ ] Create a trigger workflow for automatically building your docker images (M21)
+* [-] Create a trigger workflow for automatically building your docker images (M21)
 * [ ] Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [x] Create a FastAPI application that can do inference using your model (M22)
 * [x] Deploy your model in GCP using either Functions or Run as the backend (M23)
@@ -99,22 +99,22 @@ will check the repositories and the code to verify your answers.
 
 ### Week 3
 
-* [ ] Check how robust your model is towards data drifting (M27)
+* [ ] Check how robust your model is towards data drifting (M27) (Farnood)
 * [ ] Setup collection of input-output data from your deployed application (M27)
 * [ ] Deploy to the cloud a drift detection API (M27)
-* [ ] Instrument your API with a couple of system metrics (M28)
+* [ ] Instrument your API with a couple of system metrics (M28) (Victor)
 * [ ] Setup cloud monitoring of your instrumented application (M28)
-* [ ] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28)
+* [ ] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28) (Farnood)
 * [ ] If applicable, optimize the performance of your data loading using distributed data loading (M29)
-* [ ] If applicable, optimize the performance of your training pipeline by using distributed training (M30)
+* [ ] If applicable, optimize the performance of your training pipeline by using distributed training (M30) (Victor checks)
 * [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
 
 ### Extra
 
-* [ ] Write some documentation for your application (M32)
+* [x] Write some documentation for your application (M32)
 * [ ] Publish the documentation to GitHub Pages (M32)
-* [ ] Revisit your initial project description. Did the project turn out as you wanted?
-* [ ] Create an architectural diagram over your MLOps pipeline
+* [x] Revisit your initial project description. Did the project turn out as you wanted?
+* [ ] Create an architectural diagram over your MLOps pipeline (eduard)
 * [ ] Make sure all group members have an understanding about all parts of the project
 * [x] Uploaded all your code to GitHub
 
@@ -382,8 +382,8 @@ each run, storing logs and checkpoints separately.
 > *one would have to do ...*
 >
 > Answer:
-
---- question 13 fill here ---
+Eduard
+Using seed
 
 ### Question 14
 
@@ -399,7 +399,7 @@ each run, storing logs and checkpoints separately.
 > *As seen in the second image we are also tracking ... and ...*
 >
 > Answer:
-
+Xiaoyu
 --- question 14 fill here ---
 
 ### Question 15
@@ -414,7 +414,7 @@ each run, storing logs and checkpoints separately.
 > *training docker image: `docker run trainer:latest lr=1e-3 batch_size=64`. Link to docker file: <weblink>*
 >
 > Answer:
-
+Eduard
 --- question 15 fill here ---
 
 ### Question 16
@@ -450,7 +450,7 @@ Regarding profiling, we did run a profiling session using cProfile to identify p
 > *We used the following two services: Engine and Bucket. Engine is used for... and Bucket is used for...*
 >
 > Answer:
-
+Eduard
 We used the following GCP services:
 1) Cloud Storage (Buckets): Acts as our DVC remote. Used to store our binary files (model), allowing the team to sync 
 data states without bloating the Git repository.
@@ -472,7 +472,7 @@ TODO: add more services if used.
 > *using a custom container: ...*
 >
 > Answer:
-
+Eduard
 --- question 18 fill here ---
 
 ### Question 19
@@ -481,7 +481,7 @@ TODO: add more services if used.
 > **You can take inspiration from [this figure](figures/bucket.png).**
 >
 > Answer:
-
+Victor
 --- question 19 fill here ---
 
 ### Question 20
@@ -490,7 +490,7 @@ TODO: add more services if used.
 > **stored. You can take inspiration from [this figure](figures/registry.png).**
 >
 > Answer:
-
+Eduard
 --- question 20 fill here ---
 
 ### Question 21
@@ -499,7 +499,7 @@ TODO: add more services if used.
 > **your project. You can take inspiration from [this figure](figures/build.png).**
 >
 > Answer:
-
+Eduard
 --- question 21 fill here ---
 
 ### Question 22
@@ -514,7 +514,8 @@ TODO: add more services if used.
 > *was because ...*
 >
 > Answer:
-
+Victor
+Simplicity of our model. 
 --- question 22 fill here ---
 
 ## Deployment
@@ -568,7 +569,7 @@ Registry, and then deploy it as a service on Cloud Run.
 > *before the service crashed.*
 >
 > Answer:
-
+Farnood
 --- question 25 fill here ---
 
 ### Question 26
@@ -583,7 +584,7 @@ Registry, and then deploy it as a service on Cloud Run.
 > *measure ... and ... that would inform us about this ... behaviour of our application.*
 >
 > Answer:
-
+Farnood
 --- question 26 fill here ---
 
 ## Overall discussion of project
@@ -602,7 +603,7 @@ Registry, and then deploy it as a service on Cloud Run.
 > *costing the most was ... due to ... . Working in the cloud was ...*
 >
 > Answer:
-
+Kadi
 --- question 27 fill here ---
 
 ### Question 28
@@ -637,7 +638,7 @@ HTTP requests.
 > *Whenever we commit code and push to GitHub, it auto triggers ... and ... . From there the diagram shows ...*
 >
 > Answer:
-
+Eduard
 --- question 29 fill here ---
 
 ### Question 30
@@ -651,7 +652,7 @@ HTTP requests.
 > *The biggest challenges in the project was using ... tool to do ... . The reason for this was ...*
 >
 > Answer:
-
+Xiaoyu
 The biggest challenges in the project were related to Google Cloud. Setting up GCP services and assuring that all 
 team members had the correct permissions and access took considerable time. We overcame these challenges by
 sharing our experiences setup process among team members.
@@ -678,3 +679,11 @@ Additionally, Kadi created shared Google Cloud and ensured that team-members hav
 team meetings, coordinated tasks among members, merged many pull requests and contributed to writing tests with 
 student s240118.
 TODO: fill out for all members
+
+Student s204475 (Victor G. H. Rasmussen) was worked on:
+- Adding the API and a Streamlit-based frontend for CSV upload and results display
+- Runnable tasks (e.g., uv run invoke preprocess-data/train/evaluate/visualize/serve-api/serve-ui)
+- Adding profilling tools (snakeviz) and using it to isolate related performance tweaks
+- Good project hygiene (refactored training code (split train.py into helper modules))
+- Improving data.py to persist scaler/feature metadata so inference works on new datasets
+- Added/maintaining linting and test automation (GitHub Actions)
