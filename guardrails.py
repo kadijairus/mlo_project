@@ -1,6 +1,11 @@
 import torch
 import wandb
+import logging
 from loguru import logger
+
+#Cloud configs
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("gcp_logger")
 
 class DataGuard:
     
