@@ -1,6 +1,8 @@
 from loguru import logger
 import torch
 import typer
+import hydra
+from omegaconf import DictConfig
 from pathlib import Path
 from mlo_group_project.model import BreastCancerModel
 
@@ -9,16 +11,14 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 app = typer.Typer()
 
 
-@app.command()
-
 # Evaluate the trained model on the test dataset
-def evaluate_model(
-    model_path: Path = Path("models/model.pth"),
-    processed_dir: Path = Path("data/processed"),
-    metrics_save_path: Path = Path("eval_metrics.pt"),
-):
+def _evaluate(cnf: DictConfig) -> None:
     """Evaluate the trained model on the test dataset."""
     try:
+        model_path: Path = Path(cnf.paths.model_save_path)
+        processed_dir: Path = Path(cnf.paths.processed_dir)
+        metrics_save_path: Path = Path(cnf.paths.metrics_save_path)
+
         logger.info(f"Starting evaluation using model: {model_path}")
 
         # --- Enhanced Data Loading ---
@@ -42,7 +42,7 @@ def evaluate_model(
 
         # --- Enhanced Model Loading ---
         try:
-            model = BreastCancerModel(input_shape=x_eval.shape[1])
+            model = BreastCancerModel(input_shape=x_eval.shape[1], cnf=cnf)
             model.load_state_dict(torch.load(model_path))
             model.eval()
             logger.debug("Model loaded and set to evaluation mode.")
@@ -109,6 +109,22 @@ def evaluate_model(
         # Use typer.Exit to ensure the script terminates with a non-zero exit code,
         # which is crucial for CI/CD pipelines.
         raise typer.Exit(code=1)
+
+
+@hydra.main(config_path="config", config_name="config", version_base=None)
+def _hydra_entry(cfg: DictConfig) -> None:
+    _evaluate(cfg)
+
+
+@app.command()
+def evaluate_model() -> None:
+    """
+    Evaluate the trained model using Hydra config.
+    Use Hydra overrides after `--`.
+    Example:
+      python evaluate.py evaluate-model -- paths.processed_dir=data/processed
+    """
+    _hydra_entry()  # Hydra will parse its own CLI arg
 
 
 if __name__ == "__main__":
