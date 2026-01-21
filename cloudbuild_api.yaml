@@ -4,6 +4,15 @@ steps:
   id: 'Download Model'
   args: ['storage', 'cp', 'gs://kadis-bucket/models/best_model.pt', 'models/model.pth']
 
+- name: gcr.io/cloud-builders/gsutil
+  id: 'Download Preprocessing Artifacts'
+  args:
+    - cp
+    - gs://kadis-bucket/data/processed/scaler.joblib
+    - gs://kadis-bucket/data/processed/feature_columns.json
+    - gs://kadis-bucket/data/processed/label_encoder.joblib
+    - data/processed/
+
 - name: 'gcr.io/cloud-builders/docker'
   id: 'Build container image'
   args: [
