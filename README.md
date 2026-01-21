@@ -226,3 +226,11 @@ docker compose up --build
 The evaluation services are deployed on **Google Cloud Run**, providing a scalable and highly available production environment.
 * Live User Interface: [streamlit-app-934984265576.europe-west1.run.app](https://streamlit-app-934984265576.europe-west1.run.app/)
 > **MLOps Note**: The UI service is linked to the API through the API_URL environment variable. If redeploying the API, ensure the UI's environment variable is updated to point to the new service URL to maintain connectivity.
+
+## App instructions
+The application allows users to upload a dataset for model evaluation:
+![Upload dataset](reports/figures/app_upload_data.png)
+
+Once the dataset is uploaded, the application evaluates the model’s performance and displays the results:
+
+![Results](reports/figures/app_results.png)
