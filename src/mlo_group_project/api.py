@@ -8,7 +8,8 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from loguru import logger
 from mlo_group_project.model import BreastCancerModel
 import json
-import joblib  # type: ignore[import-untyped]
+import joblib# type: ignore[import-untyped]
+from mlo_group_project.guardrails import DataGuard
 
 MODEL_PATH = Path("models/model.pth")
 PROCESSED_DIR = Path("data/processed")
