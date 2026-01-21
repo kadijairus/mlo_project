@@ -52,7 +52,7 @@ def train_model(cnf: DictConfig) -> None:
         dataloader = make_train_dataloader(data, batch_size=batch_size, shuffle=True)
 
         input_features = int(data.x.shape[1])
-        model = BreastCancerModel(input_shape=input_features)
+        model = BreastCancerModel(input_shape=input_features, cnf=cnf)
 
         criterion: nn.Module = nn.BCEWithLogitsLoss()
         optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -123,6 +123,7 @@ if __name__ == "__main__":
     # Check if profiling is requested
     if "--profile" in sys.argv:
         import cProfile
+
         # Remove --profile from sys.argv so Hydra doesn't see it
         sys.argv.remove("--profile")
         logger.info("Profiling enabled")
@@ -131,6 +132,8 @@ if __name__ == "__main__":
         train_model()
         profiler.disable()
         profiler.dump_stats("reports/train_profile.prof")
-        logger.info("Profile saved to reports/train_profile.prof\n To visualize, run: snakeviz reports/train_profile.prof")
+        logger.info(
+            "Profile saved to reports/train_profile.prof\n To visualize, run: snakeviz reports/train_profile.prof"
+        )
     else:
         train_model()
