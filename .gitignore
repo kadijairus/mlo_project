@@ -189,3 +189,6 @@ eval_metrics.pt
 
 # DVC
 /google_cloud_key.json
+
+# Not ignored report files
+!reports/figures/
