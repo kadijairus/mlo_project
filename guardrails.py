@@ -1,7 +1,7 @@
 import torch
 import wandb
 import logging
-from loguru import logger
+
 
 #Cloud configs
 logging.basicConfig(level=logging.INFO)
