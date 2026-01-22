@@ -8,6 +8,8 @@ from sklearn.manifold import TSNE
 from mlo_group_project.model import BreastCancerModel
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
+import matplotlib.patches as patches
+import torch
 
 
 
