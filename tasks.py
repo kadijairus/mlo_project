@@ -1,11 +1,8 @@
 import os
 import sys
-
 from invoke import task
 from invoke.context import Context
-
 import subprocess
-
 from loguru import logger
 from pathlib import Path
 import tomllib
@@ -199,10 +196,12 @@ def data_pull(ctx):
 
 
 @task
-def repro(ctx):
+def repro(ctx, force = False):
     """Run the DVC pipeline. Only runs stages if code or data changed."""
     logger.debug("Checking pipeline lineage and reproducing...")
-    ctx.run("dvc repro", echo=True)
+    flag = "-f" if force else ""
+    ctx.run(f"dvc repro {flag}", echo=True)
+    logger.info(f"Repro force flag on: {force}")
     ctx.run("git add dvc.lock")
     logger.success("Pipeline reproduced. dvc.lock updated.")
 
@@ -211,8 +210,12 @@ def repro(ctx):
 def promote(ctx: Context) -> None:
     """Push results to Cloud."""
     logger.debug("Starting Model Promotion to Registry...")
-    # Upload the actual binary data to your bucket
-    ctx.run("dvc push", echo=True)
-    # Stage the hash changes
-    ctx.run("git add dvc.lock")
-    logger.success("Model promoted! Run 'git commit' and 'git push' to trigger CI evaluation.")
+    try:
+        ctx.run("dvc commit -f", echo=True)
+        ctx.run("dvc push", echo=True)
+        ctx.run("git add dvc.lock")
+        logger.success("Model promoted! Run 'git commit' and 'git push' to trigger CI evaluation.")
+    except Exception as e:
+        logger.error(f"Could not promote model: {e}")
+        return
+

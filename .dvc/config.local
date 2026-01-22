@@ -1,2 +1,0 @@
-['remote "remote_storage"']
-    credentialpath = ../.secrets/gcp-key.json
