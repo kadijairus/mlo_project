@@ -9,34 +9,77 @@ stages:
       size: 125206
     - path: src/
       hash: md5
-      md5: e3d8699dc6e6a93c958da6451b7cca94.dir
-      size: 65432
-      nfiles: 25
     outs:
     - path: data/processed/
       hash: md5
-      md5: 130fa883b601a6d0d2c710c947490c8a.dir
-      size: 76827
-      nfiles: 5
+      files:
+      - relpath: feature_columns.json
+        md5: a69c2a0e20a9f18198393f972acdcc30
+        size: 545
+        cloud:
+          remote_storage:
+            etag: 089b9ad586f39c92031001
+            version_id: '1769007654194459'
+      - relpath: label_encoder.joblib
+        md5: 08af598a13b001862e4834decd6e52a1
+        size: 481
+        cloud:
+          remote_storage:
+            etag: 08f089d686f39c92031001
+            version_id: '1769007654208752'
+      - relpath: scaler.joblib
+        md5: 6fa6caf753e479bb6f27ed38f4845fe8
+        size: 2631
+        cloud:
+          remote_storage:
+            etag: 08dfced586f39c92031001
+            version_id: '1769007654201183'
+      - relpath: test.pt
+        md5: 3a96192614573c0730eb1f5fbbc9edb6
+        size: 8390
+        cloud:
+          remote_storage:
+            etag: 0880e6d586f39c92031001
+            version_id: '1769007654204160'
+      - relpath: train.pt
+        md5: 9fadca232053b6f0e0a486a6b2afd0cd
+        size: 64780
+        cloud:
+          remote_storage:
+            etag: 08daded986f39c92031001
+            version_id: '1769007654268762'
   train:
     cmd: uv run python src/*/train.py
     deps:
     - path: data/processed/
       hash: md5
-      md5: 130fa883b601a6d0d2c710c947490c8a.dir
-      size: 76827
-      nfiles: 5
+      files:
+      - relpath: feature_columns.json
+        md5: a69c2a0e20a9f18198393f972acdcc30
+      - relpath: label_encoder.joblib
+        md5: 08af598a13b001862e4834decd6e52a1
+      - relpath: scaler.joblib
+        md5: 6fa6caf753e479bb6f27ed38f4845fe8
+      - relpath: test.pt
+        md5: 3a96192614573c0730eb1f5fbbc9edb6
+      - relpath: train.pt
+        md5: 9fadca232053b6f0e0a486a6b2afd0cd
     - path: src/
       hash: md5
-      md5: d1846b4b05d82bb979a1d0a50d4c960b.dir
-      size: 65432
-      nfiles: 25
     outs:
     - path: models/best_model.pt
       hash: md5
-      md5: 8bdcb1d491059185aff600476306fa62
+      md5: 78ebc9b455a659b7df5be20df47efd5e
       size: 19174
+      cloud:
+        remote_storage:
+          etag: 08d7a3d686f39c92031001
+          version_id: '1769007654212055'
     - path: models/last_model.pt
       hash: md5
-      md5: 801ce492099991b47ddd0e7795c40b48
+      md5: 8b1a2e70d128e81a881432430ff5b0c3
       size: 19174
+      cloud:
+        remote_storage:
+          etag: 08faa6cc86f39c92031001
+          version_id: '1769007654048634'
