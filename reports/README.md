@@ -564,9 +564,9 @@ Our live user interface is accessible here: [Streamlit App on Cloud Run](https:/
 >
 > Answer:
 
-[History of API docker image](figures/gcp-artifact-api-1.png)
+![History of API docker image](figures/gcp-artifact-api-1.png)
 
-[History of Streamlit docker image](figures/gcp-artifact-streamlit-1.png)
+![History of Streamlit docker image](figures/gcp-artifact-streamlit-1.png)
 
 ### Question 21
 
@@ -575,8 +575,7 @@ Our live user interface is accessible here: [Streamlit App on Cloud Run](https:/
 >
 > Answer:
 
-Eduard
---- question 21 fill here ---
+![Cloud Build history screenshots](figures/gcp-cloud-build-history.png)
 
 ### Question 22
 
@@ -591,13 +590,13 @@ Eduard
 >
 > Answer:
 
-We chose not to use the cloud for training, as our model is very simple. Our classification model is a 
+We chose not to use the cloud for training, as our model is very simple. Our classification model is a
 straightforward feedforward neural network with only a few hidden layers processing 30 input features. The entire dataset contains only 569 samples, which after preprocessing results in small tensors easily handled on a local machine. Training runs complete in minutes on a standard laptop CPU (local experiments leave timestamps).
-Given these constraints, the overhead of setting up VM instances, configuring cloud storage access, and managing remote 
-training jobs would have been counterproductive. We achieved our goal of experiment tracking through Weights & Biases, 
-which logged all metrics regardless of training location. The cost-benefit analysis clearly favored local development: 
-we could iterate faster, debug more easily, and avoid spending GCP credits on compute resources that provided no 
-practical advantage for our lightweight model architecture. Of course, getting the practical experience of implenting cloud training would still have been beneficial. 
+Given these constraints, the overhead of setting up VM instances, configuring cloud storage access, and managing remote
+training jobs would have been counterproductive. We achieved our goal of experiment tracking through Weights & Biases,
+which logged all metrics regardless of training location. The cost-benefit analysis clearly favored local development:
+we could iterate faster, debug more easily, and avoid spending GCP credits on compute resources that provided no
+practical advantage for our lightweight model architecture. Of course, getting the practical experience of implenting cloud training would still have been beneficial.
 
 ## Deployment
 
@@ -801,10 +800,15 @@ Student s240118 ( Farnood Khordepaz ):
 - I focused on the Core Training Pipeline, Model Reliability, and Quality Assurance.
 - Training & Evaluation Pipeline: I implemented the core training loop (train.py) and evaluation logic (evaluate.py). This included defining the optimization steps, loss calculation, and ensuring the   model correctly processes batches during both training and validation phases.
 - Guardrails & Drift Detection (M27): I designed and implemented the guardrails.py module. This system acts as a runtime "bouncer" that validates input tensors against statistical thresholds, preventing the model from hallucinating on outliers, NaNs, or drifted data.
--Automated Alerting (M28): I integrated the guardrails with the Weights & Biases alerting system. This ensures that any "bad" data detected in production immediately triggers a real-time cloud alert to the team.
--Testing Infrastructure: I took ownership of the testing framework. This involved resolving critical dependency conflicts in pyproject.toml to get the CI environment running on macOS, implementing unit tests for the Model and Data modules, and mocking the training loop to verify integration without incurring compute costs.
+- Automated Alerting (M28): I integrated the guardrails with the Weights & Biases alerting system. This ensures that any "bad" data detected in production immediately triggers a real-time cloud alert to the team.
+- Testing Infrastructure: I took ownership of the testing framework. This involved resolving critical dependency conflicts in pyproject.toml to get the CI environment running on macOS, implementing unit tests for the Model and Data modules, and mocking the training loop to verify integration without incurring compute costs.
 
-Student ...
+Student s256594 (Eduard Haiman):
+- Developed a hierarchical Hydra configuration system to standardize experiments across training and evaluation workflows.
+- Engineered the project's Docker ecosystem, creating specialized images for DVC, FastAPI, and Streamlit, and orchestrated services using Docker Compose.
+- Architected the GCP integration, implementing secure Service Account authentication for Cloud Storage access within containers.
+- Configured Google Cloud Build to automate the build-to-registry pipeline for production images upon GitHub repository updates.
+- Managed the deployment of the API and frontend UI on Google Cloud Run, configuring cross-service communication via environment variables.
 
 Student ...
 

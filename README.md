@@ -52,26 +52,26 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 ├── .dvc                      # Data Version Control
 │   ├── cache
 │   ├── tmp
-│   ├── config                
+│   ├── config
 │   └── config.local
 ├── .github/                  # Github actions
 │   └── workflows/
 │       ├── evaluation.yaml
 │       ├── linting.yaml
 │       └── tests.yaml
-├── .secrets/  
+├── .secrets/
 │   └── gcp-key.json          # GCP service account key (to be added by user)
 ├── .venv/                    # Virtual environment (to be added by user)
-├── configs/                  
+├── configs/
 ├── data/                     # Data directory
 │   ├── processed
 │   └── raw
 ├── dockerfiles/              # Dockerfiles
 │   ├── api.dockerfile
-│   ├── api.requirements.txt
+│   ├── api_requirements.txt
 │   ├── dvc.dockerfile
 │   ├── streamlit.dockerfile
-│   └── streamlit.requirements.txt
+│   └── streamlit_requirements.txt
 ├── models/                   # Trained models
 ├── outputs/
 ├── reports/                  # Reports
@@ -79,11 +79,16 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 ├── scripts/                  # Helper scritpt for testing
 ├── src/                      # Source code
 │   ├── mlo_group_project/
+│   │   ├──config/            # Configuration files
+│   │   ├──styles/            # Streamlit styles
+│   │   ├──training/          # Training scripts
 │   │   ├── __init__.py
 │   │   ├── api.py
 │   │   ├── data.py
 │   │   ├── evaluate.py
+│   │   ├── guardrails.py
 │   │   ├── model.py
+│   │   ├── streamlit_app.py
 │   │   ├── train.py
 │   │   └── visualize.py
 └── tests/                    # Tests
@@ -100,7 +105,8 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 ├── .pre-commit-config.yaml
 ├── cloudbuild_api.yaml           # Google Cloud Build file
 ├── cloudbuild_stramlit_app.yaml  # Google Cloud Build file
-├── dvc.lock                      # DVC lock file  
+├── docker-compose.yml            # Docker compose file
+├── dvc.lock                      # DVC lock file
 ├── pyproject.toml            # Python project file
 ├── README.md                 # Project README
 ├── requirements.txt          # Project requirements
@@ -189,7 +195,7 @@ Use these commands to keep your local environment in sync with the cloud registr
 
 All project tasks (data pulling, training, and evaluation) can be executed within a containerized environment to ensure consistency across different machines.
 
-1. Setup. 
+1. Setup.
 Build the Docker image: Run this command from the project root to build the specialized DVC/worker image:
 
    ```bash
@@ -204,7 +210,7 @@ To interact with Google Cloud Storage (e.g., via DVC), you must provide a servic
 
 #### Usage examples
 
-**To explore the container environment (Interactive Shell):** 
+**To explore the container environment (Interactive Shell):**
 If you need to debug or run multiple commands manually, use the `--entrypoint` override:
 
    ```
@@ -238,10 +244,10 @@ Training progress and model artifacts are automatically logged to Weights & Bias
    ```bash
    snakeviz reports/train_profile.prof
    ```
-   
+
 ### Inference API & User Interface to Evaluate the Model (Three Options)
 
-This project features a **FastAPI backend** for programmatic model inference and a **Streamlit frontend** for 
+This project features a **FastAPI backend** for programmatic model inference and a **Streamlit frontend** for
 interactive spatial data evaluation.
 
 #### API: Local Development (via Invoke)
