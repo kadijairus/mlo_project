@@ -26,7 +26,6 @@ from mlo_group_project.training.wandb_utils import (
 
 load_dotenv()
 
-
 @hydra.main(config_path="config", config_name="config", version_base=None)
 def train_model(cnf: DictConfig) -> None:
     """Train the Breast Cancer Classification Model."""
