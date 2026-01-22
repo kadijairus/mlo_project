@@ -1,5 +1,4 @@
 from __future__ import annotations
-import os
 from loguru import logger
 import sys
 from pathlib import Path
