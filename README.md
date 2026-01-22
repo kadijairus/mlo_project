@@ -223,12 +223,17 @@ Training progress and model artifacts are automatically logged to Weights & Bias
    ```bash
    snakeviz reports/train_profile.prof
    ```
+   
+### Inference API & User Interface to Evaluate the Model (Three Options)
 
-### Inference API & User Interface to Eavaluate the Model (Three Options)
 This project features a **FastAPI backend** for programmatic model inference and a **Streamlit frontend** for interactive spatial data evaluation.
+
 #### Local Development (via Invoke)
+
 The easiest way to run the services locally for development is using our `invoke` tasks.
+
 >Prerequisites: Ensure that `models/best_model.pt` and the required preprocessing files (scalers, encoders) are present in the `data/processed/` directory before starting.
+
 1. Start the backend API server:
    ```bash
    uv run invoke serve-api

@@ -99,12 +99,12 @@ will check the repositories and the code to verify your answers.
 
 ### Week 3
 
-* [ ] Check how robust your model is towards data drifting (M27) (Farnood)
+* [x] Check how robust your model is towards data drifting (M27) (Farnood)
 * [ ] Setup collection of input-output data from your deployed application (M27)
 * [ ] Deploy to the cloud a drift detection API (M27)
 * [ ] Instrument your API with a couple of system metrics (M28) (Victor)
 * [ ] Setup cloud monitoring of your instrumented application (M28)
-* [ ] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28) (Farnood)
+* [x] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28) (Farnood)
 * [ ] If applicable, optimize the performance of your data loading using distributed data loading (M29)
 * [ ] If applicable, optimize the performance of your training pipeline by using distributed training (M30) (Victor checks)
 * [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
@@ -334,7 +334,7 @@ We have organized our continuous integration into 4 separate workflows:
 1) tests.yaml for running unit tests,
 2) linting.yaml for code quality checks,
 3) and evaluation.yaml for model evaluation.
-4) TODO: answer cloudbuild.yaml 
+4) TODO: answer cloudbuild.yaml ..
 The tests workflow runs pytest across three operating systems (Ubuntu, Windows, macOS), with caching enabled via 
 uv's setup action for faster dependency installation.
 The linting workflow runs on push and pull requests to main/master, executing Ruff for code formatting and linting, 
@@ -382,6 +382,7 @@ each run, storing logs and checkpoints separately.
 > *one would have to do ...*
 >
 > Answer:
+
 Eduard
 Using seed
 
@@ -399,6 +400,7 @@ Using seed
 > *As seen in the second image we are also tracking ... and ...*
 >
 > Answer:
+
 Xiaoyu
 --- question 14 fill here ---
 
@@ -414,6 +416,7 @@ Xiaoyu
 > *training docker image: `docker run trainer:latest lr=1e-3 batch_size=64`. Link to docker file: <weblink>*
 >
 > Answer:
+
 Eduard
 --- question 15 fill here ---
 
@@ -430,10 +433,15 @@ Eduard
 >
 > Answer:
 
-We introduced logging early in the project to help with debugging. By strategically placing log statements
+We introduced logging early in the project to help with debugging. 
+We used different levels of logging including debug, info, critical and success. By strategically placing log statements
 throughout the codebase, we could trace the execution flow and identify where things went wrong. When a bug was 
 reported, we would first check the logs to see the sequence of events leading up to the error. This often provided 
-clues about the root cause. 
+clues about the root cause.
+More complicated bugs were solved with group: we discussed the problems in chat or in Zoom. Ofter the other team-member
+opened the same branch and commited some fixes directly. This way we could share knowledge and help each other.
+We introduced pre-commit hooks to automatically run linting and basic tests before every commit, catching potential 
+issues early in the development process.
 Regarding profiling, we did run a profiling session using cProfile to identify performance bottlenecks.
 
 ## Working in the cloud
@@ -450,6 +458,7 @@ Regarding profiling, we did run a profiling session using cProfile to identify p
 > *We used the following two services: Engine and Bucket. Engine is used for... and Bucket is used for...*
 >
 > Answer:
+
 Eduard
 We used the following GCP services:
 1) Cloud Storage (Buckets): Acts as our DVC remote. Used to store our binary files (model), allowing the team to sync 
@@ -472,6 +481,7 @@ TODO: add more services if used.
 > *using a custom container: ...*
 >
 > Answer:
+
 Eduard
 --- question 18 fill here ---
 
@@ -481,6 +491,7 @@ Eduard
 > **You can take inspiration from [this figure](figures/bucket.png).**
 >
 > Answer:
+
 Victor
 --- question 19 fill here ---
 
@@ -490,6 +501,7 @@ Victor
 > **stored. You can take inspiration from [this figure](figures/registry.png).**
 >
 > Answer:
+
 Eduard
 --- question 20 fill here ---
 
@@ -499,6 +511,7 @@ Eduard
 > **your project. You can take inspiration from [this figure](figures/build.png).**
 >
 > Answer:
+
 Eduard
 --- question 21 fill here ---
 
@@ -514,6 +527,7 @@ Eduard
 > *was because ...*
 >
 > Answer:
+
 Victor
 Simplicity of our model. 
 --- question 22 fill here ---
@@ -533,10 +547,13 @@ Simplicity of our model.
 >
 > Answer:
 
-We used FastAPI to create a RESTful API for our model. The prediction endpoint accepts POST requests with input data 
-and returns model predictions in JSON format. We included automatic API documentation using FastAPI's built-in Swagger 
-UI, allowing users to easily explore and test the endpoints. The API was containerized using Docker, ensuring consistent 
-deployment across different environments.
+We used FastAPI to create a RESTful API for our project. The endpoint accepts POST requests with input data 
+and returns data evaluation in JSON format. The endpoint can be used using curl, but it is also accessible at:
+https://streamlit-app-934984265576.europe-west1.run.app/
+We included automatic API documentation using FastAPI's built-in Swagger UI, allowing users to easily explore and test 
+the endpoint. The API was containerized using Docker, ensuring consistent deployment across different environments. 
+We also implemented Google Cloud Build to automate the building and testing of our Docker images whenever we pushed 
+changes to our repository. This CI/CD pipeline ensured that our API was always up-to-date and reliable.
 
 ### Question 24
 
@@ -552,10 +569,15 @@ deployment across different environments.
 >
 > Answer:
 
-We did manage to deploy our API using Google Cloud Run. First we served the model locally. Later we containerized our 
-FastAPI application with Docker. We created two distinct cloudbuild.yaml files: one for the API and one for the 
-Streamlit application. These files instruct Google Cloud Build to build the Docker image, push it to Google Artifact 
-Registry, and then deploy it as a service on Cloud Run.
+We did manage to deploy our API using Google Cloud Run both locally and in the cloud. 
+First we served the API locally and tested it using curl. 
+Then we added added frontend using Streamlit, which enabled users to interact through a web interface.
+Later we containerized our FastAPI application with Docker. We created two distinct cloudbuild.yaml files: 
+one for the API and one for the Streamlit application. These files instruct Google Cloud Build to build the Docker 
+image, push it to Google Artifact Registry, and then deploy it as a service on Cloud Run. 
+To invoke the deployed service, users can use browser to access the Streamlit frontend or use curl commands to send 
+POST requests. The production URL is provided by Cloud Run and is accessible at: 
+https://streamlit-app-934984265576.europe-west1.run.app/
 
 ### Question 25
 
@@ -569,9 +591,10 @@ Registry, and then deploy it as a service on Cloud Run.
 > *before the service crashed.*
 >
 > Answer:
+
 Farnood
 --- question 25 fill here ---
-
+For unit testing, we used pytest to verify the individual components of our inference pipeline. We focused on three key areas: Model Logic: We verified that the model accepts variable batch sizes and produces valid probability outputs (strictly between 0 and 1). Input Guardrails: We tested our DataGuard class to ensure it correctly rejects "bad" inputs—such as NaNs, infinite values, or statistical outliers—before they are passed to the model. Data Integrity: We validated that our normalization logic maintains the expected feature ranges to prevent silent data corruption. We have not performed load testing yet, as the API is currently being integrated into the Google Cloud environment.How we would do load testing: To load test the API, we would use Locust, a Python-based load testing tool. We would write a locustfile.py script that simulates hundreds of concurrent users sending random tensor data to the /predict endpoint. We would gradually ramp up the number of users (e.g., from 10 to 1,000) and monitor two key metrics to find the breaking point: Latency: The point where average response time exceeds an acceptable threshold (e.g., 200ms). Failure Rate: The point where the server begins returning 500 errors or crashes due to Out-Of-Memory (OOM) exceptions.
 ### Question 26
 
 > **Did you manage to implement monitoring of your deployed model? If yes, explain how it works. If not, explain how**
@@ -584,6 +607,7 @@ Farnood
 > *measure ... and ... that would inform us about this ... behaviour of our application.*
 >
 > Answer:
+
 Farnood
 --- question 26 fill here ---
 
@@ -603,8 +627,15 @@ Farnood
 > *costing the most was ... due to ... . Working in the cloud was ...*
 >
 > Answer:
-Kadi
---- question 27 fill here ---
+
+We used 7.78 GCP credits during the project. The most expensive service was Container Registry Vulnerability Scanning,
+which cost $4.16 because every new Docker image push cost. The second expencive service was Cloud Run, which cost 
+$3.39 due to frequent testing of the API.
+The private projects cost less than $0.50.
+Working in the cloud took a lot of time to set up, especially with permissions and access for all team members. 
+However, once set up, it provided a scalable and flexible environment for deploying our application. 
+It was good to get some free credits and test the environment. In the future we are able to use our personal 
+1000 credits a more experienced manner.      
 
 ### Question 28
 
@@ -638,6 +669,7 @@ HTTP requests.
 > *Whenever we commit code and push to GitHub, it auto triggers ... and ... . From there the diagram shows ...*
 >
 > Answer:
+
 Eduard
 --- question 29 fill here ---
 
@@ -652,10 +684,20 @@ Eduard
 > *The biggest challenges in the project was using ... tool to do ... . The reason for this was ...*
 >
 > Answer:
-Xiaoyu
+> 
+
 The biggest challenges in the project were related to Google Cloud. Setting up GCP services and assuring that all 
-team members had the correct permissions and access took considerable time. We overcame these challenges by
-sharing our experiences setup process among team members.
+team members had the correct permissions and access took considerable time. The amount of different Roles was
+overwhelming. We overcame these challenges by sharing our experiences of the setup process among team members.
+In general our team-work functioned well. We held regular meetings to discuss progress, challenges, and next steps.
+It was sometimes difficult to coordinate schedules among all team members and discuss the project
+during live Zoom meetings. This was not surprising, as we were a 100% online team. The use of asynchronous communication 
+channels like Slack helped us overcome this.
+We also faced challenges in selecting which tasks to prioritize within the limited timeframe of the project. We
+addressed this by allowing each team member to focus on areas aligned with their  interests, while ensuring that
+everyone had a basic understanding of all parts of the project. It helped that we had group members with different
+backgrounds and strengths.
+--- Xiaoyu ---
 
 ### Question 31
 
@@ -673,17 +715,23 @@ sharing our experiences setup process among team members.
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
 
-Student s256613 (Kadi Jairus) was responsible for setting up the initial repository, initial README, 
-cookiecutter project structure, logging, typing and managing the DVC integration with Google Cloud Storage. 
-Additionally, Kadi created shared Google Cloud and ensured that team-members have necessary access. Kadi also organized 
-team meetings, coordinated tasks among members, merged many pull requests and contributed to writing tests with 
-student s240118.
-TODO: fill out for all members
+Student s256613 (Kadi Jairus) worked on setting up the project including repository, project structure, shared Google 
+Cloud project and access; logging and typing, DVC integration; coordinating team meetings and tasks; improving tests 
+with student s240118; merging pull requests and helping with merge conflicts.
 
-Student s204475 (Victor G. H. Rasmussen) was worked on:
+Student s204475 (Victor G. H. Rasmussen) worked on:
 - Adding the API and a Streamlit-based frontend for CSV upload and results display
 - Runnable tasks (e.g., uv run invoke preprocess-data/train/evaluate/visualize/serve-api/serve-ui)
 - Adding profilling tools (snakeviz) and using it to isolate related performance tweaks
 - Good project hygiene (refactored training code (split train.py into helper modules))
 - Improving data.py to persist scaler/feature metadata so inference works on new datasets
 - Added/maintaining linting and test automation (GitHub Actions)
+
+Student s240118 ( Farnood Khordepaz ):
+- I focused on the Core Training Pipeline, Model Reliability, and Quality Assurance.
+- Training & Evaluation Pipeline: I implemented the core training loop (train.py) and evaluation logic (evaluate.py). This included defining the optimization steps, loss calculation, and ensuring the   model correctly processes batches during both training and validation phases.
+- Guardrails & Drift Detection (M27): I designed and implemented the guardrails.py module. This system acts as a runtime "bouncer" that validates input tensors against statistical thresholds, preventing the model from hallucinating on outliers, NaNs, or drifted data.
+-Automated Alerting (M28): I integrated the guardrails with the Weights & Biases alerting system. This ensures that any "bad" data detected in production immediately triggers a real-time cloud alert to the team.
+-Testing Infrastructure: I took ownership of the testing framework. This involved resolving critical dependency conflicts in pyproject.toml to get the CI environment running on macOS, implementing unit tests for the Model and Data modules, and mocking the training loop to verify integration without incurring compute costs.
+
+Generative AI Usage: I used Generative AI primarily as a technical unblocker and pair programmer. It was essential for debugging complex environment errors (specifically between uv, torch, and hardware architectures) and for generating the initial boilerplate code for the unit tests and guardrail logic, allowing me to focus on the system architecture rather than syntax. ( Also gemini helped with some questions and answers in this read me file )

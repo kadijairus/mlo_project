@@ -18,36 +18,36 @@ stages:
         size: 545
         cloud:
           remote_storage:
-            etag: 089c9c9af59b8e92031001
-            version_id: '1768503227354652'
+            etag: 089b9ad586f39c92031001
+            version_id: '1769007654194459'
       - relpath: label_encoder.joblib
         md5: 08af598a13b001862e4834decd6e52a1
         size: 481
         cloud:
           remote_storage:
-            etag: 08b1aa8ef59b8e92031001
-            version_id: '1768503227159857'
+            etag: 08f089d686f39c92031001
+            version_id: '1769007654208752'
       - relpath: scaler.joblib
         md5: 6fa6caf753e479bb6f27ed38f4845fe8
         size: 2631
         cloud:
           remote_storage:
-            etag: 08f59c9af59b8e92031001
-            version_id: '1768503227354741'
+            etag: 08dfced586f39c92031001
+            version_id: '1769007654201183'
       - relpath: test.pt
         md5: 3a96192614573c0730eb1f5fbbc9edb6
         size: 8390
         cloud:
           remote_storage:
-            etag: 08eeb08df59b8e92031001
-            version_id: '1768503227144302'
+            etag: 0880e6d586f39c92031001
+            version_id: '1769007654204160'
       - relpath: train.pt
         md5: 9fadca232053b6f0e0a486a6b2afd0cd
         size: 64780
         cloud:
           remote_storage:
-            etag: 0889b386f59b8e92031001
-            version_id: '1768503227029897'
+            etag: 08daded986f39c92031001
+            version_id: '1769007654268762'
   train:
     cmd: uv run python src/*/train.py
     deps:
@@ -69,17 +69,17 @@ stages:
     outs:
     - path: models/best_model.pt
       hash: md5
-      md5: df6f66945e9cd1c9bcdf6912173a5c7e
+      md5: 78ebc9b455a659b7df5be20df47efd5e
       size: 19174
       cloud:
         remote_storage:
-          etag: 08d8eff4e89b8e92031001
-          version_id: '1768503201576920'
+          etag: 08d7a3d686f39c92031001
+          version_id: '1769007654212055'
     - path: models/last_model.pt
       hash: md5
-      md5: b232bd669b06b84c5f1a7ba2d6fefb77
+      md5: 8b1a2e70d128e81a881432430ff5b0c3
       size: 19174
       cloud:
         remote_storage:
-          etag: 08e18480e99b8e92031001
-          version_id: '1768503201759841'
+          etag: 08faa6cc86f39c92031001
+          version_id: '1769007654048634'
