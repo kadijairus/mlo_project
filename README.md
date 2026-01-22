@@ -78,7 +78,7 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 │   └── figures/
 ├── scripts/                  # Helper scritpt for testing
 ├── src/                      # Source code
-│   ├── mlo_project/
+│   ├── mlo_group_project/
 │   │   ├── __init__.py
 │   │   ├── api.py
 │   │   ├── data.py
