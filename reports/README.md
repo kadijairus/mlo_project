@@ -689,6 +689,7 @@ Eduard
 The biggest challenges in the project were related to Google Cloud. Setting up GCP services and assuring that all 
 team members had the correct permissions and access took considerable time. The amount of different Roles was
 overwhelming. We overcame these challenges by sharing our experiences of the setup process among team members.
+We also had problems with DVC using Bucket. The time to delete files were set too short initially (7 days) and we lost the live versions, which caused confusion.
 In general our team-work functioned well. We held regular meetings to discuss progress, challenges, and next steps.
 It was sometimes difficult to coordinate schedules among all team members and discuss the project
 during live Zoom meetings. This was not surprising, as we were a 100% online team. The use of asynchronous communication 
@@ -697,6 +698,8 @@ We also faced challenges in selecting which tasks to prioritize within the limit
 addressed this by allowing each team member to focus on areas aligned with their  interests, while ensuring that
 everyone had a basic understanding of all parts of the project. It helped that we had group members with different
 backgrounds and strengths.
+We had different backgrounds in using Git and one team-member had a lot of merge conflicts and we were able to get to the roots of the problems.
+
 --- Xiaoyu ---
 
 ### Question 31
