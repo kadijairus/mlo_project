@@ -5,11 +5,7 @@ import torch
 import typer
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
-
 from mlo_group_project.model import BreastCancerModel
-import numpy as np
-from scipy.spatial import ConvexHull
-import matplotlib.patches as patches
 
 
 def _select_device() -> torch.device:

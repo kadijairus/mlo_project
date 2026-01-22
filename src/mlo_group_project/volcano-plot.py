@@ -89,15 +89,15 @@ def embedding_sensitivity_volcano(
 
     sens_matrix /= len(x_test)  # Average over samples
 
-    # ------------------------------
-    # 5️⃣ Select top-k points
-    # ------------------------------
-    if top_k is not None:
-        flat = sens_matrix.flatten()
-        thresh = torch.topk(flat, top_k).values.min()
-        mask = sens_matrix >= thresh
-    else:
-        mask = torch.ones_like(sens_matrix, dtype=torch.bool)
+    # # ------------------------------
+    # # 5️⃣ Select top-k points
+    # # ------------------------------
+    # if top_k is not None:
+    #     flat = sens_matrix.flatten()
+    #     thresh = torch.topk(flat, top_k).values.min()
+    #     mask = sens_matrix >= thresh
+    # else:
+    #     mask = torch.ones_like(sens_matrix, dtype=torch.bool)
 
     # ------------------------------
     # 6️⃣ Volcano plot
