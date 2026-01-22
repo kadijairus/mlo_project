@@ -143,18 +143,25 @@ def visualize(
 
         # Gaussian Ellipse
         if len(x) > 1:
-            mean = [np.mean(x), np.mean(y)]
+            mean = (float(np.mean(x)), float(np.mean(y)))  # ✅ convert to tuple of floats
             cov = np.cov(x, y)
             eigenvalues, eigenvectors = np.linalg.eigh(cov)
             
             order = eigenvalues.argsort()[::-1]
             eigenvalues, eigenvectors = eigenvalues[order], eigenvectors[:, order]
-            angle = np.degrees(np.arctan2(*eigenvectors[:, 0][::-1]))
+            angle = float(np.degrees(np.arctan2(*eigenvectors[:, 0][::-1])))  # optional: ensure float
 
-            width, height = 2 * np.sqrt(eigenvalues) * 2  # 放大 factor=2
-            ellipse = patches.Ellipse(mean, width, height, angle=angle, edgecolor=colors[label],
-                                    facecolor="none", linestyle="--", linewidth=1.5, alpha=0.8)
+            width, height = 2 * np.sqrt(eigenvalues) * 2  # scale factor=2
+            ellipse = patches.Ellipse(
+                mean, width, height, angle=angle,
+                edgecolor=colors[label],
+                facecolor="none",
+                linestyle="--",
+                linewidth=1.5,
+                alpha=0.8
+            )
             plt.gca().add_patch(ellipse)
+
 
     plt.legend()
     plt.title("t-SNE Visualization of Breast Cancer Classification ANN Prediction")
