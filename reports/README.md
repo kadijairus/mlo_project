@@ -658,9 +658,8 @@ https://streamlit-app-934984265576.europe-west1.run.app/
 >
 > Answer:
 
-Farnood
---- question 25 fill here ---
 For unit testing, we used pytest to verify the individual components of our inference pipeline. We focused on three key areas: Model Logic: We verified that the model accepts variable batch sizes and produces valid probability outputs (strictly between 0 and 1). Input Guardrails: We tested our DataGuard class to ensure it correctly rejects "bad" inputs—such as NaNs, infinite values, or statistical outliers—before they are passed to the model. Data Integrity: We validated that our normalization logic maintains the expected feature ranges to prevent silent data corruption. We have not performed load testing yet, as the API is currently being integrated into the Google Cloud environment.How we would do load testing: To load test the API, we would use Locust, a Python-based load testing tool. We would write a locustfile.py script that simulates hundreds of concurrent users sending random tensor data to the /predict endpoint. We would gradually ramp up the number of users (e.g., from 10 to 1,000) and monitor two key metrics to find the breaking point: Latency: The point where average response time exceeds an acceptable threshold (e.g., 200ms). Failure Rate: The point where the server begins returning 500 errors or crashes due to Out-Of-Memory (OOM) exceptions.
+
 ### Question 26
 
 > **Did you manage to implement monitoring of your deployed model? If yes, explain how it works. If not, explain how**
@@ -764,9 +763,7 @@ We also faced challenges in selecting which tasks to prioritize within the limit
 addressed this by allowing each team member to focus on areas aligned with their  interests, while ensuring that
 everyone had a basic understanding of all parts of the project. It helped that we had group members with different
 backgrounds and strengths.
-We had different backgrounds in using Git and one team-member had a lot of merge conflicts and we were able to get to the roots of the problems.
-
---- Xiaoyu ---
+We had different backgrounds in using Git and one team-member had a lot of merge conflicts. We were able to get to the roots of the problems, but lost a lot of time.
 
 ### Question 31
 
@@ -783,10 +780,14 @@ We had different backgrounds in using Git and one team-member had a lot of merge
 > *All members contributed to code by...*
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
-
-Student s256613 (Kadi Jairus) worked on setting up the project including repository, project structure, shared Google
-Cloud project and access; logging and typing, DVC integration; coordinating team meetings and tasks; improving tests
-with student s240118; merging a lot of pull requests and helping with merge conflicts.
+> 
+Student s256613 (Kadi Jairus) was responsible for:
+- Setting things up: getting the group together, deciding scope/dataset, creating the initial repository with cookiecutter project structure, filling initial README, 
+- Creating Google Cloud project and resolving access issues
+- Managing the DVC integration with Google Cloud Storage 
+- Coordinating team meetings and dividing tasks 
+- improving tests with student s240118
+- Merging at least half of the merge requests and helping with merge conflicts
 
 Student s204475 (Victor G. H. Rasmussen) worked on:
 - Adding the API and a Streamlit-based frontend for CSV upload and results display
@@ -796,7 +797,7 @@ Student s204475 (Victor G. H. Rasmussen) worked on:
 - Improving data.py to persist scaler/feature metadata so inference works on new datasets
 - Added/maintaining linting and test automation (GitHub Actions)
 
-Student s240118 ( Farnood Khordepaz ):
+Student s240118 (Farnood Khordepaz):
 - I focused on the Core Training Pipeline, Model Reliability, and Quality Assurance.
 - Training & Evaluation Pipeline: I implemented the core training loop (train.py) and evaluation logic (evaluate.py). This included defining the optimization steps, loss calculation, and ensuring the   model correctly processes batches during both training and validation phases.
 - Guardrails & Drift Detection (M27): I designed and implemented the guardrails.py module. This system acts as a runtime "bouncer" that validates input tensors against statistical thresholds, preventing the model from hallucinating on outliers, NaNs, or drifted data.
@@ -810,8 +811,10 @@ Student s256594 (Eduard Haiman):
 - Configured Google Cloud Build to automate the build-to-registry pipeline for production images upon GitHub repository updates.
 - Managed the deployment of the API and frontend UI on Google Cloud Run, configuring cross-service communication via environment variables.
 
-Student ...
-
+Student 260025 (Xiaoyu He):
+- Created visualization
+- Added plots
+TODO: add
 
 All members contributed to documentation.
 Generative AI Usage: we used Generative AI (Google Gemini) primarily as a technical unblocker and pair programmer. It was essential for debugging complex environment errors (specifically between uv, torch, and hardware architectures) and for generating the initial boilerplate code for the unit tests and guardrail logic, allowing to focus on the system architecture rather than syntax.
