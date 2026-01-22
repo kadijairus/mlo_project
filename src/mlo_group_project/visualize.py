@@ -6,6 +6,7 @@ import typer
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from mlo_group_project.model import BreastCancerModel
+import numpy as np
 
 
 def _select_device() -> torch.device:
