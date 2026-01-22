@@ -102,11 +102,11 @@ will check the repositories and the code to verify your answers.
 * [x] Check how robust your model is towards data drifting (M27)
 * [ ] Setup collection of input-output data from your deployed application (M27)
 * [ ] Deploy to the cloud a drift detection API (M27)
-* [-] Instrument your API with a couple of system metrics (M28) (Victor)
+* [x] Instrument your API with a couple of system metrics (M28) (Victor)
 * [ ] Setup cloud monitoring of your instrumented application (M28)
 * [x] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28)
 * [ ] If applicable, optimize the performance of your data loading using distributed data loading (M29)
-* [-] If applicable, optimize the performance of your training pipeline by using distributed training (M30) (Victor checks)
+* [ ] If applicable, optimize the performance of your training pipeline by using distributed training (M30)
 * [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
 
 ### Extra
@@ -155,8 +155,8 @@ Farnood Khordepaz -	s240118
 >
 > Answer:
 
-Currently, we are using no third-party framework that was not covered in the course. We focused on using tools 
-recommended and mastering the pipeline they support. 
+Currently, we are using no third-party framework that was not covered in the course. We focused on using tools
+recommended and mastering the pipeline they support.
 
 ## Coding environment
 
@@ -176,11 +176,11 @@ recommended and mastering the pipeline they support.
 >
 > Answer:
 
-We managed our dependencies using uv. The source of truth is the pyproject.toml file. To ensure every team member 
-has a bit-for-bit identical environment, we use a uv.lock file. A new team member can get an exact copy of the 
-environment by Git cloning and running ´uv sync´. Additionally, since our binary data and models are not stored in Git, 
-the member must run dvc pull after setting up their local service_account_key.json to fetch the processed tensors and 
-model checkpoints from Google Cloud Storage. This dual-layered approach (uv for code, DVC for data) ensures a fully 
+We managed our dependencies using uv. The source of truth is the pyproject.toml file. To ensure every team member
+has a bit-for-bit identical environment, we use a uv.lock file. A new team member can get an exact copy of the
+environment by Git cloning and running ´uv sync´. Additionally, since our binary data and models are not stored in Git,
+the member must run dvc pull after setting up their local service_account_key.json to fetch the processed tensors and
+model checkpoints from Google Cloud Storage. This dual-layered approach (uv for code, DVC for data) ensures a fully
 reproducible pipeline across different machines.
 
 ### Question 5
@@ -197,13 +197,13 @@ reproducible pipeline across different machines.
 >
 > Answer:
 
-From the cookiecutter template we have filled out the tests, .github, data, dockerfiles, models, reports, wandb, configs 
-and src folder. We have removed the notebooks folder because we did not use any Jupyter notebooks in our project. 
-We have added: (1) .dvc folder to manage our remote connection to Google Cloud Storage, 
-(2) scripts folder to hold helper-script to create smaller data files for testing, 
-(3) outputs folder for running our experiments, 
-(4) src/mlo_group_project/training folder to hold helper classes for training.py, 
-(5) src/mlo_group_project/config folder containing Hydra configuration files (config.yaml and hyperparameter configs), and 
+From the cookiecutter template we have filled out the tests, .github, data, dockerfiles, models, reports, wandb, configs
+and src folder. We have removed the notebooks folder because we did not use any Jupyter notebooks in our project.
+We have added: (1) .dvc folder to manage our remote connection to Google Cloud Storage,
+(2) scripts folder to hold helper-script to create smaller data files for testing,
+(3) outputs folder for running our experiments,
+(4) src/mlo_group_project/training folder to hold helper classes for training.py,
+(5) src/mlo_group_project/config folder containing Hydra configuration files (config.yaml and hyperparameter configs), and
 (6) gcp folder for Google Cloud Platform deployment artifacts.
 
 ### Question 6
@@ -219,14 +219,14 @@ We have added: (1) .dvc folder to manage our remote connection to Google Cloud S
 >
 > Answer:
 
-We used Ruff for both linting and formatting, enforcing PEP 8 compliance with a 120-character line length. For type 
-checking, we used mypy with strict settings enabled. We integrated pre-commit hooks to automatically run Ruff (fix, 
-format, and lint) on every commit, along with basic checks for trailing whitespace, YAML syntax, and large files. 
-These concepts are critical in larger projects because they ensure code consistency across team members, catch bugs 
-early (e.g., type errors before runtime), and make the codebase more maintainable and readable. For example, typing 
-helps prevent runtime errors by catching type mismatches during development, while consistent formatting reduces merge 
-conflicts and cognitive load when reviewing code. It is a good idea to centralise this, as we did, since having 
-individual setups for especially formatting will create conflicts more often than not. 
+We used Ruff for both linting and formatting, enforcing PEP 8 compliance with a 120-character line length. For type
+checking, we used mypy with strict settings enabled. We integrated pre-commit hooks to automatically run Ruff (fix,
+format, and lint) on every commit, along with basic checks for trailing whitespace, YAML syntax, and large files.
+These concepts are critical in larger projects because they ensure code consistency across team members, catch bugs
+early (e.g., type errors before runtime), and make the codebase more maintainable and readable. For example, typing
+helps prevent runtime errors by catching type mismatches during development, while consistent formatting reduces merge
+conflicts and cognitive load when reviewing code. It is a good idea to centralise this, as we did, since having
+individual setups for especially formatting will create conflicts more often than not.
 
 ## Version control
 
@@ -245,10 +245,10 @@ individual setups for especially formatting will create conflicts more often tha
 >
 > Answer:
 
-In total we have implemented around 25 tests. Primarily, we focused on model robustness and data integrity. For model 
-tests we verified output shapes across variable batch sizes, ensured the model handles edge-case inputs (zeros, negative 
-numbers) without crashing or producing NaNs, and confirmed the model is deterministic in evaluation mode. And for the 
-we validated that processed tensors have the correct shape (30 features), are strictly normalized (MinMax scaling 
+In total we have implemented around 25 tests. Primarily, we focused on model robustness and data integrity. For model
+tests we verified output shapes across variable batch sizes, ensured the model handles edge-case inputs (zeros, negative
+numbers) without crashing or producing NaNs, and confirmed the model is deterministic in evaluation mode. And for the
+we validated that processed tensors have the correct shape (30 features), are strictly normalized (MinMax scaling
 between 0-1), and that there is no data leakage between training and test sets.
 
 ### Question 8
@@ -264,14 +264,14 @@ between 0-1), and that there is no data leakage between training and test sets.
 >
 > Answer:
 
-The total code coverage is currently 53% (tested by running `uv run invoke test`). Even if we achieved 100% code 
-coverage, we would not trust the system to be completely error-free. Code coverage only measures which lines of code 
-were executed during testing, not whether the logic or the results are correct. Still, it would be worthwhile to run 
-more code than not since it helps catch errors early. It is also important to test which files are actually generating 
-code coverage reports since all parts of the pipeline can be important to cover. Some parts, however, are more 
-high-risk and should be covered. Earlier parts of the pipeline remain the most critical, but ideally all parts should 
-be covered. Code coverage can also help highlight what code is actually used, however using packages such as 
-"cProfile" is better at isolating parts to optimise. 
+The total code coverage is currently 53% (tested by running `uv run invoke test`). Even if we achieved 100% code
+coverage, we would not trust the system to be completely error-free. Code coverage only measures which lines of code
+were executed during testing, not whether the logic or the results are correct. Still, it would be worthwhile to run
+more code than not since it helps catch errors early. It is also important to test which files are actually generating
+code coverage reports since all parts of the pipeline can be important to cover. Some parts, however, are more
+high-risk and should be covered. Earlier parts of the pipeline remain the most critical, but ideally all parts should
+be covered. Code coverage can also help highlight what code is actually used, however using packages such as
+"cProfile" is better at isolating parts to optimise.
 
 ### Question 9
 
@@ -286,10 +286,10 @@ be covered. Code coverage can also help highlight what code is actually used, ho
 >
 > Answer:
 
-We early on agreed to use both branches and pull requests. We even enforced rules so pushes cannot be made directly 
-on the main branch but only through pull requests (that also need a review). We did this in an attempt to ensure as 
-many people as possible are up to date with the project and try to keep unchecked code out of main. Still, this does 
-not ensure the code actually works, and it is up to the reviewer to be thorough and in the long run it is better to 
+We early on agreed to use both branches and pull requests. We even enforced rules so pushes cannot be made directly
+on the main branch but only through pull requests (that also need a review). We did this in an attempt to ensure as
+many people as possible are up to date with the project and try to keep unchecked code out of main. Still, this does
+not ensure the code actually works, and it is up to the reviewer to be thorough and in the long run it is better to
 ensure a continuous pipeline that performs automatic linting, building and testing (as we also do).
 
 ### Question 10
@@ -305,14 +305,14 @@ ensure a continuous pipeline that performs automatic linting, building and testi
 >
 > Answer:
 
-We used DVC to track changes in our model and data (bcw.csv) by creating a pipeline in dvc.yaml. Using dvc repro 
-ensures that if either the preprocessing logic or the underlying data changes, the entire pipeline is consistently 
+We used DVC to track changes in our model and data (bcw.csv) by creating a pipeline in dvc.yaml. Using dvc repro
+ensures that if either the preprocessing logic or the underlying data changes, the entire pipeline is consistently
 updated and reproducible.
-A second benefit of DVC is that it allows us to store large binary files, such as our PyTorch models, outside of Git. 
-We configured Google Cloud Storage as a remote, enabling team members to use dvc pull to sync the project state 
+A second benefit of DVC is that it allows us to store large binary files, such as our PyTorch models, outside of Git.
+We configured Google Cloud Storage as a remote, enabling team members to use dvc pull to sync the project state
 seamlessly across different environments.
-Finally, DVC served as a bridge to our automation; our GitHub Actions are configured to trigger an evaluation 
-workflow whenever dvc.lock is updated. This ensures that every new version of the data or model is automatically 
+Finally, DVC served as a bridge to our automation; our GitHub Actions are configured to trigger an evaluation
+workflow whenever dvc.lock is updated. This ensures that every new version of the data or model is automatically
 validated before deployment, providing a reliable audit trail for our ML experiments.
 
 ### Question 11
@@ -330,18 +330,20 @@ validated before deployment, providing a reliable audit trail for our ML experim
 >
 > Answer:
 
-We have organized our continuous integration into 4 separate workflows:
-1) tests.yaml for running unit tests,
-2) linting.yaml for code quality checks,
-3) and evaluation.yaml for model evaluation.
-4) TODO: answer cloudbuild.yaml ..
-The tests workflow runs pytest across three operating systems (Ubuntu, Windows, macOS), with caching enabled via 
-uv's setup action for faster dependency installation.
-The linting workflow runs on push and pull requests to main/master, executing Ruff for code formatting and linting, 
-plus mypy for type checking. The evaluation workflow is triggered automatically when dvc.lock changes (indicating a 
-new model in the registry), communicating with GCP to pull the latest artifacts via DVC and running our evaluation. 
-All workflows use uv for dependency management with locked dependencies (--locked flag) and implement concurrency 
-controls to cancel previous runs on new pushes so we don't waste GitHub action minutes running too many actions.
+Our continuous integration (CI) pipeline is organized into four primary GitHub Action workflows, designed to ensure code reliability, style consistency, and model performance.
+
+**1. Testing and Multi-Environment Validation**.
+The `tests.yaml` workflow executes our suite of unit tests using `pytest`. To ensure cross-platform compatibility, we utilize a build matrix that runs tests across **Ubuntu, Windows, and macOS**. We leverage the `uv` package manager with the `--locked` flag for deterministic dependency installation. To optimize runner performance, we implemented **caching** via the `uv-setup` action, significantly reducing environment setup times.
+
+**2. Linting and Static Analysis**.
+The `linting.yaml` workflow is triggered on every push and pull request to the main branch. It enforces code quality using **Ruff** for fast linting and formatting, alongside **mypy** for static type checking. This ensures the codebase remains maintainable and reduces runtime errors.
+
+**3. Automated Model Evaluation and DVC Integration**.
+The `evaluation.yaml` workflow facilitates a seamless transition between data science and engineering. It is automatically triggered whenever `dvc.lock` is updated. This workflow authenticates with **Google Cloud Platform (GCP)**, pulls the latest model artifacts via **DVC**, and runs our evaluation suite to prevent performance regression before deployment.
+
+**4. Continuous Deployment via Google Cloud Build**.
+Finally, we automate our containerized deployment using **Google Cloud Build**. Two dedicated configuration files, `cloudbuild_api.yaml` and `cloudbuild_streamlit_app.yaml`, are triggered to rebuild and push Docker images for our API and Streamlit dashboard whenever the source code in `master` branch is updated.
+
 
 ## Running code and tracking experiments
 
@@ -360,15 +362,31 @@ controls to cancel previous runs on new pushes so we don't waste GitHub action m
 >
 > Answer:
 
-We used Hydra for experiment configuration management. Our config files are organized in "src/mlo_group_project/config/", 
-with config.yaml as the main file and hyperparameters in hp/basic.yaml. To run an experiment with default settings:
-uv run python src/mlo_group_project/train.py 
-Experiments can also be run using invoke. List all tasks with 
-uv run invoke --list 
-To override hyperparameters: 
-uv run python src/mlo_group_project/train.py hp.lr=0.01 hp.batch_size=128 hp.epochs=50
-with desired parameters. Hydra automatically creates timestamped output directories (outputs/YYYY-MM-DD/HH-MM-SS/) for 
-each run, storing logs and checkpoints separately.
+We utilize **Hydra** for hierarchical configuration management, allowing for clean separation between environment paths and model hyperparameters. Our configuration is centralized in `src/mlo_group_project/config/`, with `config.yaml` serving as the entry point and `hp/basic.yaml` defining specific model parameters.
+
+To run a standard experiment using our default configuration:
+
+```bash
+uv run python src/mlo_group_project/train.py
+
+```
+
+For more complex workflows, we use **Invoke** to wrap commands. You can view available tasks via:
+
+```bash
+uv run invoke --list
+
+```
+
+Hydra’s power lies in its command-line overrides. To test different settings without modifying files, we use:
+
+```bash
+uv run python src/mlo_group_project/train.py hp.lr=0.01 hp.batch_size=128
+
+```
+
+Every execution automatically generates a unique, timestamped output directory (e.g., `outputs/2026-01-22/14-30-00/`), ensuring that logs, checkpoints, and the finalized configuration are preserved for every run.
+
 
 ### Question 13
 
@@ -383,8 +401,11 @@ each run, storing logs and checkpoints separately.
 >
 > Answer:
 
-Eduard
-Using seed
+To ensure reproducibility and prevent information loss, we implemented a robust configuration management system using the **Hydra** framework. All experimental parameters are centralized in `src/mlo_group_project/config/`, where the main `config.yaml` defines essential project paths, including data, model, and report directories.
+
+For experiment tracking, we utilized a modular approach by linking specific hyperparameter files (e.g., `hp/basic.yaml`) to the main configuration. We integrated Hydra into our workflow using the `@hydra.main` decorator in `train.py` and `evaluate.py`. To ensure compatibility between Hydra’s configuration management and **Typer’s** command-line interface, we wrapped our logic in dedicated functions such as `_evaluate()` and `evaluate_model()`.
+
+Furthermore, to guarantee consistent results across different runs, we added a `seed` parameter to our hyperparameter configurations and enforced it globally using `torch.manual_seed()` within `model.py`. To reproduce any experiment, a user simply needs to run the training script with the corresponding hyperparameter config file, ensuring the exact same environment and stochastic initialization are maintained.
 
 ### Question 14
 
@@ -417,8 +438,37 @@ Xiaoyu
 >
 > Answer:
 
-Eduard
---- question 15 fill here ---
+For this project, we developed a containerized ecosystem using three specialized Docker images to handle the MLOps lifecycle from training to deployment.
+
+**1. Training and Task Automation (`dvc.dockerfile`)**. The [dvc.dockerfile](../dockerfiles/dvc.dockerfile) provides a consistent environment for data preprocessing and training. It is designed to run **Invoke** tasks, ensuring that local development and containerized execution remain identical. To pull data securely from **GCP**, we mount a service account JSON key and pass it as an environment variable:
+
+```bash
+docker run --rm -it \
+-v $(pwd)/.secrets/gcp-key.json:/app/gcp-key.json:ro \
+-e GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json \
+dvc:latest invoke data-pull
+
+```
+
+For debugging or manual execution of multiple steps, we use the `--entrypoint` override to access an interactive shell:
+
+```bash
+docker run --rm -it \
+-v $(pwd)/.secrets/gcp-key.json:/app/gcp-key.json:ro \
+-e GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json \
+--entrypoint sh \
+dvc:latest
+
+```
+**2. API and UI Deployment**
+We separated the production services into [api.dockerfile](../dockerfiles/api.dockerfile) and [streamlit.dockerfile](../dockerfiles/streamlit_app.dockerfile). These are orchestrated using **Docker Compose**, which manages the shared network and port mapping:
+
+```bash
+docker compose up --build
+
+```
+
+This setup launches the **FastAPI backend** (port 8000) and **Streamlit UI** (port 8501) simultaneously. By using `invoke` inside Docker, we ensure that our complex project commands are executed reliably across any host system.
 
 ### Question 16
 
@@ -433,14 +483,14 @@ Eduard
 >
 > Answer:
 
-We introduced logging early in the project to help with debugging. 
+We introduced logging early in the project to help with debugging.
 We used different levels of logging including debug, info, critical and success. By strategically placing log statements
-throughout the codebase, we could trace the execution flow and identify where things went wrong. When a bug was 
-reported, we would first check the logs to see the sequence of events leading up to the error. This often provided 
+throughout the codebase, we could trace the execution flow and identify where things went wrong. When a bug was
+reported, we would first check the logs to see the sequence of events leading up to the error. This often provided
 clues about the root cause.
 More complicated bugs were solved with group: we discussed the problems in chat or in Zoom. Ofter the other team-member
 opened the same branch and commited some fixes directly. This way we could share knowledge and help each other.
-We introduced pre-commit hooks to automatically run linting and basic tests before every commit, catching potential 
+We introduced pre-commit hooks to automatically run linting and basic tests before every commit, catching potential
 issues early in the development process.
 Regarding profiling, we did run a profiling session using cProfile to identify performance bottlenecks.
 
@@ -459,15 +509,19 @@ Regarding profiling, we did run a profiling session using cProfile to identify p
 >
 > Answer:
 
-Eduard
-We used the following GCP services:
-1) Cloud Storage (Buckets): Acts as our DVC remote. Used to store our binary files (model), allowing the team to sync 
-data states without bloating the Git repository.
-2) Artifact Registry: Used to store and manage our Docker images for consistent deployment.
-3) Cloud Build with GitHub integration: Used to automate the building and testing of our Docker images whenever we 
-pushed changes to our repository.
-4) Google Cloud Run: A serverless compute platform used to deploy our model API.
-TODO: add more services if used.
+We utilized a suite of **Google Cloud Platform (GCP)** services to create a fully integrated, serverless MLOps pipeline:
+
+**1. Cloud Storage (GCS):** Acts as our remote storage for **DVC**. It hosts our large datasets and model binaries, enabling version control of data without increasing the Git repository size.
+
+**2. Artifact Registry:** Serves as our private Docker registry. It stores and manages the versioned container images for our training environment, API, and Streamlit application.
+
+**3. Cloud Build:** Integrated with GitHub, it automatically triggers whenever the master branch is updated, building new Docker images and pushing them to the Artifact Registry based on our `cloudbuild.yaml` configurations.
+
+**4. Cloud Run:** A serverless platform used to host our **FastAPI backend** and **Streamlit frontend**. It provides automatic scaling and ensures our services are highly available via public URLs.
+
+**5. Google Service Accounts:** The foundational security layer. We used dedicated service accounts with **IAM roles** (e.g., Storage Object Admin) to allow our Docker containers and GitHub Actions to authenticate securely with GCP resources.
+
+
 
 ### Question 18
 
@@ -482,8 +536,16 @@ TODO: add more services if used.
 >
 > Answer:
 
-Eduard
---- question 18 fill here ---
+While Compute Engine is the foundational infrastructure for GCP, we opted to use **Google Cloud Run** for our deployment. This serverless approach was chosen because our model is lightweight and does not require the heavy overhead or manual management of dedicated virtual machines.
+
+By using Cloud Run, we benefit from automatic scaling and a pay-as-you-go model, which is more cost-effective for our API and Streamlit UI. These services are integrated via **Cloud Build**, which automates the deployment of our containerized code directly from GitHub.
+
+For our specific project requirements:
+
+* **API/UI:** Hosted on Cloud Run to avoid managing OS-level patches or VM scaling.
+* **Training:** Conducted locally, as the model's computational requirements did not justify the use of specialized Compute Engine instances or GPUs.
+
+Our live user interface is accessible here: [Streamlit App on Cloud Run](https://streamlit-app-934984265576.europe-west1.run.app/). The frontend communicates with the backend via an `API_URL` environment variable, ensuring that the two services remain decoupled yet connected.
 
 ### Question 19
 
@@ -502,8 +564,9 @@ Eduard
 >
 > Answer:
 
-Eduard
---- question 20 fill here ---
+[History of API docker image](figures/gcp-artifact-api-1.png)
+
+[History of Streamlit docker image](figures/gcp-artifact-streamlit-1.png)
 
 ### Question 21
 
@@ -536,8 +599,6 @@ which logged all metrics regardless of training location. The cost-benefit analy
 we could iterate faster, debug more easily, and avoid spending GCP credits on compute resources that provided no 
 practical advantage for our lightweight model architecture. Of course, getting the practical experience of implenting cloud training would still have been beneficial. 
 
-
-
 ## Deployment
 
 ### Question 23
@@ -553,12 +614,12 @@ practical advantage for our lightweight model architecture. Of course, getting t
 >
 > Answer:
 
-We used FastAPI to create a RESTful API for our project. The endpoint accepts POST requests with input data 
+We used FastAPI to create a RESTful API for our project. The endpoint accepts POST requests with input data
 and returns data evaluation in JSON format. The endpoint can be used using curl, but it is also accessible at:
 https://streamlit-app-934984265576.europe-west1.run.app/
-We included automatic API documentation using FastAPI's built-in Swagger UI, allowing users to easily explore and test 
-the endpoint. The API was containerized using Docker, ensuring consistent deployment across different environments. 
-We also implemented Google Cloud Build to automate the building and testing of our Docker images whenever we pushed 
+We included automatic API documentation using FastAPI's built-in Swagger UI, allowing users to easily explore and test
+the endpoint. The API was containerized using Docker, ensuring consistent deployment across different environments.
+We also implemented Google Cloud Build to automate the building and testing of our Docker images whenever we pushed
 changes to our repository. This CI/CD pipeline ensured that our API was always up-to-date and reliable.
 
 ### Question 24
@@ -575,14 +636,14 @@ changes to our repository. This CI/CD pipeline ensured that our API was always u
 >
 > Answer:
 
-We did manage to deploy our API using Google Cloud Run both locally and in the cloud. 
-First we served the API locally and tested it using curl. 
+We did manage to deploy our API using Google Cloud Run both locally and in the cloud.
+First we served the API locally and tested it using curl.
 Then we added added frontend using Streamlit, which enabled users to interact through a web interface.
-Later we containerized our FastAPI application with Docker. We created two distinct cloudbuild.yaml files: 
-one for the API and one for the Streamlit application. These files instruct Google Cloud Build to build the Docker 
-image, push it to Google Artifact Registry, and then deploy it as a service on Cloud Run. 
-To invoke the deployed service, users can use browser to access the Streamlit frontend or use curl commands to send 
-POST requests. The production URL is provided by Cloud Run and is accessible at: 
+Later we containerized our FastAPI application with Docker. We created two distinct cloudbuild.yaml files:
+one for the API and one for the Streamlit application. These files instruct Google Cloud Build to build the Docker
+image, push it to Google Artifact Registry, and then deploy it as a service on Cloud Run.
+To invoke the deployed service, users can use browser to access the Streamlit frontend or use curl commands to send
+POST requests. The production URL is provided by Cloud Run and is accessible at:
 https://streamlit-app-934984265576.europe-west1.run.app/
 
 ### Question 25
@@ -635,13 +696,13 @@ Farnood
 > Answer:
 
 We used 7.78 GCP credits during the project. The most expensive service was Container Registry Vulnerability Scanning,
-which cost $4.16 because every new Docker image push cost. The second expencive service was Cloud Run, which cost 
+which cost $4.16 because every new Docker image push cost. The second expencive service was Cloud Run, which cost
 $3.39 due to frequent testing of the API.
 The private projects cost less than $0.50.
-Working in the cloud took a lot of time to set up, especially with permissions and access for all team members. 
-However, once set up, it provided a scalable and flexible environment for deploying our application. 
-It was good to get some free credits and test the environment. In the future we are able to use our personal 
-1000 credits a more experienced manner.      
+Working in the cloud took a lot of time to set up, especially with permissions and access for all team members.
+However, once set up, it provided a scalable and flexible environment for deploying our application.
+It was good to get some free credits and test the environment. In the future we are able to use our personal
+1000 credits a more experienced manner.
 
 ### Question 28
 
@@ -657,8 +718,8 @@ It was good to get some free credits and test the environment. In the future we 
 >
 > Answer:
 
-We implemented a simple frontend for our API using Streamlit. We did this because it allows non-technical users 
-to interact with the model and visualize predictions in real-time without needing to use terminal commands or raw 
+We implemented a simple frontend for our API using Streamlit. We did this because it allows non-technical users
+to interact with the model and visualize predictions in real-time without needing to use terminal commands or raw
 HTTP requests.
 
 ### Question 29
@@ -690,14 +751,14 @@ Eduard
 > *The biggest challenges in the project was using ... tool to do ... . The reason for this was ...*
 >
 > Answer:
-> 
+>
 
-The biggest challenges in the project were related to Google Cloud. Setting up GCP services and assuring that all 
+The biggest challenges in the project were related to Google Cloud. Setting up GCP services and assuring that all
 team members had the correct permissions and access took considerable time. The amount of different Roles was
 overwhelming. We overcame these challenges by sharing our experiences of the setup process among team members.
 In general our team-work functioned well. We held regular meetings to discuss progress, challenges, and next steps.
 It was sometimes difficult to coordinate schedules among all team members and discuss the project
-during live Zoom meetings. This was not surprising, as we were a 100% online team. The use of asynchronous communication 
+during live Zoom meetings. This was not surprising, as we were a 100% online team. The use of asynchronous communication
 channels like Slack helped us overcome this.
 We also faced challenges in selecting which tasks to prioritize within the limited timeframe of the project. We
 addressed this by allowing each team member to focus on areas aligned with their  interests, while ensuring that
@@ -721,8 +782,8 @@ backgrounds and strengths.
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
 
-Student s256613 (Kadi Jairus) worked on setting up the project including repository, project structure, shared Google 
-Cloud project and access; logging and typing, DVC integration; coordinating team meetings and tasks; improving tests 
+Student s256613 (Kadi Jairus) worked on setting up the project including repository, project structure, shared Google
+Cloud project and access; logging and typing, DVC integration; coordinating team meetings and tasks; improving tests
 with student s240118; merging a lot of pull requests and helping with merge conflicts.
 
 Student s204475 (Victor G. H. Rasmussen) worked on:

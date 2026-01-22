@@ -4,18 +4,27 @@ from pathlib import Path
 from contextlib import asynccontextmanager
 import pandas as pd
 import torch
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, Request, Response, UploadFile, File, HTTPException
 from loguru import logger
 import json
 import joblib  # type: ignore[import-untyped]
 from mlo_group_project.model import BreastCancerModel
 from mlo_group_project.guardrails import DataGuard  # type: ignore
+from prometheus_client import CONTENT_TYPE_LATEST, Counter, generate_latest
 
 MODEL_PATH = Path("models/model.pth")
 PROCESSED_DIR = Path("data/processed")
 SCALER_PATH = PROCESSED_DIR / "scaler.joblib"
 FEATURES_PATH = PROCESSED_DIR / "feature_columns.json"
 LABEL_ENCODER_PATH = PROCESSED_DIR / "label_encoder.joblib"
+
+# Prometheus metrics 
+API_REQUESTS_TOTAL = Counter(
+    "api_requests_total",
+    "Total number of HTTP requests",
+    ["method", "path", "status_code"],
+)
+
 
 
 @asynccontextmanager
@@ -165,3 +174,21 @@ async def evaluate_csv(file: UploadFile = File(...)) -> dict:
 def health_check():
     # Check if your model is loaded here
     return {"status": "healthy"}
+
+# Middleware for prometheus to count requests
+@app.middleware("http")
+async def prometheus_request_counter(request: Request, call_next):
+    response = await call_next(request)
+
+    API_REQUESTS_TOTAL.labels(
+        method=request.method,
+        path=request.url.path,
+        status_code=str(response.status_code),
+    ).inc()
+
+    return response
+
+# Metrics endpoint for Prometheus
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
