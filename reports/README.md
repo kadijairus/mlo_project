@@ -780,7 +780,7 @@ We had different backgrounds in using Git and one team-member had a lot of merge
 > *All members contributed to code by...*
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
-> 
+
 Student s256613 (Kadi Jairus) was responsible for:
 - Setting things up: getting the group together, deciding scope/dataset, creating the initial repository with cookiecutter project structure, filling initial README, 
 - Creating Google Cloud project and resolving access issues
