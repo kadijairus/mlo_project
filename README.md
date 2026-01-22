@@ -50,22 +50,28 @@ Similar model has been trained on the same dataset and has shown good performanc
 The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) and is based on [Machine Learning Operations template](https://github.com/SkafteNicki/mlops_template).
 ```txt
 ├── .dvc                      # DVC configuration files
+│   ├── cache
+│   ├── tmp
+│   ├── config                # DVC Bucket configuration
+│   └── config.local
 ├── .github/                  # Github actions and dependabot
 │   └── workflows/
 │       ├── evaluation.yaml
 │       ├── linting.yaml
 │       └── tests.yaml
+├── .secrets/  
+│   └── gcp-key.json          # GCP service account key (to be added by user)
+├── .venv/                    # Virtual environment (to be added by user)
 ├── configs/                  # Configuration files
 ├── data/                     # Data directory
 │   ├── processed
 │   └── raw
 ├── dockerfiles/              # Dockerfiles
-│   ├── evaluate.dockerfile
-│   └── train.dockerfile
-├── docs/                     # Documentation
-│   ├── mkdocs.yml
-│   └── source/
-│       └── index.md
+│   ├── api.dockerfile
+│   ├── api.requirements.txt
+│   ├── dvc.dockerfile
+│   ├── streamlit.dockerfile
+│   └── streamlit.requirements.txt
 ├── models/                   # Trained models
 ├── outputs/
 ├── reports/                  # Reports
@@ -83,18 +89,24 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 └── tests/                    # Tests
 │   ├── __init__.py
 │   ├── conftest.py
-│   ├── test_api.py
+│   ├── sample_data.pt        # Sample data for tests (to be added automatically when tests are run)
 │   ├── test_data.py
 │   └── test_model.py
 ├── wandb/                    # Weights & Biases files
+├── .dvcignore
+├── .env                      # Environment variables (to be added by user)
+├── .gcloudignore
 ├── .gitignore
 ├── .pre-commit-config.yaml
-├── LICENSE
+├── cloudbuild_api.yaml           # Google Cloud Build file
+├── cloudbuild_stramlit_app.yaml  # Google Cloud Build file
+├── dvc.lock                      # DVC lock file  
 ├── pyproject.toml            # Python project file
 ├── README.md                 # Project README
 ├── requirements.txt          # Project requirements
 ├── requirements_dev.txt      # Project development requirements
-└── tasks.py                  # Project tasks
+├── tasks.py                  # Project tasks
+└── uv.lock                   # uv lock file
 ```
 ## How to run
 We use invoke as our primary project CLI to simplify complex commands.
@@ -170,6 +182,44 @@ Use these commands to keep your local environment in sync with the cloud registr
    ```bash
    uv run invoke test
    ```
+
+### Runnig via the Docker
+
+All project tasks (data pulling, training, and evaluation) can be executed within a containerized environment to ensure consistency across different machines.
+
+#### 1. Setup:
+
+Build the Docker image: Run this command from the project root to build the specialized DVC/worker image:
+```
+docker build -f dockerfiles/dvc.dockerfile . -t dvc:latest
+```
+#### 2. Usage:
+
+**Prerequisites (GCP Credentials):** To interact with Google Cloud Storage (e.g., via DVC), you must provide a service account key:
+* Download a GCP Service Account key with Storage Object Admin (or Viewer/Creator) permissions.
+* Save the JSON file to .secrets/gcp-key.json in your project root.
+* Note: The .secrets/ folder is included in .gitignore to prevent accidental credential leaks.
+
+You can run any invoke task (`uv run invoke <task>`) defined in the project by passing it to the docker run command.
+
+**To explore the container environment (Interactive Shell):** If you need to debug or run multiple commands manually, use the `--entrypoint` override:
+
+```
+docker run --rm -it \
+-v $(pwd)/.secrets/gcp-key.json:/app/gcp-key.json:ro \
+-e GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json \
+--entrypoint sh \
+dvc:latest
+```
+
+**To run a specific task (e.g., pulling data):**
+
+```
+docker run --rm -it \
+-v $(pwd)/.secrets/gcp-key.json:/app/gcp-key.json:ro \
+-e GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json \
+dvc:latest data-pull
+```
 
 ### Monitoring and profiling
 
