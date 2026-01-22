@@ -3,3 +3,4 @@
 ['remote "remote_storage"']
     url = gs://kadis-bucket/
     version_aware = true
+    credentialpath = ../.secrets/gcp-key.json

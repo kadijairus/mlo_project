@@ -50,22 +50,28 @@ Similar model has been trained on the same dataset and has shown good performanc
 The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) and is based on [Machine Learning Operations template](https://github.com/SkafteNicki/mlops_template).
 ```txt
 ├── .dvc                      # DVC configuration files
+│   ├── cache
+│   ├── tmp
+│   ├── config                # DVC Bucket configuration
+│   └── config.local
 ├── .github/                  # Github actions and dependabot
 │   └── workflows/
 │       ├── evaluation.yaml
 │       ├── linting.yaml
 │       └── tests.yaml
+├── .secrets/  
+│   └── gcp-key.json          # GCP service account key (to be added by user)
+├── .venv/                    # Virtual environment (to be added by user)
 ├── configs/                  # Configuration files
 ├── data/                     # Data directory
 │   ├── processed
 │   └── raw
 ├── dockerfiles/              # Dockerfiles
-│   ├── evaluate.dockerfile
-│   └── train.dockerfile
-├── docs/                     # Documentation
-│   ├── mkdocs.yml
-│   └── source/
-│       └── index.md
+│   ├── api.dockerfile
+│   ├── api.requirements.txt
+│   ├── dvc.dockerfile
+│   ├── streamlit.dockerfile
+│   └── streamlit.requirements.txt
 ├── models/                   # Trained models
 ├── outputs/
 ├── reports/                  # Reports
@@ -83,18 +89,24 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 └── tests/                    # Tests
 │   ├── __init__.py
 │   ├── conftest.py
-│   ├── test_api.py
+│   ├── sample_data.pt        # Sample data for tests (to be added automatically when tests are run)
 │   ├── test_data.py
 │   └── test_model.py
 ├── wandb/                    # Weights & Biases files
+├── .dvcignore
+├── .env                      # Environment variables (to be added by user)
+├── .gcloudignore
 ├── .gitignore
 ├── .pre-commit-config.yaml
-├── LICENSE
+├── cloudbuild_api.yaml           # Google Cloud Build file
+├── cloudbuild_stramlit_app.yaml  # Google Cloud Build file
+├── dvc.lock                      # DVC lock file  
 ├── pyproject.toml            # Python project file
 ├── README.md                 # Project README
 ├── requirements.txt          # Project requirements
 ├── requirements_dev.txt      # Project development requirements
-└── tasks.py                  # Project tasks
+├── tasks.py                  # Project tasks
+└── uv.lock                   # uv lock file
 ```
 ## How to run
 We use invoke as our primary project CLI to simplify complex commands.
