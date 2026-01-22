@@ -42,7 +42,6 @@ def train_model(cnf: DictConfig) -> None:
         batch_size = int(cnf.hp.batch_size)
 
         processed_dir = Path(cnf.paths.processed_dir)
-        processed_dir = Path(os.getenv("processed_dir", "data/processed"))
         model_save_path = Path(cnf.paths.model_save_path)
         metrics_save_path = Path(cnf.paths.metrics_save_path)
 

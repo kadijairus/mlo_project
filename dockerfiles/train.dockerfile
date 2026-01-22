@@ -10,7 +10,8 @@ COPY ../pyproject.toml pyproject.toml
 COPY ../README.md README.md
 COPY ../src src/
 # Set working directory to root
-WORKDIR /
+#WORKDIR /
+WORKDIR /app
 
 # Install dependencies from uv.lock without installing the project itself
 RUN uv sync --locked --no-cache --no-install-project
