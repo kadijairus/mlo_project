@@ -92,7 +92,7 @@ will check the repositories and the code to verify your answers.
 * [ ] Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [x] Create a FastAPI application that can do inference using your model (M22)
 * [x] Deploy your model in GCP using either Functions or Run as the backend (M23)
-* [ ] Write API tests for your application and setup continues integration for these (M24)
+* [x] Write API tests for your application and setup continues integration for these (M24)
 * [ ] Load test your application (M24)
 * [ ] Create a more specialized ML-deployment API using either ONNX or BentoML, or both (M25)
 * [x] Create a frontend for your API (M26)
@@ -554,8 +554,8 @@ Our live user interface is accessible here: [Streamlit App on Cloud Run](https:/
 >
 > Answer:
 
-Victor
---- question 19 fill here ---
+`![Bucket Structure](figures/structure.png)`
+`![Models](figures/models.png)`
 
 ### Question 20
 
@@ -591,9 +591,13 @@ Eduard
 >
 > Answer:
 
-Victor
-Simplicity of our model.
---- question 22 fill here ---
+We chose not to use the cloud for training, as our model is very simple. Our classification model is a 
+straightforward feedforward neural network with only a few hidden layers processing 30 input features. The entire dataset contains only 569 samples, which after preprocessing results in small tensors easily handled on a local machine. Training runs complete in minutes on a standard laptop CPU (local experiments leave timestamps).
+Given these constraints, the overhead of setting up VM instances, configuring cloud storage access, and managing remote 
+training jobs would have been counterproductive. We achieved our goal of experiment tracking through Weights & Biases, 
+which logged all metrics regardless of training location. The cost-benefit analysis clearly favored local development: 
+we could iterate faster, debug more easily, and avoid spending GCP credits on compute resources that provided no 
+practical advantage for our lightweight model architecture. Of course, getting the practical experience of implenting cloud training would still have been beneficial. 
 
 ## Deployment
 
