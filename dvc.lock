@@ -12,7 +12,6 @@ stages:
     outs:
     - path: data/processed/
       hash: md5
-      files: []
   train:
     cmd: uv run python src/*/train.py
     deps:
