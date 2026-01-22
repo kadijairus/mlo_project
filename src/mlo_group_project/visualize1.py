@@ -1,6 +1,6 @@
 from pathlib import Path
 from loguru import logger
-import torch
+import numpy as np
 import typer
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
