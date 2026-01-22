@@ -174,6 +174,7 @@ Use these commands to keep your local environment in sync with the cloud registr
    ```bash
    uv run invoke preprocess-data
    uv run invoke train
+   uv run invoke visualize 
    ```
 
 3. Promote best model to cloud registry:

@@ -5,8 +5,8 @@ stages:
     deps:
     - path: data/raw/bcw.csv
       hash: md5
-      md5: b89bc72edee2b5574bf43f92b320b679
-      size: 125206
+      md5: c8a5a23b948ce4b0ef2bb0e97876be47
+      size: 124636
     - path: src/
       hash: md5
     outs:
@@ -18,36 +18,36 @@ stages:
         size: 545
         cloud:
           remote_storage:
-            etag: 08dcd8deffba9f92031001
-            version_id: '1769095686499420'
+            etag: 08e8bebed4f89992031001
+            version_id: '1768906080362344'
       - relpath: label_encoder.joblib
         md5: 08af598a13b001862e4834decd6e52a1
         size: 481
         cloud:
           remote_storage:
-            etag: 08d9b3e6ffba9f92031001
-            version_id: '1769095686625753'
+            etag: 08cd9fc1d4f89992031001
+            version_id: '1768906080407501'
       - relpath: scaler.joblib
         md5: 6fa6caf753e479bb6f27ed38f4845fe8
         size: 2631
         cloud:
           remote_storage:
-            etag: 0884e0f0ffba9f92031001
-            version_id: '1769095686795268'
+            etag: 08c5e7c0d4f89992031001
+            version_id: '1768906080400325'
       - relpath: test.pt
-        md5: 3a96192614573c0730eb1f5fbbc9edb6
+        md5: 97ffe6b374143ff027f535ebff8079c7
         size: 8390
         cloud:
           remote_storage:
-            etag: 08c6a7e9ffba9f92031001
-            version_id: '1769095686673350'
+            etag: 08bac8c5d4f89992031001
+            version_id: '1768906080478266'
       - relpath: train.pt
-        md5: 9fadca232053b6f0e0a486a6b2afd0cd
+        md5: 6b1686e10e8f8634ed49fa9409d42709
         size: 64780
         cloud:
           remote_storage:
-            etag: 08e5d0eaffba9f92031001
-            version_id: '1769095686695013'
+            etag: 089083c2d4f89992031001
+            version_id: '1768906080420240'
   train:
     cmd: uv run python src/*/train.py
     deps:
@@ -61,25 +61,25 @@ stages:
       - relpath: scaler.joblib
         md5: 6fa6caf753e479bb6f27ed38f4845fe8
       - relpath: test.pt
-        md5: 3a96192614573c0730eb1f5fbbc9edb6
+        md5: 97ffe6b374143ff027f535ebff8079c7
       - relpath: train.pt
-        md5: 9fadca232053b6f0e0a486a6b2afd0cd
+        md5: 6b1686e10e8f8634ed49fa9409d42709
     - path: src/
       hash: md5
     outs:
     - path: models/best_model.pt
       hash: md5
-      md5: 78ebc9b455a659b7df5be20df47efd5e
+      md5: c2b95501ca141881bde633b911465b82
       size: 19174
       cloud:
         remote_storage:
-          etag: 08d7a3d686f39c92031001
-          version_id: '1769007654212055'
+          etag: 08ee8bb8d4f89992031001
+          version_id: '1768906080257518'
     - path: models/last_model.pt
       hash: md5
-      md5: 8b1a2e70d128e81a881432430ff5b0c3
+      md5: 63c90b53ce1b89e74bf9fbb83f8422c8
       size: 19174
       cloud:
         remote_storage:
-          etag: 08faa6cc86f39c92031001
-          version_id: '1769007654048634'
+          etag: 08b1aec1d4f89992031001
+          version_id: '1768906080409393'
