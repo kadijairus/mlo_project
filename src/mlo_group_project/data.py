@@ -1,6 +1,5 @@
 from loguru import logger
 from pathlib import Path
-import typer
 from torch.utils.data import Dataset
 import torch
 import pandas as pd
@@ -107,4 +106,5 @@ def preprocess(data_path: Path = Path("./data/raw/bcw.csv"), output_folder: Path
 
 
 if __name__ == "__main__":
+    import typer
     typer.run(preprocess)
