@@ -427,7 +427,8 @@ Furthermore, to guarantee consistent results across different runs, we added a `
 ![W&B visualization](figures/results-plot.png)
 As seen in the first screenshot, we tracked training loss and accuracy over steps for our ANN model.These losses are key indicators of model convergence and generalization. A consistent decrease in both training and validation loss shows the model is learning effectively, while divergences can highlight overfitting or underfitting issues.
 
-We also have Visualize, visualize1 and volcano plots, where the first two demostrate the performance of classification, and volcano plot is for visualizing selected features by our model. We show how decentralized and clustered data points are represented. These visual outputs complement quantitative metrics by helping us assess whether the model preserves both local and global data structures, ensuring that visualizations are meaningful and interpretable.
+![W&B visualization](figures/tSNE_plot_ANN.png)
+We also have had visualize, visualize1 and volcano plots, where the first two demostrate the performance of classification, and volcano plot is for visualizing selected features by our model. We show how decentralized and clustered data points are represented. These visual outputs complement quantitative metrics by helping us assess whether the model preserves both local and global data structures, ensuring that visualizations are meaningful and interpretable.
 
 By tracking these parameters alongside performance metrics, we systematically identify configurations that optimize visualization quality while keeping computational costs reasonable. This approach ensures that improvements are data-driven and reproducible.
 
