@@ -29,6 +29,7 @@ COPY pyproject.toml README.md* ./
 # Copy source files
 COPY src/${PROJECT_NAME}/__init__.py ./src/${PROJECT_NAME}/__init__.py
 COPY src/${PROJECT_NAME}/api.py ./src/${PROJECT_NAME}/api.py
+COPY src/${PROJECT_NAME}/guardrails.py ./src/${PROJECT_NAME}/guardrails.py
 COPY src/${PROJECT_NAME}/model.py ./src/${PROJECT_NAME}/model.py
 # Copy model
 COPY models/model.pth ./models/model.pth

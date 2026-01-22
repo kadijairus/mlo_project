@@ -88,7 +88,7 @@ will check the repositories and the code to verify your answers.
 * [x] Add a continues workflow that triggers when data changes (M19)
 * [x] Add a continues workflow that triggers when changes to the model registry is made (M19)
 * [x] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
-* [-] Create a trigger workflow for automatically building your docker images (M21)
+* [x] Create a trigger workflow for automatically building your docker images (M21)
 * [ ] Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [x] Create a FastAPI application that can do inference using your model (M22)
 * [x] Deploy your model in GCP using either Functions or Run as the backend (M23)
@@ -99,14 +99,14 @@ will check the repositories and the code to verify your answers.
 
 ### Week 3
 
-* [x] Check how robust your model is towards data drifting (M27) (Farnood)
+* [x] Check how robust your model is towards data drifting (M27)
 * [ ] Setup collection of input-output data from your deployed application (M27)
 * [ ] Deploy to the cloud a drift detection API (M27)
-* [ ] Instrument your API with a couple of system metrics (M28) (Victor)
+* [-] Instrument your API with a couple of system metrics (M28) (Victor)
 * [ ] Setup cloud monitoring of your instrumented application (M28)
-* [x] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28) (Farnood)
+* [x] Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28)
 * [ ] If applicable, optimize the performance of your data loading using distributed data loading (M29)
-* [ ] If applicable, optimize the performance of your training pipeline by using distributed training (M30) (Victor checks)
+* [-] If applicable, optimize the performance of your training pipeline by using distributed training (M30) (Victor checks)
 * [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
 
 ### Extra
@@ -114,8 +114,8 @@ will check the repositories and the code to verify your answers.
 * [x] Write some documentation for your application (M32)
 * [ ] Publish the documentation to GitHub Pages (M32)
 * [x] Revisit your initial project description. Did the project turn out as you wanted?
-* [ ] Create an architectural diagram over your MLOps pipeline (eduard)
-* [ ] Make sure all group members have an understanding about all parts of the project
+* [-] Create an architectural diagram over your MLOps pipeline (eduard)
+* [-] Make sure all group members have an understanding about all parts of the project
 * [x] Uploaded all your code to GitHub
 
 ## Group information
@@ -717,7 +717,7 @@ backgrounds and strengths.
 
 Student s256613 (Kadi Jairus) worked on setting up the project including repository, project structure, shared Google 
 Cloud project and access; logging and typing, DVC integration; coordinating team meetings and tasks; improving tests 
-with student s240118; merging pull requests and helping with merge conflicts.
+with student s240118; merging a lot of pull requests and helping with merge conflicts.
 
 Student s204475 (Victor G. H. Rasmussen) worked on:
 - Adding the API and a Streamlit-based frontend for CSV upload and results display
@@ -734,4 +734,10 @@ Student s240118 ( Farnood Khordepaz ):
 -Automated Alerting (M28): I integrated the guardrails with the Weights & Biases alerting system. This ensures that any "bad" data detected in production immediately triggers a real-time cloud alert to the team.
 -Testing Infrastructure: I took ownership of the testing framework. This involved resolving critical dependency conflicts in pyproject.toml to get the CI environment running on macOS, implementing unit tests for the Model and Data modules, and mocking the training loop to verify integration without incurring compute costs.
 
-Generative AI Usage: I used Generative AI primarily as a technical unblocker and pair programmer. It was essential for debugging complex environment errors (specifically between uv, torch, and hardware architectures) and for generating the initial boilerplate code for the unit tests and guardrail logic, allowing me to focus on the system architecture rather than syntax. ( Also gemini helped with some questions and answers in this read me file )
+Student ...
+
+Student ...
+
+
+All members contributed to documentation.
+Generative AI Usage: we used Generative AI (Google Gemini) primarily as a technical unblocker and pair programmer. It was essential for debugging complex environment errors (specifically between uv, torch, and hardware architectures) and for generating the initial boilerplate code for the unit tests and guardrail logic, allowing to focus on the system architecture rather than syntax.
