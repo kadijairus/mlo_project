@@ -55,7 +55,7 @@ def _create_tsne(
 def visualize(
     model_checkpoint: Path = Path("models/model.pth"),
     processed_dir: Path = Path("data/processed"),
-    figure_name: str = "embeddings2.png",
+    figure_name: str = "tSNE_plot_lineboundary.png",
     batch_size: int = 128,
     pca_components: int = 32,
     tsne_perplexity: float = 30.0,
