@@ -564,9 +564,9 @@ Our live user interface is accessible here: [Streamlit App on Cloud Run](https:/
 >
 > Answer:
 
-[History of API docker image](figures/gcp-artifact-api-1.png)
+![History of API docker image](figures/gcp-artifact-api-1.png)
 
-[History of Streamlit docker image](figures/gcp-artifact-streamlit-1.png)
+![History of Streamlit docker image](figures/gcp-artifact-streamlit-1.png)
 
 ### Question 21
 
@@ -575,8 +575,7 @@ Our live user interface is accessible here: [Streamlit App on Cloud Run](https:/
 >
 > Answer:
 
-Eduard
---- question 21 fill here ---
+![Cloud Build history screenshots](figures/gcp-cloud-build-history.png)
 
 ### Question 22
 
@@ -591,13 +590,13 @@ Eduard
 >
 > Answer:
 
-We chose not to use the cloud for training, as our model is very simple. Our classification model is a 
+We chose not to use the cloud for training, as our model is very simple. Our classification model is a
 straightforward feedforward neural network with only a few hidden layers processing 30 input features. The entire dataset contains only 569 samples, which after preprocessing results in small tensors easily handled on a local machine. Training runs complete in minutes on a standard laptop CPU (local experiments leave timestamps).
-Given these constraints, the overhead of setting up VM instances, configuring cloud storage access, and managing remote 
-training jobs would have been counterproductive. We achieved our goal of experiment tracking through Weights & Biases, 
-which logged all metrics regardless of training location. The cost-benefit analysis clearly favored local development: 
-we could iterate faster, debug more easily, and avoid spending GCP credits on compute resources that provided no 
-practical advantage for our lightweight model architecture. Of course, getting the practical experience of implenting cloud training would still have been beneficial. 
+Given these constraints, the overhead of setting up VM instances, configuring cloud storage access, and managing remote
+training jobs would have been counterproductive. We achieved our goal of experiment tracking through Weights & Biases,
+which logged all metrics regardless of training location. The cost-benefit analysis clearly favored local development:
+we could iterate faster, debug more easily, and avoid spending GCP credits on compute resources that provided no
+practical advantage for our lightweight model architecture. Of course, getting the practical experience of implenting cloud training would still have been beneficial.
 
 ## Deployment
 
