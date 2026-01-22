@@ -10,6 +10,7 @@ import json
 import joblib  # type: ignore[import-untyped]
 from mlo_group_project.model import BreastCancerModel
 from mlo_group_project.guardrails import DataGuard  # type: ignore
+from prometheus_client import CONTENT_TYPE_LATEST, Counter, generate_latest
 
 MODEL_PATH = Path("models/model.pth")
 PROCESSED_DIR = Path("data/processed")
