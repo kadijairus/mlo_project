@@ -801,9 +801,14 @@ Student s240118 ( Farnood Khordepaz ):
 - Training & Evaluation Pipeline: I implemented the core training loop (train.py) and evaluation logic (evaluate.py). This included defining the optimization steps, loss calculation, and ensuring the   model correctly processes batches during both training and validation phases.
 - Guardrails & Drift Detection (M27): I designed and implemented the guardrails.py module. This system acts as a runtime "bouncer" that validates input tensors against statistical thresholds, preventing the model from hallucinating on outliers, NaNs, or drifted data.
 -Automated Alerting (M28): I integrated the guardrails with the Weights & Biases alerting system. This ensures that any "bad" data detected in production immediately triggers a real-time cloud alert to the team.
--Testing Infrastructure: I took ownership of the testing framework. This involved resolving critical dependency conflicts in pyproject.toml to get the CI environment running on macOS, implementing unit tests for the Model and Data modules, and mocking the training loop to verify integration without incurring compute costs.
+- Testing Infrastructure: I took ownership of the testing framework. This involved resolving critical dependency conflicts in pyproject.toml to get the CI environment running on macOS, implementing unit tests for the Model and Data modules, and mocking the training loop to verify integration without incurring compute costs.
 
-Student ...
+Student s256594 (Eduard Haiman):
+- Developed a hierarchical Hydra configuration system to standardize experiments across training and evaluation workflows.
+- Engineered the project's Docker ecosystem, creating specialized images for DVC, FastAPI, and Streamlit, and orchestrated services using Docker Compose.
+- Architected the GCP integration, implementing secure Service Account authentication for Cloud Storage access within containers.
+- Configured Google Cloud Build to automate the build-to-registry pipeline for production images upon GitHub repository updates.
+- Managed the deployment of the API and frontend UI on Google Cloud Run, configuring cross-service communication via environment variables.
 
 Student ...
 
