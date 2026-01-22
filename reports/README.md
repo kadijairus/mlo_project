@@ -423,7 +423,8 @@ Furthermore, to guarantee consistent results across different runs, we added a `
 > Answer:
 
 --- question 14 fill here ---
-`![W&B visualizatio](./reports/figures/results-plot.png)`
+
+![W&B visualizatio](./reports/figures/results-plot.png)
 As seen in the first screenshot, we tracked training loss and accuracy over steps for our ANN model.These losses are key indicators of model convergence and generalization. A consistent decrease in both training and validation loss shows the model is learning effectively, while divergences can highlight overfitting or underfitting issues.
 
 We also have Visualize, visualize1 and volcano plots, where the first two demostrate the performance of classification, and volcano plot is for visualizing selected features by our model. We show how decentralized and clustered data points are represented. These visual outputs complement quantitative metrics by helping us assess whether the model preserves both local and global data structures, ensuring that visualizations are meaningful and interpretable.
@@ -772,8 +773,6 @@ addressed this by allowing each team member to focus on areas aligned with their
 everyone had a basic understanding of all parts of the project. It helped that we had group members with different
 backgrounds and strengths.
 We had different backgrounds in using Git and one team-member had a lot of merge conflicts and we were able to get to the roots of the problems.
-
---- Xiaoyu ---
 
 ### Question 31
 
