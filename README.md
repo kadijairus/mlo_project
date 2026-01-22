@@ -49,12 +49,12 @@ Similar model has been trained on the same dataset and has shown good performanc
 
 The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) and is based on [Machine Learning Operations template](https://github.com/SkafteNicki/mlops_template).
 ```txt
-├── .dvc                      # DVC configuration files
+├── .dvc                      # Data Version Control
 │   ├── cache
 │   ├── tmp
-│   ├── config                # DVC Bucket configuration
+│   ├── config                
 │   └── config.local
-├── .github/                  # Github actions and dependabot
+├── .github/                  # Github actions
 │   └── workflows/
 │       ├── evaluation.yaml
 │       ├── linting.yaml
@@ -62,7 +62,7 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 ├── .secrets/  
 │   └── gcp-key.json          # GCP service account key (to be added by user)
 ├── .venv/                    # Virtual environment (to be added by user)
-├── configs/                  # Configuration files
+├── configs/                  
 ├── data/                     # Data directory
 │   ├── processed
 │   └── raw
@@ -76,7 +76,7 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 ├── outputs/
 ├── reports/                  # Reports
 │   └── figures/
-├── scripts/
+├── scripts/                  # Helper scritpt for testing
 ├── src/                      # Source code
 │   ├── mlo_project/
 │   │   ├── __init__.py
@@ -105,12 +105,11 @@ The project uses [Cookiecutter](https://github.com/cookiecutter/cookiecutter) an
 ├── README.md                 # Project README
 ├── requirements.txt          # Project requirements
 ├── requirements_dev.txt      # Project development requirements
-├── tasks.py                  # Project tasks
+├── tasks.py                  # Project invoke tasks
 └── uv.lock                   # uv lock file
 ```
 ## How to run
-We use invoke as our primary project CLI to simplify complex commands.
-Ensure your environment is set up with uv sync.
+We use invoke as our primary project CLI to simplify complex commands and DVC to store data.
 
 ### Setup
 1. Clone the repository:
@@ -122,23 +121,25 @@ Ensure your environment is set up with uv sync.
    ```bash
    pip install uv
    ```
-3. Add to .env file (create if it doesn't exist):
+3. Get credentials for Wandb and Google Cloud service account key.
+4. Save the Google Cloud service account key JSON file to `.secrets/gcp-key.json` in your project root.
+4. Add to .env file (create if it doesn't exist):
    ```env
    WANDB_API_KEY=your_wandb_api_key_here
-   GOOGLE_APPLICATION_CREDENTIALS="your_google_cloud_service_account_key.json"
+   GOOGLE_APPLICATION_CREDENTIALS="gcp-key.json"
    ```
 4. Activate virtual environment:
    ```bash
    source .venv/bin/activate  # On Windows use `venv\Scripts\activate`
    ```
-5. Install the required dependencies:
+5. Install the required dependencies and ensure your environment is set up:
    ```bash
    uv sync
    ```
 
 ### Update data artifacts
 
-We use DVC to version heavy artifacts.
+We use DVC to version heavy artifacts and invoke for commands.
 Use these commands to keep your local environment in sync with the cloud registry.
 
 1. Before running any scripts, you must pull the data artifacts tracked by DVC:
@@ -150,6 +151,7 @@ Use these commands to keep your local environment in sync with the cloud registr
    uv run invoke promote
    ```
 3. Pushing data to DVC updates the local dvc.lock file. Commit this to git.
+
 4. See other invoke tasks in `tasks.py` file or run:
    ```bash
    uv run invoke --list
@@ -187,39 +189,40 @@ Use these commands to keep your local environment in sync with the cloud registr
 
 All project tasks (data pulling, training, and evaluation) can be executed within a containerized environment to ensure consistency across different machines.
 
-#### 1. Setup:
-
+1. Setup. 
 Build the Docker image: Run this command from the project root to build the specialized DVC/worker image:
-```
-docker build -f dockerfiles/dvc.dockerfile . -t dvc:latest
-```
-#### 2. Usage:
 
-**Prerequisites (GCP Credentials):** To interact with Google Cloud Storage (e.g., via DVC), you must provide a service account key:
+   ```bash
+   docker build -f dockerfiles/dvc.dockerfile . -t dvc:latest
+   ```
+2. Ensure the prerequisites (GCP Credentials):
+To interact with Google Cloud Storage (e.g., via DVC), you must provide a service account key:
 * Download a GCP Service Account key with Storage Object Admin (or Viewer/Creator) permissions.
-* Save the JSON file to .secrets/gcp-key.json in your project root.
-* Note: The .secrets/ folder is included in .gitignore to prevent accidental credential leaks.
+* Save the JSON file to `.secrets/gcp-key.json` in your project root.
 
-You can run any invoke task (`uv run invoke <task>`) defined in the project by passing it to the docker run command.
+3. Usage. You can run any invoke task (`uv run invoke <task>`) defined in the project by passing it to the docker run command.
 
-**To explore the container environment (Interactive Shell):** If you need to debug or run multiple commands manually, use the `--entrypoint` override:
+#### Usage examples
 
-```
-docker run --rm -it \
--v $(pwd)/.secrets/gcp-key.json:/app/gcp-key.json:ro \
--e GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json \
---entrypoint sh \
-dvc:latest
-```
+**To explore the container environment (Interactive Shell):** 
+If you need to debug or run multiple commands manually, use the `--entrypoint` override:
+
+   ```
+   docker run --rm -it \
+   -v $(pwd)/.secrets/gcp-key.json:/app/gcp-key.json:ro \
+   -e GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json \
+   --entrypoint sh \
+   dvc:latest
+   ```
 
 **To run a specific task (e.g., pulling data):**
 
-```
-docker run --rm -it \
--v $(pwd)/.secrets/gcp-key.json:/app/gcp-key.json:ro \
--e GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json \
-dvc:latest data-pull
-```
+   ```
+   docker run --rm -it \
+   -v $(pwd)/.secrets/gcp-key.json:/app/gcp-key.json:ro \
+   -e GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json \
+   dvc:latest data-pull
+   ```
 
 ### Monitoring and profiling
 
@@ -238,9 +241,10 @@ Training progress and model artifacts are automatically logged to Weights & Bias
    
 ### Inference API & User Interface to Evaluate the Model (Three Options)
 
-This project features a **FastAPI backend** for programmatic model inference and a **Streamlit frontend** for interactive spatial data evaluation.
+This project features a **FastAPI backend** for programmatic model inference and a **Streamlit frontend** for 
+interactive spatial data evaluation.
 
-#### Local Development (via Invoke)
+#### API: Local Development (via Invoke)
 
 The easiest way to run the services locally for development is using our `invoke` tasks.
 
@@ -261,29 +265,30 @@ The easiest way to run the services locally for development is using our `invoke
 
 * Click "Evaluate Dataset" to generate predictions from the model.
 
-#### Containerized Deployment (via Docker)
+#### API: Containerized Deployment (via Docker)
 To ensure environment consistency and simplify dependency management, we provide a `docker-compose.yml` file to orchestrate both services in parallel.
 
 1. Build and launch the containers:
 
-```
-docker compose up --build
-```
+   ```
+   docker compose up --build
+   ```
 
 2. Accessing the services:
 
-* Frontend UI: Navigate to http://localhost:8501.
+Frontend UI: Navigate to http://localhost:8501.
 
-* Backend API: Available at http://localhost:8000
+Backend API: Available at http://localhost:8000
 
 
-#### Cloud Production (Google Cloud Platform)
+#### API: Cloud Production (Google Cloud Platform)
 The evaluation services are deployed on **Google Cloud Run**, providing a scalable and highly available production environment.
 * Live User Interface: [streamlit-app-934984265576.europe-west1.run.app](https://streamlit-app-934984265576.europe-west1.run.app/)
 > **MLOps Note**: The UI service is linked to the API through the API_URL environment variable. If redeploying the API, ensure the UI's environment variable is updated to point to the new service URL to maintain connectivity.
 
 ## App instructions
 The application allows users to upload a dataset for model evaluation:
+
 ![Upload dataset](reports/figures/app_upload_data.png)
 
 Once the dataset is uploaded, the application evaluates the model’s performance and displays the results:
