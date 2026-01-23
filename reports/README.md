@@ -422,8 +422,17 @@ Furthermore, to guarantee consistent results across different runs, we added a `
 >
 > Answer:
 
-Xiaoyu
---- question 14 fill here ---
+![W&B visualization](figures/results-plot.png)
+
+As seen in the first screenshot, we tracked training loss and accuracy over steps for our ANN model.These losses are key indicators of model convergence and generalization. A consistent decrease in both training and validation loss shows the model is learning effectively, while divergences can highlight overfitting or underfitting issues.
+
+![W&B visualization](figures/tSNE_plot_ANN.png)
+
+We also have had visualize, visualize1 and volcano plots, where the first two demostrate the performance of classification, and volcano plot is for visualizing selected features by our model. We show how decentralized and clustered data points are represented. These visual outputs complement quantitative metrics by helping us assess whether the model preserves both local and global data structures, ensuring that visualizations are meaningful and interpretable.
+
+By tracking these parameters alongside performance metrics, we systematically identify configurations that optimize visualization quality while keeping computational costs reasonable. This approach ensures that improvements are data-driven and reproducible.
+
+Together, these tracked metrics—loss curves and sample visualizations—give a holistic view of our experiments. Using Weights & Biases (W&B) allows us to monitor progress in real time, maintain version control, and easily compare results across model variants, supporting informed decisions for model refinement and reproducible research.
 
 ### Question 15
 
@@ -554,8 +563,9 @@ Our live user interface is accessible here: [Streamlit App on Cloud Run](https:/
 >
 > Answer:
 
-`![Bucket Structure](figures/structure.png)`
-`![Models](figures/models.png)`
+![Bucket Structure](figures/structure.png)
+
+![Models](figures/models.png)
 
 ### Question 20
 
@@ -812,9 +822,9 @@ Student s256594 (Eduard Haiman):
 - Managed the deployment of the API and frontend UI on Google Cloud Run, configuring cross-service communication via environment variables.
 
 Student 260025 (Xiaoyu He):
-- Created visualization
-- Added plots
-TODO: add
+- I implemented the visualization module, using Visualize.py as the main method and additionally implementing visualize1 for decentralized data settings based on prior work and  volcano plot for feature selection. 
+- I have spent significant time debugging the experimental pipeline and integrating DVC, Docker, and Weights & Biases to ensure reproducible experimentation, probably my debug experience can be used to guild others.
+
 
 All members contributed to documentation.
 Generative AI Usage: we used Generative AI (Google Gemini) primarily as a technical unblocker and pair programmer. It was essential for debugging complex environment errors (specifically between uv, torch, and hardware architectures) and for generating the initial boilerplate code for the unit tests and guardrail logic, allowing to focus on the system architecture rather than syntax.
