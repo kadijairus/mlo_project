@@ -363,7 +363,7 @@ Finally, we automate our containerized deployment using **Google Cloud Build**. 
 >
 > Answer:
 
-We utilize **Hydra** for hierarchical configuration management, allowing for clean separation between environment paths and model hyperparameters. Our configuration is centralized in `src/mlo_group_project/config/`, with `config.yaml` serving as the entry point and `hp/basic.yaml` defining specific model parameters.
+We use **Hydra** for hierarchical configuration, centralizing settings in `src/mlo_group_project/config/`. The `config.yaml` acts as the entry point, while `hp/basic.yaml` stores hyperparameters.
 
 To run a standard experiment using our default configuration:
 
@@ -379,7 +379,7 @@ uv run invoke --list
 
 ```
 
-Hydra’s power lies in its command-line overrides. To test different settings without modifying files, we use:
+For custom runs, Hydra enables command-line overrides:
 
 ```bash
 uv run python src/mlo_group_project/train.py hp.lr=0.01 hp.batch_size=128
@@ -748,8 +748,18 @@ We also experiemented much more with visualisation than the report checkboxes su
 >
 > Answer:
 
-Eduard
---- question 29 fill here ---
+![Overall system architecture](figures/architecture.png)
+
+Our system architecture integrates local development, automated CI/CD pipelines, and cloud-native deployment.
+
+**Local Development and Training**
+The process originates on a **local machine**, where **uv** serves as the primary package and project manager. We utilize **Hydra** for hierarchical configuration management, enabling flexible experimentation. **Training** and **evaluation** are either containerized using **Docker** or executed within a **Virtual Machine** to ensure environment parity. During these phases, the system leverages **DVC** for data and model versioning. A **Google Service Account** provides the necessary credentials (secret keys) allowing DVC to securely pull datasets from or push models to **Google Cloud Storage**. Additionally, we integrate **Weights & Biases** to inspect and track real-time experiment metrics.
+
+**CI/CD Pipeline**
+Code changes are pushed to a **GitHub Repository**. When a pull request is created, it triggers **GitHub Actions** to execute automated unit tests and code quality checks. Once the code is approved and merged into the master branch, a **Google Cloud Build** trigger is activated to automate the transition from source code to production artifacts.
+
+**Cloud Deployment**
+**Google Cloud Build** handles the construction of production-ready **Docker images** for both the **FastAPI** backend and the **Streamlit** frontend. These images are stored in the registry and deployed to **Google Cloud Run**. This serverless platform hosts the final application, which dynamically pulls "the best model" from **Google Cloud Storage** to serve evaluations to the end **User**. This architecture ensures that every component—from data versioning to frontend hosting—is automated, scalable, and reproducible.
 
 ### Question 30
 
