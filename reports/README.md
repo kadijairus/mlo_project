@@ -114,8 +114,8 @@ will check the repositories and the code to verify your answers.
 * [x] Write some documentation for your application (M32)
 * [ ] Publish the documentation to GitHub Pages (M32)
 * [x] Revisit your initial project description. Did the project turn out as you wanted?
-* [-] Create an architectural diagram over your MLOps pipeline (eduard)
-* [-] Make sure all group members have an understanding about all parts of the project
+* [ ] Create an architectural diagram over your MLOps pipeline (eduard)
+* [x] Make sure all group members have an understanding about all parts of the project
 * [x] Uploaded all your code to GitHub
 
 ## Group information
@@ -199,7 +199,8 @@ reproducible pipeline across different machines.
 
 From the cookiecutter template we have filled out the tests, .github, data, dockerfiles, models, reports, wandb, configs
 and src folder. We have removed the notebooks folder because we did not use any Jupyter notebooks in our project.
-We have added: (1) .dvc folder to manage our remote connection to Google Cloud Storage,
+We have added:
+(1) .dvc folder to manage our remote connection to Google Cloud Storage,
 (2) scripts folder to hold helper-script to create smaller data files for testing,
 (3) outputs folder for running our experiments,
 (4) src/mlo_group_project/training folder to hold helper classes for training.py,
@@ -264,7 +265,7 @@ between 0-1), and that there is no data leakage between training and test sets.
 >
 > Answer:
 
-The total code coverage is currently 53% (tested by running `uv run invoke test`). Even if we achieved 100% code
+The total code coverage is currently 56% (tested by running `uv run invoke test`). Even if we achieved 100% code
 coverage, we would not trust the system to be completely error-free. Code coverage only measures which lines of code
 were executed during testing, not whether the logic or the results are correct. Still, it would be worthwhile to run
 more code than not since it helps catch errors early. It is also important to test which files are actually generating
@@ -730,6 +731,7 @@ It was good to get some free credits and test the environment. In the future we 
 We implemented a simple frontend for our API using Streamlit. We did this because it allows non-technical users
 to interact with the model and visualize predictions in real-time without needing to use terminal commands or raw
 HTTP requests.
+We also experiemented much more with visualisation than the report checkboxes suggest, since we find this one of the most important parts of making sure things are running as they should. Data and results are much easier to understand if properly visualised. Just seeing a high accuracy does not neccesarily mean it is a good model or is doing what we wanted it to do. 
 
 ### Question 29
 
