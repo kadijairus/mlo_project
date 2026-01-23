@@ -683,7 +683,9 @@ For unit testing, we used pytest to verify the individual components of our infe
 >
 > Answer:
 
-Farnood
+Yes, we successfully implemented a real-time monitoring and alerting system integrated directly into our inference pipeline. The system works by using a custom DataGuard component that intercepts every request sent to the API before it reaches the model. This component monitors input statistics to detect data drift, outliers, or invalid values (like NaNs) instantly.
+
+When an anomaly is detected, the system triggers a dual-logging strategy: it logs structured errors to Google Cloud Logging (for infrastructure-level alerts) and sends notifications to Weights & Biases (for model-specific tracking). This monitoring setup ensures the longevity of the application by giving us immediate visibility into how production data is behaving. If the logs show a spike in rejected inputs or drift warnings, we know exactly when the model is becoming stale and needs to be retrained.
 --- question 26 fill here ---
 
 ## Overall discussion of project
