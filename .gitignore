@@ -196,3 +196,6 @@ eval_metrics.pt
 # Secrets and credentials
 .secrets/
 tests/sample_data.pt
+
+# Report temporal files
+report.html
