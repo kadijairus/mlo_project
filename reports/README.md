@@ -821,7 +821,7 @@ Student s256594 (Eduard Haiman):
 - Configured Google Cloud Build to automate the build-to-registry pipeline for production images upon GitHub repository updates.
 - Managed the deployment of the API and frontend UI on Google Cloud Run, configuring cross-service communication via environment variables.
 
-Student 260025 (Xiaoyu He):
+Student s260025 (Xiaoyu He):
 - I implemented the visualization module, using Visualize.py as the main method and additionally implementing visualize1 for decentralized data settings based on prior work and  volcano plot for feature selection. 
 - I have spent significant time debugging the experimental pipeline and integrating DVC, Docker, and Weights & Biases to ensure reproducible experimentation, probably my debug experience can be used to guild others.
 
